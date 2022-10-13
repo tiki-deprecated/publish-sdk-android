@@ -54,7 +54,8 @@ class TikiSdk(
         )
     }
 
-    fun modifyConsent(ownershipId: String, destination: TikiSdkDestination, about: String?, reward: String?
+    fun modifyConsent(
+        ownershipId: String, destination: TikiSdkDestination, about: String?, reward: String?
     ) {
         checkFlutterChannel()
         flutterPlugin.channel!!.invokeMethod(
