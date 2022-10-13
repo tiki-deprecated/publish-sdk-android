@@ -5,7 +5,6 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.TIKISDK" >
-    </application>
+        android:theme="@style/Theme.TIKISDK"></application>
 
 </manifest>

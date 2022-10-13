@@ -31,8 +31,12 @@ class TikiSdk(
         )
     }
 
-    fun assignOwnership( source: String,  type: String,  contains: List<String>,  origin: String? = null)
-    {
+    fun assignOwnership(
+        source: String,
+        type: String,
+        contains: List<String>,
+        origin: String? = null
+    ) {
         checkFlutterChannel()
         flutterPlugin.channel!!.invokeMethod(
             "assignOwnership", mapOf(
@@ -88,8 +92,9 @@ class TikiSdk(
     }
 
     private fun checkFlutterChannel() {
-        if(flutterPlugin.channel == null) {
-            flutterPlugin.channel = MethodChannel(flutterEngine.dartExecutor, "com.example.package.background")
+        if (flutterPlugin.channel == null) {
+            flutterPlugin.channel =
+                MethodChannel(flutterEngine.dartExecutor, "com.example.package.background")
             flutterPlugin.channel!!.setMethodCallHandler(flutterPlugin)
         }
     }
