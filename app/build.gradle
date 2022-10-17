@@ -7,7 +7,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        minSdk 18
+        minSdk 19
         versionCode 1
         versionName "1.0"
 
@@ -27,6 +27,83 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.mytiki'
+                artifactId = 'tiki_sdk_android'
+                version = '0.0.1'
+
+                pom {
+                    name = 'TIKI SDK Android'
+                    description = 'Android native implementation for TIKI SDK'
+                    url = 'https://mytiki.com'
+                    licenses {
+                        license {
+                            name = 'MIT'
+                            url = 'https://github.com/tiki/tiki-sdk-android/blob/main/LICENSE'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/tiki/tiki-sdk-android.git'
+                        developerConnection = 'scm:git:ssh://git@github.com:tiki/tiki-sdk-android.git'
+                        url = 'https://github.com/tiki/tiki-sdk-android'
+                    }
+                }
+            }
+            debug(MavenPublication) {
+                from components.debug
+
+                groupId = 'com.mytiki'
+                artifactId = 'tiki_sdk_android-debug'
+                version = '0.0.1'
+
+                pom {
+                    name = 'TIKI SDK Android'
+                    description = 'Android native implementation for TIKI SDK'
+                    url = 'https://mytiki.com'
+                    licenses {
+                        license {
+                            name = 'MIT'
+                            url = 'https://github.com/tiki/tiki-sdk-android/blob/main/LICENSE'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/tiki/tiki-sdk-android.git'
+                        developerConnection = 'scm:git:ssh://git@github.com:tiki/tiki-sdk-android.git'
+                        url = 'https://github.com/tiki/tiki-sdk-android'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = "OSSRH"
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = System.getenv("MAVEN_USERNAME")
+                    password = System.getenv("MAVEN_PASSWORD")
+                }
+            }
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/tiki/tiki-sdk-android"
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
     }
 }
 
