@@ -6,23 +6,24 @@ import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkFlutterPlugin
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
+/**
+  * A Flutter plugin has a lifecycle. First, a developer must add a FlutterPlugin to an instance
+  *        of FlutterEngine. To do this, obtain a PluginRegistry with FlutterEngine.getPlugins(), then
+  *        call PluginRegistry.add(FlutterPlugin), passing the instance of the Flutter plugin. During
+  *        the call to PluginRegistry.add(FlutterPlugin), the FlutterEngine will invoke
+  *        onAttachedToEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
+  *        If the FlutterPlugin is removed from the FlutterEngine via PluginRegistry.remove(Class),
+  *        or if the FlutterEngine is destroyed, the FlutterEngine will invoke
+  *        onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
+  */
 class TikiSdk(
     context: Context,
-    private val apiKey: String?,
+    apiKey: String?,
     private var flutterPlugin: TikiSdkFlutterPlugin = TikiSdkFlutterPlugin(),
     private var flutterEngine: FlutterEngine = FlutterEngine(context)
 ) {
 
-    //        A Flutter plugin has a lifecycle. First, a developer must add a FlutterPlugin to an instance
-    //        of FlutterEngine. To do this, obtain a PluginRegistry with FlutterEngine.getPlugins(), then
-    //        call PluginRegistry.add(FlutterPlugin), passing the instance of the Flutter plugin. During
-    //        the call to PluginRegistry.add(FlutterPlugin), the FlutterEngine will invoke
-    //        onAttachedToEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
-    //        If the FlutterPlugin is removed from the FlutterEngine via PluginRegistry.remove(Class),
-    //        or if the FlutterEngine is destroyed, the FlutterEngine will invoke
-    //        onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
-
-    fun build() {
+    init {
         checkFlutterChannel()
         flutterPlugin.channel!!.invokeMethod(
             "buildSdk", mapOf(
@@ -48,23 +49,13 @@ class TikiSdk(
         )
     }
 
-    fun getConsent(source: String, origin: String?) {
-        checkFlutterChannel()
-        flutterPlugin.channel!!.invokeMethod(
-            "getConsent", mapOf(
-                "source" to source,
-                "origin" to origin
-            )
-        )
-    }
-
     fun modifyConsent(
-        ownershipId: String, destination: TikiSdkDestination, about: String?, reward: String?
+        source: String, destination: TikiSdkDestination, about: String? = null, reward: String? = null
     ) {
         checkFlutterChannel()
         flutterPlugin.channel!!.invokeMethod(
             "modifyConsent", mapOf(
-                "ownershipId" to ownershipId,
+                "source" to source,
                 "destination" to destination.toJson(),
                 "about" to about,
                 "reward" to reward,
@@ -85,7 +76,7 @@ class TikiSdk(
         flutterPlugin.channel!!.invokeMethod(
             "applyConsent", mapOf(
                 "source" to source,
-                "destination" to destination,
+                "destination" to destination.toJson(),
                 "requestId" to requestId,
             )
         )

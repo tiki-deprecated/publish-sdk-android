@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
 
@@ -7,7 +7,6 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.mytiki.tiki_sdk_android"
         minSdk 18
         versionCode 1
         versionName "1.0"
