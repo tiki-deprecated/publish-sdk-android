@@ -63,6 +63,22 @@ class TikiSdk(
         )
     }
 
+    fun getConsent(
+        source: String,
+        origin: String? = null,
+        callbackId: String? = null,
+        callback: ((value: String) -> Unit)? = null) {
+        checkFlutterChannel()
+        flutterPlugin.channel!!.invokeMethod(
+            "getConsent", mapOf(
+                "source" to source,
+                "origin" to origin,
+                "callbackId" to callbackId,
+                "callback" to callback,
+            )
+        )
+    }
+
     fun applyConsent(
         source: String,
         destination: TikiSdkDestination,

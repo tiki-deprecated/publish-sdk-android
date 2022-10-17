@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TikiSdkTest {
-    private val apiKey: String = ""
+    private val apiKey: String = "a49fe762-124e-4ced-9b88-9814d64c131b"
 
     @Test
     fun init_tiki_sdk() {
