@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
 
@@ -7,7 +7,6 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.mytiki.tiki_sdk_android"
         minSdk 18
         versionCode 1
         versionName "1.0"
@@ -40,7 +39,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':flutter')
 }
