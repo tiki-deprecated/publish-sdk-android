@@ -1,108 +1,51 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
+import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkConsent
 import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkDestination
-import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkFlutterPlugin
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
+import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkPlugin
 
-/**
-  * A Flutter plugin has a lifecycle. First, a developer must add a FlutterPlugin to an instance
-  *        of FlutterEngine. To do this, obtain a PluginRegistry with FlutterEngine.getPlugins(), then
-  *        call PluginRegistry.add(FlutterPlugin), passing the instance of the Flutter plugin. During
-  *        the call to PluginRegistry.add(FlutterPlugin), the FlutterEngine will invoke
-  *        onAttachedToEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
-  *        If the FlutterPlugin is removed from the FlutterEngine via PluginRegistry.remove(Class),
-  *        or if the FlutterEngine is destroyed, the FlutterEngine will invoke
-  *        onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding) on the given FlutterPlugin.
-  */
 class TikiSdk(
-    context: Context,
-    apiKey: String?,
-    private var flutterPlugin: TikiSdkFlutterPlugin = TikiSdkFlutterPlugin(),
-    private var flutterEngine: FlutterEngine = FlutterEngine(context)
+    origin: String,
+    apiKey: String,
+    context: Context?,
+    private var flutterPlugin: TikiSdkPlugin = TikiSdkPlugin(origin, apiKey, context),
 ) {
 
-    init {
-        checkFlutterChannel()
-        flutterPlugin.channel!!.invokeMethod(
-            "buildSdk", mapOf(
-                "apiKey" to apiKey
-            )
-        )
-    }
-
-    fun assignOwnership(
+    suspend fun assignOwnership(
         source: String,
         type: String,
         contains: List<String>,
         origin: String? = null
-    ) {
-        checkFlutterChannel()
-        flutterPlugin.channel!!.invokeMethod(
-            "assignOwnership", mapOf(
-                "source" to source,
-                "type" to type,
-                "contains" to contains,
-                "origin" to origin,
-            )
+    ): String {
+        return flutterPlugin.caller!!.assignOwnership(
+            source, type, contains, origin
         )
     }
 
-    fun modifyConsent(
-        source: String, destination: TikiSdkDestination, about: String? = null, reward: String? = null
-    ) {
-        checkFlutterChannel()
-        flutterPlugin.channel!!.invokeMethod(
-            "modifyConsent", mapOf(
-                "source" to source,
-                "destination" to destination.toJson(),
-                "about" to about,
-                "reward" to reward,
-            )
-        )
-    }
-
-    fun getConsent(
-        source: String,
-        origin: String? = null,
-        callbackId: String? = null,
-        callback: ((value: String) -> Unit)? = null) {
-        checkFlutterChannel()
-        flutterPlugin.channel!!.invokeMethod(
-            "getConsent", mapOf(
-                "source" to source,
-                "origin" to origin,
-                "callbackId" to callbackId,
-                "callback" to callback,
-            )
-        )
-    }
-
-    fun applyConsent(
+    suspend fun modifyConsent(
         source: String,
         destination: TikiSdkDestination,
-        requestId: String,
+        about: String? = null,
+        reward: String? = null
+    ): String {
+        return flutterPlugin.caller!!.modifyConsent(source, destination, about, reward)
+    }
+
+    suspend fun getConsent(
+        source: String,
+        origin: String? = null
+    ): TikiSdkConsent {
+        return flutterPlugin.caller!!.getConsent(source, origin)
+    }
+
+    suspend fun applyConsent(
+        source: String,
+        destination: TikiSdkDestination,
         request: () -> Unit,
         onBlock: (value: String) -> Unit
     ) {
-        checkFlutterChannel()
-        flutterPlugin.requestCallbacks[requestId] = request
-        flutterPlugin.blockCallbacks[requestId] = onBlock
-        flutterPlugin.channel!!.invokeMethod(
-            "applyConsent", mapOf(
-                "source" to source,
-                "destination" to destination.toJson(),
-                "requestId" to requestId,
-            )
-        )
+        flutterPlugin.caller!!.applyConsent(source, destination, request, onBlock)
     }
 
-    private fun checkFlutterChannel() {
-        if (flutterPlugin.channel == null) {
-            flutterPlugin.channel =
-                MethodChannel(flutterEngine.dartExecutor, "com.example.package.background")
-            flutterPlugin.channel!!.setMethodCallHandler(flutterPlugin)
-        }
-    }
 }
