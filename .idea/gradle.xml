@@ -15,7 +15,7 @@
             <option value="$PROJECT_DIR$/../flutter/packages/integration_test/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/../tiki_sdk_flutter/.android/Flutter" />
+            <option value="$PROJECT_DIR$/../tiki_sdk_flutter/tiki_sdk_flutter_module/.android/Flutter" />
             <option value="$PROJECT_DIR$/../tiki_sdk_flutter/tiki_sdk_flutter_plugin/android" />
           </set>
         </option>
