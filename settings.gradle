@@ -13,10 +13,12 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "TIKI SDK"
-include ':app'
 
-setBinding(new Binding([gradle: this]))
-evaluate(new File(
-        settingsDir.parentFile,
-        'tiki_sdk_flutter_module/.android/include_flutter.groovy'
+include ':app'                                    // assumed existing content
+setBinding(new Binding([gradle: this]))                                // new
+evaluate(new File(                                                     // new
+        settingsDir.parentFile,                                              // new
+        'tiki_sdk_flutter/tiki_sdk_flutter_module/.android/include_flutter.groovy'                         // new
 ))
+
+
