@@ -119,3 +119,8 @@ dependencies {
     implementation project(':flutter')
 
 }
+
+apply plugin: "org.jetbrains.dokka"
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("../doc/html"))
+}
