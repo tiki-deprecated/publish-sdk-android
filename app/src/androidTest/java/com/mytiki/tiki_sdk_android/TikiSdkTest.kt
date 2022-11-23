@@ -2,38 +2,34 @@ package com.mytiki.tiki_sdk_android
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.mytiki.tiki_sdk_flutter_plugin.TikiSdkDestination
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.math.exp
 
 const val API_KEY: String = "a49fe762-124e-4ced-9b88-9814d64c131b"
-const val ORIGIN: String = "com.mytiki..tiki_sdk_android.test"
+const val ORIGIN: String = "com.mytiki.tiki_sdk_android.test"
 
 @RunWith(AndroidJUnit4::class)
 class TikiSdkTest {
 
+    @OptIn(DelicateCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
-        Dispatchers.resetMain() // reset the main dispatcher to the original Main dispatcher
+        Dispatchers.resetMain()
         mainThreadSurrogate.close()
     }
     @Test
@@ -47,16 +43,16 @@ class TikiSdkTest {
 //
 //    @Test
 //    fun assign_onwership() {
-//        lateinit var tikiSdk: TikiSdk;
 //        getInstrumentation().runOnMainSync {
 //            val context = getInstrumentation().targetContext
-//            tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
-//        }
-//        runTest {
-//            assertEquals(1,1)
+//            val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
+//            runBlocking {
+//                tikiSdk.assignOwnership("com.mytiki.androidtest", "data_point", listOf("nothing"));
+//                assertEquals(1,1)
+//            }
 //        }
 //    }
-//
+
 //    @Test
 //    fun give_consent() {
 //        getInstrumentation().runOnMainSync {
