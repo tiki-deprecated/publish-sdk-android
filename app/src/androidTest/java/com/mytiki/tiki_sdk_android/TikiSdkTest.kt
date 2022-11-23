@@ -2,8 +2,6 @@ package com.mytiki.tiki_sdk_android
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.mytiki.tiki_sdk_flutter_plugin.TikiSdk
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -14,7 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 const val API_KEY: String = "a49fe762-124e-4ced-9b88-9814d64c131b"
-const val ORIGIN: String = "com.mytiki..tiki_sdk_android.test"
+const val ORIGIN: String = "com.mytiki.tiki_sdk_android.test"
 
 @RunWith(AndroidJUnit4::class)
 class TikiSdkTest {
@@ -42,18 +40,18 @@ class TikiSdkTest {
             Assert.assertNotNull(tikiSdk)
         }
     }
-
-    @Test
-    fun assign_onwership() {
-        getInstrumentation().runOnMainSync {
-            val context = getInstrumentation().targetContext
-            val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
-            runBlocking {
-                tikiSdk.assignOwnership("com.mytiki.androidtest", "data_point", listOf("nothing"));
-                assertEquals(1,1)
-            }
-        }
-    }
+//
+//    @Test
+//    fun assign_onwership() {
+//        getInstrumentation().runOnMainSync {
+//            val context = getInstrumentation().targetContext
+//            val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
+//            runBlocking {
+//                tikiSdk.assignOwnership("com.mytiki.androidtest", "data_point", listOf("nothing"));
+//                assertEquals(1,1)
+//            }
+//        }
+//    }
 
 //    @Test
 //    fun give_consent() {

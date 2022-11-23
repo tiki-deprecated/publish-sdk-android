@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_flutter_plugin
+package com.mytiki.tiki_sdk_android
 
 import android.content.Context
 import androidx.annotation.NonNull
