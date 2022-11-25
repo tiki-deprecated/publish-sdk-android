@@ -3,10 +3,11 @@ package com.mytiki.tiki_sdk_android
 import android.content.Context
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
+import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 
 /**
  * Tiki sdk plugin
@@ -22,9 +23,8 @@ class TikiSdkFlutterChannel(
     private val origin: String,
     private val tikiSdk: TikiSdk,
     context: Context? = null
-) : FlutterPlugin, MethodChannel.MethodCallHandler  {
+) : MethodChannel.MethodCallHandler  {
 
-    private var flutterEngine: FlutterEngine? = null
     var methodChannel: MethodChannel? = null
 
     companion object {
@@ -39,14 +39,17 @@ class TikiSdkFlutterChannel(
 
     private fun setupChannel(context: Context) {
         if (methodChannel == null) {
-            if (flutterEngine == null) flutterEngine = FlutterEngine(context)
-            methodChannel = MethodChannel(flutterEngine!!.dartExecutor, channelId)
+            val loader = FlutterLoader()
+            loader.startInitialization(context)
+            loader.ensureInitializationComplete(context, null)
+            val flutterEngine = FlutterEngine(context)
+            flutterEngine.dartExecutor.executeDartEntrypoint(
+                DartEntrypoint.createDefault()
+            )
+            GeneratedPluginRegistrant.registerWith(flutterEngine)
+            methodChannel = MethodChannel(flutterEngine.dartExecutor, channelId)
         }
-        buildSdk()
-    }
 
-    private fun setupChannel(messenger: BinaryMessenger) {
-        methodChannel = MethodChannel(messenger, channelId)
         buildSdk()
     }
 
@@ -60,33 +63,27 @@ class TikiSdkFlutterChannel(
         )
     }
 
-    private fun teardownChannel() {
-        methodChannel!!.setMethodCallHandler(null)
-        methodChannel = null
-    }
-
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
         val requestId = call.argument<String>("requestId")
         val response = call.argument<String?>("response")
         if (requestId == null) result.error("-1", "missing requestId argument", call.arguments)
+        val callback = tikiSdk.callbacks[requestId]
         when (call.method) {
             "success" -> {
-                response?.let { tikiSdk.completables[requestId]?.complete(it) }
+                if (callback != null) {
+                    val valueToReturn: String = response.let{ "" }
+                    callback(true, valueToReturn)
+                }
             }
             "error" -> {
-                tikiSdk.completables[requestId]?.completeExceptionally(Exception(response))
+                if (callback != null) {
+                    val valueToReturn: String = response.let{ "" }
+                    callback(false, valueToReturn)
+                }
             }
             else -> result.notImplemented()
         }
-        tikiSdk.completables.remove(requestId)
-    }
-
-    override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        setupChannel(binding.binaryMessenger)
-    }
-
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        teardownChannel()
+        tikiSdk.callbacks.remove(requestId)
     }
 
 }

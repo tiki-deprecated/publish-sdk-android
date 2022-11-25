@@ -13,9 +13,9 @@
             <option value="$PROJECT_DIR$/../flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.20/android" />
             <option value="$PROJECT_DIR$/../flutter/.pub-cache/hosted/pub.dartlang.org/sqlite3_flutter_libs-0.5.12/android" />
             <option value="$PROJECT_DIR$/../flutter/packages/integration_test/android" />
+            <option value="$PROJECT_DIR$/../tiki-sdk-flutter/.android/Flutter" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/../tiki_sdk_flutter/.android/Flutter" />
           </set>
         </option>
       </GradleProjectSettings>
