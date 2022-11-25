@@ -1,7 +1,6 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
-import kotlinx.coroutines.CompletableDeferred
 import java.util.*
 
 
@@ -10,8 +9,7 @@ class TikiSdk(
     origin: String,
     context: Context
 ) {
-
-    var completables: MutableMap<String, CompletableDeferred<String?>> = mutableMapOf()
+    var callbacks: MutableMap<String, (Boolean, String) -> Unit> = mutableMapOf()
     var tikiSdkFlutterChannel: TikiSdkFlutterChannel
 
     init {
@@ -23,22 +21,23 @@ class TikiSdk(
     /** Assign ownership to a given source
      *
      * Assign ownership to a given [source]. : .
-     * [types] . Optionally, the [origin] can be overridden
+     * [type] . Optionally, the [origin] can be overridden
      * for the specific ownership grant.
      *
      * @param source String The source of the data (reversed FQDN of the company or product)
      * @param type String The type of data: point, pool, or stream
      * @param contains List<String> The list data assets (email, phone, images, etc)
-     * @param origin String? Optionally overrides the default [TikiSdkPlugin.origin]
+     * @param origin String? Optionally overrides the default origin
      *
      * @return String base64 from blockchain transaction id for ownership
      */
-    suspend fun assignOwnership(
+    fun assignOwnership(
         source: String,
         type: String,
         contains: List<String>,
+        callback: ((String?) -> Unit)? = null,
         origin: String? = null
-    ): String {
+    ) {
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
             "assignOwnership", mapOf(
@@ -49,9 +48,11 @@ class TikiSdk(
                 "origin" to origin,
             )
         )
-        val deferred = CompletableDeferred<String?>()
-        completables[requestId] = deferred
-        return deferred.await()!!
+        callback?.let {
+            callbacks[requestId] = { result, response ->
+                if (result) callback(response)
+            }
+        }
     }
 
     /**
@@ -70,12 +71,13 @@ class TikiSdk(
      *
      * @return String base64 from blockchain transaction id for consent
      * */
-    suspend fun modifyConsent(
+     fun modifyConsent(
         source: String,
         destination: TikiSdkDestination,
         about: String? = null,
-        reward: String? = null
-    ): String? {
+        reward: String? = null,
+        callback: ((String) -> Unit)? = null
+       ) {
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
             "modifyConsent", mapOf(
@@ -86,16 +88,18 @@ class TikiSdk(
                 "reward" to reward,
             )
         )
-        val deferred = CompletableDeferred<String?>()
-        completables[requestId] = deferred
-        return deferred.await()
+        callback?.let {
+            callbacks[requestId] = { result, response ->
+                if (result) callback(response)
+            }
+        }
     }
 
-
-    suspend fun getConsent(
+    fun getConsent(
         source: String,
+        callback: ((TikiSdkConsent) -> Unit)? = null,
         origin: String? = null
-    ): TikiSdkConsent? {
+    ){
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
             "getConsent", mapOf(
@@ -104,17 +108,18 @@ class TikiSdk(
                 "origin" to origin,
             )
         )
-        val deferred = CompletableDeferred<String?>()
-        completables[requestId] = deferred
-        val jsonConsent = deferred.await()
-        return jsonConsent?.let { TikiSdkConsent.fromJson(it) }
+        callback?.let {
+            callbacks[requestId] = { result, response ->
+                if (result) callback(TikiSdkConsent.fromJson(response))
+            }
+        }
     }
 
-    suspend fun applyConsent(
+    fun applyConsent(
         source: String,
         destination: TikiSdkDestination,
-        request: (value: String) -> Unit,
-        onBlocked: (value: String) -> Unit
+        request: (String) -> Unit,
+        onBlocked: (String) -> Unit
     ) {
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
@@ -124,17 +129,12 @@ class TikiSdk(
                 "destination" to destination.toJson(),
             )
         )
-        try {
-            val deferred = CompletableDeferred<String?>()
-            completables[requestId] = deferred
-            val value = deferred.await()
-            if(value != null){
-                request(value)
+        callbacks[requestId] = { result, response ->
+            if(result){
+                request(response)
             }else{
                 onBlocked("no consent")
             }
-        } catch (e: Exception) {
-            onBlocked(e.message ?: "no consent")
         }
     }
 }
