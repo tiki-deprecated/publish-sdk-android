@@ -12,9 +12,13 @@ class TikiSdk(
 ) {
 
     var completables: MutableMap<String, CompletableDeferred<String?>> = mutableMapOf()
-    private var tikiSdkFlutterChannel: TikiSdkFlutterChannel = TikiSdkFlutterChannel(
-        apiKey, origin, this, context
-    )
+    var tikiSdkFlutterChannel: TikiSdkFlutterChannel
+
+    init {
+        tikiSdkFlutterChannel = TikiSdkFlutterChannel(
+            apiKey, origin, this, context
+        )
+    }
 
     /** Assign ownership to a given source
      *

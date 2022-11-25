@@ -18,7 +18,7 @@ include ':app'                                    // assumed existing content
 setBinding(new Binding([gradle: this]))                                // new
 evaluate(new File(                                                     // new
         settingsDir.parentFile,                                              // new
-        'tiki_sdk_flutter/.android/include_flutter.groovy'                         // new
+        'tiki-sdk-flutter/.android/include_flutter.groovy'                         // new
 ))
 
 

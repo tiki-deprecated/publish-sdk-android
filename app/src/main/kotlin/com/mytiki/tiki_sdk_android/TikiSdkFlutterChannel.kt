@@ -3,10 +3,18 @@ package com.mytiki.tiki_sdk_android
 import android.content.Context
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
+import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
+import io.flutter.view.FlutterMain
+
+
+
 
 /**
  * Tiki sdk plugin
@@ -24,7 +32,6 @@ class TikiSdkFlutterChannel(
     context: Context? = null
 ) : FlutterPlugin, MethodChannel.MethodCallHandler  {
 
-    private var flutterEngine: FlutterEngine? = null
     var methodChannel: MethodChannel? = null
 
     companion object {
@@ -39,8 +46,15 @@ class TikiSdkFlutterChannel(
 
     private fun setupChannel(context: Context) {
         if (methodChannel == null) {
-            if (flutterEngine == null) flutterEngine = FlutterEngine(context)
-            methodChannel = MethodChannel(flutterEngine!!.dartExecutor, channelId)
+            val loader = FlutterLoader()
+            loader.startInitialization(context)
+            loader.ensureInitializationComplete(context, null)
+            val flutterEngine = FlutterEngine(context)
+            flutterEngine.dartExecutor.executeDartEntrypoint(
+                DartEntrypoint.createDefault()
+            )
+            GeneratedPluginRegistrant.registerWith(flutterEngine);
+            methodChannel = MethodChannel(flutterEngine.dartExecutor, channelId)
         }
         buildSdk()
     }

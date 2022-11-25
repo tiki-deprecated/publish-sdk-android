@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,18 +41,18 @@ class TikiSdkTest {
             Assert.assertNotNull(tikiSdk)
         }
     }
-//
-//    @Test
-//    fun assign_onwership() {
-//        getInstrumentation().runOnMainSync {
-//            val context = getInstrumentation().targetContext
-//            val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
-//            runBlocking {
-//                tikiSdk.assignOwnership("com.mytiki.androidtest", "data_point", listOf("nothing"));
-//                assertEquals(1,1)
-//            }
-//        }
-//    }
+
+    @Test
+    fun assign_onwership() {
+        getInstrumentation().runOnMainSync {
+            val context = getInstrumentation().targetContext
+            val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
+            runBlocking {
+                val ownershipId = tikiSdk.assignOwnership("com.mytiki.androidtest", "data_point", listOf("nothing"))
+                print(ownershipId)
+            }
+        }
+    }
 
 //    @Test
 //    fun give_consent() {
