@@ -35,9 +35,9 @@ class TikiSdk(
     fun assignOwnership(
         source: String,
         type: String,
-        about: String? = null,
-        contains: List<String>? = null,
         callback: ((ownershipId: String) -> Unit)? = null,
+        contains: List<String>? = null,
+        about: String? = null,
         origin: String? = null
     ) {
         val requestId = UUID.randomUUID().toString()
@@ -78,10 +78,10 @@ class TikiSdk(
      fun modifyConsent(
         source: String,
         destination: TikiSdkDestination,
+        callback: ((TikiSdkConsent) -> Unit)? = null,
         about: String? = null,
         reward: String? = null,
-        expiry: Calendar? = null,
-        callback: ((TikiSdkConsent) -> Unit)? = null
+        expiry: Calendar? = null
        ) {
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
