@@ -3,7 +3,6 @@ package com.mytiki.tiki_sdk_android
 import android.content.Context
 import java.util.*
 
-
 class TikiSdk(
     apiKey: String,
     origin: String,
@@ -18,24 +17,27 @@ class TikiSdk(
         )
     }
 
-    /** Assign ownership to a given source
+    /**
+     * Assign ownership to a given [source].
      *
-     * Assign ownership to a given [source]. : .
-     * [type] . Optionally, the [origin] can be overridden
-     * for the specific ownership grant.
+     * The [type] identifies which type the ownership refers to.
+     * The list of items the data contains is described by [contains]. Optionally,
+     * a description about this ownership can be given in [about] and the [origin]
+     * can be overridden for the specific ownership grant.
      *
      * @param source String The source of the data (reversed FQDN of the company or product)
      * @param type String The type of data: point, pool, or stream
      * @param contains List<String> The list data assets (email, phone, images, etc)
+     * @param callback ((ownershipId: String) -> Unit)? Optional callback to handle the ownershipId
      * @param origin String? Optionally overrides the default origin
      *
-     * @return String base64 from blockchain transaction id for ownership
      */
     fun assignOwnership(
         source: String,
         type: String,
-        contains: List<String>,
-        callback: ((String?) -> Unit)? = null,
+        about: String? = null,
+        contains: List<String>? = null,
+        callback: ((ownershipId: String) -> Unit)? = null,
         origin: String? = null
     ) {
         val requestId = UUID.randomUUID().toString()
@@ -43,6 +45,7 @@ class TikiSdk(
             "assignOwnership", mapOf(
                 "requestId" to requestId,
                 "source" to source,
+                "about" to about,
                 "type" to type,
                 "contains" to contains,
                 "origin" to origin,
@@ -68,15 +71,17 @@ class TikiSdk(
      * @param destination TikiSdkDestination
      * @param about String?
      * @param reward String?
-     *
-     * @return String base64 from blockchain transaction id for consent
-     * */
+     * @param expiry Calendar?
+     * @param callback ((consent: [TikiSdkConsent]) -> Unit)? Optional callback to handle the  [TikiSdkConsent] object.
+
+     */
      fun modifyConsent(
         source: String,
         destination: TikiSdkDestination,
         about: String? = null,
         reward: String? = null,
-        callback: ((String) -> Unit)? = null
+        expiry: Calendar? = null,
+        callback: ((TikiSdkConsent) -> Unit)? = null
        ) {
         val requestId = UUID.randomUUID().toString()
         tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
@@ -86,15 +91,27 @@ class TikiSdk(
                 "destination" to destination.toJson(),
                 "about" to about,
                 "reward" to reward,
+                "expiry" to expiry?.let{ it.timeInMillis / 1000 }
             )
         )
         callback?.let {
             callbacks[requestId] = { result, response ->
-                if (result) callback(response)
+                if (result) callback(TikiSdkConsent.fromJson(response))
             }
         }
     }
 
+    /**
+     * Get consent
+     *
+     * Gets latest consent given for a [source] and [origin]. It does not validate if the consent is
+     * expired or if it can be applied to a specific destination. For that, [applyConsent] should be
+     * used instead.
+     *
+     * @param source String The source of the data (reversed FQDN of the company or product)
+     * @param callback ((consent: [TikiSdkConsent]) -> Unit)? Optional callback to handle the  [TikiSdkConsent] object.
+     * @param origin String? Optionally overrides the default origin
+     */
     fun getConsent(
         source: String,
         callback: ((TikiSdkConsent) -> Unit)? = null,
@@ -115,6 +132,18 @@ class TikiSdk(
         }
     }
 
+    /**
+     * Apply consent for a given [source] and [destination].
+     *
+     * If consent exists for the destination and is not expired, [request] will be
+     * executed. Else [onBlocked] is called.
+     *
+     * @param source String
+     * @param destination TikiSdkDestination
+     * @param request (String) -> Unit
+     * @param onBlocked (String) -> Unit
+     *
+     */
     fun applyConsent(
         source: String,
         destination: TikiSdkDestination,
