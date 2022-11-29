@@ -2,13 +2,11 @@ package com.mytiki.tiki_sdk_android
 
 import android.content.Context
 import androidx.annotation.NonNull
-import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
 
 /**
  * Tiki sdk plugin
@@ -47,7 +45,6 @@ class TikiSdkFlutterChannel(
             flutterEngine.dartExecutor.executeDartEntrypoint(
                 DartEntrypoint.createDefault()
             )
-            GeneratedPluginRegistrant.registerWith(flutterEngine)
             methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
         }
         buildSdk()
