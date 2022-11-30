@@ -38,7 +38,10 @@ dependencies {
 3. Go to File -> Project Structure.
 4. Open "Dependencies" in the left panel.
 5. Click in the + sign in the right panel.
+<img width="374" alt="Captura de Tela 2022-11-30 às 11 14 13" src="https://user-images.githubusercontent.com/8357343/204835312-49507cac-cb81-4964-af83-32e9e69716c3.png">
 6. Choose JAR/AAR dependency.
+<img width="381" alt="Captura de Tela 2022-11-30 às 11 14 26" src="https://user-images.githubusercontent.com/8357343/204835467-031cfa9b-8fe6-452f-ab5c-b6df1ede9d32.png">
+
 7. Choose your app module (default is "app").
 8. Provide the path to the TIKI SDK Android AAR file.
 9. Apply and sync project
