@@ -9,7 +9,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        minSdk 19
+        minSdk 21
         versionCode 1
         versionName "1.0"
 
@@ -42,6 +42,9 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -105,6 +108,9 @@ afterEvaluate {
 }
 
 dependencies {
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
 
@@ -118,9 +124,4 @@ dependencies {
 
     implementation project(':flutter')
 
-}
-
-apply plugin: "org.jetbrains.dokka"
-tasks.dokkaHtml.configure {
-    outputDirectory.set(file("../doc/html"))
 }
