@@ -1,0 +1,186 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.mytiki",
+    "module": "tiki_sdk_android",
+    "version": "0.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.3.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "tiki_sdk_android-0.0.1.aar",
+          "url": "tiki_sdk_android-0.0.1.aar",
+          "size": 60203,
+          "sha512": "c401b53c8e21b733226400b08a9210d475ba53b6c8afaefcce558df13380396a71686ee3f00dba0f8d915356906f007f3bd27614d946d5085104adacda31caa3",
+          "sha256": "ce5f9e4c19b8aa1016dd0a646f31df77d6363ace33421fcb02210919b7facdef",
+          "sha1": "dd463d0aa4c49afe055393fd0bd5ae2a4ec71302",
+          "md5": "b1b8fd87f983493341f4af92c739fbf9"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.databinding",
+          "module": "viewbinding",
+          "version": {
+            "requires": "7.2.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.10"
+          }
+        },
+        {
+          "group": "androidx.constraintlayout",
+          "module": "constraintlayout",
+          "version": {
+            "requires": "2.1.4"
+          }
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-fragment-ktx",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-ui-ktx",
+          "version": {
+            "requires": "2.5.2"
+          }
+        },
+        {
+          "group": "androidx.multidex",
+          "module": "multidex",
+          "version": {
+            "requires": "2.0.1"
+          }
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.5.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "com.mytiki.tiki_sdk_flutter",
+          "module": "flutter",
+          "version": {
+            "requires": "1.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "tiki_sdk_android-0.0.1.aar",
+          "url": "tiki_sdk_android-0.0.1.aar",
+          "size": 60203,
+          "sha512": "c401b53c8e21b733226400b08a9210d475ba53b6c8afaefcce558df13380396a71686ee3f00dba0f8d915356906f007f3bd27614d946d5085104adacda31caa3",
+          "sha256": "ce5f9e4c19b8aa1016dd0a646f31df77d6363ace33421fcb02210919b7facdef",
+          "sha1": "dd463d0aa4c49afe055393fd0bd5ae2a4ec71302",
+          "md5": "b1b8fd87f983493341f4af92c739fbf9"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "tiki_sdk_android-0.0.1-sources.jar",
+          "url": "tiki_sdk_android-0.0.1-sources.jar",
+          "size": 4833,
+          "sha512": "8c81feb119fc03863a3b63d464067a2c4e3d8b4566a614e88276ca2d133d243532e1b4c62b07b2252ff9c9a6100a03801195a0ac5f7cbff4368bbf0dd565e8ff",
+          "sha256": "d4d8b88d9d00605664b86a3b64d35059fd5905daaabb26ea68c3065a6fd85ccb",
+          "sha1": "b8653ed76de987ba5460b2a3987f868d108508bc",
+          "md5": "d3d047b678f02d7fc766302629914992"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseJavaDocPublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "tiki_sdk_android-0.0.1-javadoc.jar",
+          "url": "tiki_sdk_android-0.0.1-javadoc.jar",
+          "size": 292367,
+          "sha512": "9902a5f5e03c304eafaf9ab373273eedaaee57ae333bc8d226435bf6124ee74fe747799367d24c4eb54dcf733e23201555a77ad6b397d1980befb8b5bd51621c",
+          "sha256": "19d9fa587037472796c735edf75f78c838c67f01fe1321414584a8b17d6f1daf",
+          "sha1": "c83a2aef4f05e2625a10a303fb5776f3b0a5bc9a",
+          "md5": "363eda4cf4bba73d3829b6800046dcb4"
+        }
+      ]
+    }
+  ]
+}
