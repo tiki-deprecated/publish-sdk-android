@@ -1,6 +1,7 @@
+###  [🍍 Console](https://console.mytiki.com) &nbsp; ⏐ &nbsp; [📚 Docs](https://docs.mytiki.com)
+
 # TIKI SDK [Android] —build the new data economy
 
-### [📚 Docs](https://docs.mytiki.com) &nbsp;&nbsp;[💬 Discord](https://discord.gg/tiki)
 
 A package for adding TIKI's decentralized infrastructure to **Android** projects. Add tokenized data ownership, consent, and rewards to your app in minutes.
 
