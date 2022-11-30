@@ -5,7 +5,7 @@ build/kotlin
 build/outputs/androidTest-results
 build/outputs/code_coverage
 build/outputs/connected_android_test_additional_output
-build/logs
+build/outputs;logs
 build/publications
 build/reports
 build/snapshot
