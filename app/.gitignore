@@ -10,3 +10,6 @@ build/publications
 build/reports
 build/snapshot
 build/tmp
+build/outputs
+build/repo
+build
