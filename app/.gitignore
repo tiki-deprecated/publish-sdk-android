@@ -1,1 +1,12 @@
-/build
+build/.transforms
+build/generated
+build/intermediates
+build/kotlin
+build/outputs/androidTest-results
+build/outputs/code_coverage
+build/outputs/connected_android_test_additional_output
+build/logs
+build/publications
+build/reports
+build/snapshot
+build/tmp
