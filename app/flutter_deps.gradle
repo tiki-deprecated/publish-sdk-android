@@ -1,0 +1,77 @@
+import groovy.lang.Closure
+import org.gradle.api.Project
+
+void addFlutterDependencies(buildType) {
+
+    final String engineVersion = "d75b7ce37a588afab7c0378ecf2e2989255cade6";
+
+/** The platforms that can be passed to the `--Ptarget-platform` flag. */
+    final String PLATFORM_ARM32  = "android-arm";
+    final String PLATFORM_ARM64  = "android-arm64";
+    final String PLATFORM_X86    = "android-x86";
+    final String PLATFORM_X86_64 = "android-x64";
+
+/** The ABI architectures supported by Flutter. */
+    final String ARCH_ARM32      = "armeabi-v7a";
+    final String ARCH_ARM64      = "arm64-v8a";
+    final String ARCH_X86        = "x86";
+    final String ARCH_X86_64     = "x86_64";
+
+/** Maps platforms to ABI architectures. */
+    final Map PLATFORM_ARCH_MAP = [
+            (PLATFORM_ARM32)    : ARCH_ARM32,
+            (PLATFORM_ARM64)    : ARCH_ARM64,
+            (PLATFORM_X86)      : ARCH_X86,
+            (PLATFORM_X86_64)   : ARCH_X86_64,
+    ]
+    String flutterBuildMode = buildModeFor(buildType)
+    if (!supportsBuildMode(flutterBuildMode)) {
+        return
+    }
+    // The embedding is set as an API dependency in a Flutter plugin.
+    // Therefore, don't make the app project depend on the embedding if there are Flutter
+    // plugins.
+    // This prevents duplicated classes when using custom build types. That is, a custom build
+    // type like profile is used, and the plugin and app projects have API dependencies on the
+    // embedding.
+    if (!isFlutterAppProject() || getPluginList().size() == 0) {
+        addApiDependencies(project, buildType.name,
+                "io.flutter:flutter_embedding_$flutterBuildMode:$engineVersion")
+    }
+    List<String> platforms = getTargetPlatforms().collect()
+    // Debug mode includes x86 and x64, which are commonly used in emulators.
+    if (flutterBuildMode == "debug" && !useLocalEngine()) {
+        platforms.add("android-x86")
+        platforms.add("android-x64")
+    }
+    platforms.each { platform ->
+        String arch = PLATFORM_ARCH_MAP[platform].replace("-", "_")
+        // Add the `libflutter.so` dependency.
+        addApiDependencies(project, buildType.name,
+                "io.flutter:${arch}_$flutterBuildMode:$engineVersion")
+    }
+}
+
+private static String buildModeFor(buildType) {
+    if (buildType.name == "profile") {
+        return "profile"
+    } else if (buildType.debuggable) {
+        return "debug"
+    }
+    return "release"
+}
+
+private static void addApiDependencies(Project project, String variantName, Object dependency, Closure config) {
+    String configuration;
+    // `compile` dependencies are now `api` dependencies.
+    if (project.getConfigurations().findByName("api")) {
+        configuration = "${variantName}Api";
+    } else {
+        configuration = "${variantName}Compile";
+    }
+    project.dependencies.add(configuration, dependency, config)
+}
+
+void testFunction(){
+
+}

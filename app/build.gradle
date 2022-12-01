@@ -54,46 +54,46 @@ signing {
     sign publishing.publications
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-
-                groupId = 'com.mytiki'
-                artifactId = 'tiki_sdk_android'
-                version = '0.0.2'
-
-            }
-        }
-        repositories {
-            maven {
-                    name = 'localRepo'
-                    url = layout.buildDirectory.dir("repo")
-                }
-            if(System.getenv('PUBLISH_TO_OSSRH') != null) {
-                maven {
-                    name = "OSSRH"
-                    url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                    credentials {
-                        username = System.getenv('OSSRH_USERNAME')
-                        password = System.getenv('OSSRH_PASSWORD')
-                    }
-                }
-            }
-            if(System.getenv('PUBLISH_TO_GITHUB') != null) {
-                maven {
-                    name = "GitHubPackages"
-                    url = "https://maven.pkg.github.com/tiki/tiki-sdk-android"
-                    credentials {
-                        username = System.getenv("GITHUB_ACTOR")
-                        password = System.getenv("GITHUB_TOKEN")
-                    }
-                }
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            release(MavenPublication) {
+//                from components.release
+//
+//                groupId = 'com.mytiki'
+//                artifactId = 'tiki_sdk_android'
+//                version = '0.0.2'
+//
+//            }
+//        }
+//        repositories {
+//            maven {
+//                    name = 'localRepo'
+//                    url = layout.buildDirectory.dir("repo")
+//                }
+//            if(System.getenv('PUBLISH_TO_OSSRH') != null) {
+//                maven {
+//                    name = "OSSRH"
+//                    url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//                    credentials {
+//                        username = System.getenv('OSSRH_USERNAME')
+//                        password = System.getenv('OSSRH_PASSWORD')
+//                    }
+//                }
+//            }
+//            if(System.getenv('PUBLISH_TO_GITHUB') != null) {
+//                maven {
+//                    name = "GitHubPackages"
+//                    url = "https://maven.pkg.github.com/tiki/tiki-sdk-android"
+//                    credentials {
+//                        username = System.getenv("GITHUB_ACTOR")
+//                        password = System.getenv("GITHUB_TOKEN")
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -107,9 +107,13 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
 
     testImplementation 'junit:junit:4.13.2'
-
+    
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-
 }
+
+def groovyShell = new GroovyShell()
+def flutter_deps = groovyShell.parse( new File("$rootDir/app/flutter_deps.gradle") )
+
+project.android.buildTypes.each{} &flutter_deps.addFlutterDependencies
