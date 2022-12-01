@@ -43,15 +43,16 @@ jobs:
       - name: "Setup Android SDK"
         uses: android-actions/setup-android@v2
 
+      - name: "Patch Flutter"
+          run: |
+            flutter doctor -v
 #      - name: "Flutter Pub Get"
 #          run: |
 #            cd tiki-sdk-flutter
 #            flutter pub get
 #            cd ..
 #
-#      - name: "Patch Flutter"
-#          run: |
-#            flutter doctor -v
+
 
 #      - name: "Publish package"
 #        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
