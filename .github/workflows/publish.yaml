@@ -33,3 +33,31 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.3.4'
+
+      - name: "Set up Java"
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: "Setup Android SDK"
+        uses: android-actions/setup-android@v2
+
+#      - name: "Flutter Pub Get"
+#          run: |
+#            cd tiki-sdk-flutter
+#            flutter pub get
+#            cd ..
+#
+#      - name: "Patch Flutter"
+#          run: |
+#            flutter doctor -v
+
+#      - name: "Publish package"
+#        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#        with:
+#          arguments: publish
+#        env:
+#          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+#          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
