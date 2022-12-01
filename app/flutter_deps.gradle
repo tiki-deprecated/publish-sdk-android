@@ -2,11 +2,6 @@ import groovy.lang.Closure
 import org.gradle.api.Project
 import org.gradle.api.GradleException
 
-var project = null
-
-
-
-
 void addFlutterDependencies(buildType, injectedProject) {
 
 /** The platforms that can be passed to the `--Ptarget-platform` flag. */
@@ -98,7 +93,7 @@ private boolean isFlutterAppProject() {
     return project.android.hasProperty("applicationVariants")
 }
 
-private List<String> getTargetPlatforms() {
+private static List<String> getTargetPlatforms() {
     final String PLATFORM_ARM32  = "android-arm";
     final String PLATFORM_ARM64  = "android-arm64";
     final String PLATFORM_X86    = "android-x86";
