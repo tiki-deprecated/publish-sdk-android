@@ -116,4 +116,6 @@ dependencies {
 def groovyShell = new GroovyShell()
 def flutter_deps = groovyShell.parse( new File("$rootDir/app/flutter_deps.gradle") )
 
-project.android.buildTypes.each{} &flutter_deps.addFlutterDependencies
+project.android.buildTypes.forEach{ buildType ->
+    flutter_deps.addFlutterDependencies(buildType, project)
+}

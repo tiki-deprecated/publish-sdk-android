@@ -1,7 +1,11 @@
 import groovy.lang.Closure
 import org.gradle.api.Project
 
-void addFlutterDependencies(buildType) {
+var project = null
+
+void addFlutterDependencies(buildType, injectedProject) {
+
+    project = injectedProject
 
     final String engineVersion = "d75b7ce37a588afab7c0378ecf2e2989255cade6";
 
@@ -61,7 +65,7 @@ private static String buildModeFor(buildType) {
     return "release"
 }
 
-private static void addApiDependencies(Project project, String variantName, Object dependency, Closure config) {
+private static void addApiDependencies(project, String variantName, Object dependency, Closure config) {
     String configuration;
     // `compile` dependencies are now `api` dependencies.
     if (project.getConfigurations().findByName("api")) {
@@ -72,6 +76,20 @@ private static void addApiDependencies(Project project, String variantName, Obje
     project.dependencies.add(configuration, dependency, config)
 }
 
-void testFunction(){
+private Boolean supportsBuildMode(String flutterBuildMode) {
+    if (!useLocalEngine()) {
+        return true;
+    }
+    assert project.hasProperty('local-engine-build-mode')
+    // Don't configure dependencies for a build mode that the local engine
+    // doesn't support.
+    return project.property('local-engine-build-mode') == flutterBuildMode
+}
 
+private Boolean useLocalEngine() {
+    return project.hasProperty('local-engine-repo')
+}
+
+private boolean isFlutterAppProject() {
+    return project.android.hasProperty("applicationVariants")
 }
