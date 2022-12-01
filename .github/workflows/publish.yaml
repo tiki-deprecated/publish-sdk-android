@@ -44,8 +44,8 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: "Patch Flutter"
-          run: |
-            flutter doctor -v
+        run: |
+          flutter doctor -v
 #      - name: "Flutter Pub Get"
 #          run: |
 #            cd tiki-sdk-flutter
