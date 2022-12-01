@@ -40,15 +40,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: "Setup Android SDK"
-        uses: android-actions/setup-android@v2
-
-      - name: "Flutter Pub Get"
-          run: |
-            cd tiki-sdk-flutter
-            flutter pub get
-            cd ..
-
       - name: "Patch Flutter"
           run: |
             flutter doctor -v
