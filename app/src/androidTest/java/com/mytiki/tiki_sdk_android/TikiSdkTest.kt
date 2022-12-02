@@ -19,7 +19,7 @@ const val ORIGIN: String = "com.mytiki.tiki_sdk_android.test"
 class TikiSdkTest {
 
     val callback = {
-            response: String? -> print(response)
+            response: String -> print(response)
     }
 
     @Test
@@ -49,7 +49,7 @@ class TikiSdkTest {
             val context = getInstrumentation().targetContext
             val tikiSdk = TikiSdk(ORIGIN, API_KEY, context)
             tikiSdk.assignOwnership("com.mytiki.test", "pool")
-            tikiSdk.modifyConsent("com.mytiki.test", TikiSdkDestination(listOf("*"), listOf("*")))
+            tikiSdk.modifyConsent("com.mytiki.test", TikiSdkDestination(listOf("*"), listOf("*")),)
             assertEquals(1, 1)
         }
     }

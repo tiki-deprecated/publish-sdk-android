@@ -4,7 +4,7 @@ import android.content.Context
 import java.util.*
 
 class TikiSdk(
-    apiKey: String,
+    apiId: String,
     origin: String,
     context: Context
 ) {
@@ -13,7 +13,7 @@ class TikiSdk(
 
     init {
         tikiSdkFlutterChannel = TikiSdkFlutterChannel(
-            apiKey, origin, this, context
+            apiId, origin, this, context
         )
     }
 

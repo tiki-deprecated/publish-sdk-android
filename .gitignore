@@ -15,4 +15,10 @@
 local.properties
 publish.properties
 secring.gpg
-/doc/html/
+
+# IntelliJ files
+.idea
+*.iml
+
+# Autogen'd docs
+doc/api
