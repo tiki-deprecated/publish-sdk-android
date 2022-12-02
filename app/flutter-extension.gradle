@@ -6,7 +6,6 @@ import java.nio.file.Paths
 //modified from: https://github.com/flutter/flutter/blob/master/packages/flutter_tools/gradle/flutter.gradle
 
 class Constants {
-    static final String MAVEN_REPOSITORY = "https://storage.googleapis.com/download.flutter.io";
     static final String ENGINE_VERSION = '1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
 
 /** The platforms that can be passed to the `--Ptarget-platform` flag. */
@@ -36,13 +35,7 @@ class Constants {
     ]
 }
 
-public void addRepository(Project project){
-    project.repositories.maven {
-        url Constants.MAVEN_REPOSITORY
-    }
-}
-
-public void addDependencies(Project project){
+void addDependencies(Project project){
     project.android.buildTypes.forEach{ buildType ->
         String flutterBuildMode = buildModeFor(buildType)
         addApiDependencies(project, buildType.name,

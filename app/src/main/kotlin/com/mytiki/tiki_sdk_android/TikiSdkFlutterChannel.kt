@@ -5,6 +5,7 @@ import androidx.annotation.NonNull
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 import io.flutter.embedding.engine.loader.FlutterLoader
+import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -46,6 +47,7 @@ class TikiSdkFlutterChannel(
             flutterEngine.dartExecutor.executeDartEntrypoint(
                 DartEntrypoint.createDefault()
             )
+            GeneratedPluginRegister.registerGeneratedPlugins(flutterEngine)
             methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
         }
         buildSdk()
