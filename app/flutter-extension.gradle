@@ -45,8 +45,7 @@ public void addRepository(Project project){
 public void addDependencies(Project project){
     project.android.buildTypes.forEach{ buildType ->
         String flutterBuildMode = buildModeFor(buildType)
-        addApiDependencies(project, buildType.name,
-                "io.flutter:flutter_embedding_$flutterBuildMode:${Constants.ENGINE_VERSION}")
+        addApiDependencies(project, buildType.name, "io.flutter:flutter_embedding_$flutterBuildMode:${Constants.ENGINE_VERSION}")
         List<String> platforms = getTargetPlatforms(project).collect()
         if (flutterBuildMode == "debug") {
             platforms.add("android-x86")

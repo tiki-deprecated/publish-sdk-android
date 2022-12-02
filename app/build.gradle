@@ -3,6 +3,15 @@ import org.gradle.api.Project
 import org.gradle.api.GradleException
 import java.nio.file.Paths
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.kezong:fat-aar:1.3.8'
+    }
+}
+
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
@@ -103,24 +112,32 @@ android {
 repositories {
     mavenCentral()
     google()
+    maven {
+        url "https://storage.googleapis.com/download.flutter.io"
+    }
 }
+
+apply plugin: 'com.kezong.fat-aar'
 
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
-
-    implementation "androidx.multidex:multidex:2.0.1"
-
+    //implementation "androidx.multidex:multidex:2.0.1"
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
-
     testImplementation 'junit:junit:4.13.2'
-
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    //embed 'io.flutter:arm64_v8a_debug:1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
+    //embed 'io.flutter:armeabi_v7a_debug:1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
+    embed 'io.flutter:flutter_embedding_debug:1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
+    embed 'io.flutter:x86_64_debug:1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
+    //embed 'io.flutter:x86_debug:1.0.0-857bd6b74c5eb56151bfafe91e7fa6a82b6fee25'
 }
 
 apply plugin: "org.jetbrains.dokka"
@@ -128,7 +145,10 @@ tasks.dokkaHtml.configure {
     outputDirectory.set(file("../doc/api"))
 }
 
-def groovyShell = new GroovyShell()
-def flutterExtension = groovyShell.parse( new File("$rootDir/app/flutter-extension.gradle") )
-flutterExtension.addRepository(project)
-flutterExtension.addDependencies(project)
+//def groovyShell = new GroovyShell()
+//def flutterExtension = groovyShell.parse(new File("$rootDir/app/flutter-extension.gradle"))
+//flutterExtension.addRepository(project)
+//flutterExtension.addDependencies(project)
+
+//def pluginLoader = groovyShell.parse(new File("$rootDir/app/plugin-loader.gradle"))
+//pluginLoader.load(project.rootProject)
