@@ -32,7 +32,7 @@ data class TikiSdkConsent(
     /**
      *  The Consent expiration date. Null for no expiration.
      */
-    val expiry: GregorianCalendar
+    val expiry: Calendar
 ) {
     companion object {
         fun fromJson(jsonString: String): TikiSdkConsent {

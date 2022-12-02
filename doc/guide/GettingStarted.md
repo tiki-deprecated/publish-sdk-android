@@ -1,45 +1,89 @@
 ---
-title: TikiSdk
-excerpt: The primary object for interacting with the TIKI infrastructure. Use `TikiSdk` to assign ownership, modify, and apply consent.
-category: 6386a02f5b7bf00510590f34
-slug: tiki-sdk-android-tiki-sdk
+title: Getting Started
+excerpt: See just how easy (and fast) it is to add TIKI to your Android app —drop in a data exchange to increase user opt-ins and lower risk.
+category: 6389822a2e5635009bf8d88b
+slug: tiki-sdk-android-getting-started
 hidden: false
 order: 1
+next:
+  pages:
+    - type: ref
+      icon: book
+      name: View the entire API
+      slug: tiki-sdk-android-tiki-sdk
+      category: SDK [Android]
 ---
 
-## Constructors
+### Installation
 
-##### TikiSdk (apiId: String, origin: String, context: [Context](https://developer.android.com/reference/android/content/Context))
+If you haven't already, add Maven Central to your Project's `build.gradle` (`PROJECT_ROOT/build.gradle`) 
 
-## Methods
+``` 
+repositories {
+    mavenCentral()
+}
+```
 
-##### assignOwnership(source: String, type: String, callback: (ownershipId: String) &#8594; Unit? = null, contains: List&lt;String>? = null, about: String? = null, origin: String? = null)
-Data ownership can be assigned to any data point, pool, or stream, creating an immutable, on-chain record.  
+Add the dependency in your App's `build.gradle` file (`PROJECT_ROOT/app/build.gradle`)
+```
+dependencies {
+    implementation("com.mytiki.tiki_sdk_android:0.0.1")
+}
+```
+
+### Usage
+
+#### 1. [Sign up](https://console.mytiki.com) (free) for a TIKI developer account to get an API ID.
+
+#### 2. Construct the [TIKI SDK](tiki-sdk-android-tiki-sdk)
+
+Configuration parameters:
+
+- **apiId &#8594; String**   
+A unique identifier for your account. Create, revoke, and cycle Ids _(not a secret but try and treat it with care)_ at https://mytiki.com.
+
+
+- **origin &#8594; String**  
+Included in the on-chain transaction to denote the application of origination (can be overridden in individual requests). It should follow a reversed FQDN syntax. _i.e. com.mycompany.myproduct_
+
+  
+- **context &#8594; [Context](https://developer.android.com/reference/android/content/Context)**   
+Set the application context. Required for the [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html) which communicates with the [Dart SDK](https://github.com/tiki/tiki-sdk-dart) binaries
+
+
+Example:
+
+```
+    TikiSdk tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context);
+```
+
+#### 3. Assign ownership
+Data ownership can be assigned to any data point, pool, or stream, creating an immutable, on-chain record.
 
 Parameters:
 - **source &#8594; String**  
-An identifier in your system corresponding to the raw data.  
-_i.e. a user_id_
+An identifier in your system corresponding to the raw data. _i.e. a user_id_
 
 
 - **type &#8594; String**  
-One of `"point"`, `"pool"`, or `"stream"`
+`"point"`, `"pool"`, or `"stream"`
 
 
-- **callback &#8594; (ownershipId: String) &#8594; Unit?**
+- **callback &#8594; (ownershipId: String) &#8594; Unit?**  
 A callback function to execute on completion. Input (**String**) is the unique transaction id (use to recall the transaction record at any time)
 
 
-- **contains &#8594; List&lt;String>**  
+- **about &#8594; String?**  
+An optional description to provide additional context to the transaction. Most typically as human-readable text.
+
+
+- **contains &#8594; List&lt;String>**
 A list of metadata tags describing the represented data
 
 
 - **origin &#8594; String?**  
 An optional override of the default origin set during initialization
 
-
-- **about &#8594; String?**  
-An optional description to provide additional context to the transaction. Most typically as human-readable text.
 
 Example:
 
@@ -48,9 +92,7 @@ val callback = { response: String -> print(response) }
 tiki.assignOwnership("12345", "point", callback, listOf("email_address"));
 ```
 
-&nbsp;
-
-##### modifyConsent(ownershipId: String, destination: [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination), callback: (TikiSdkConsent) -> Unit? = null, about: String? = null, reward: String? = null, expiry: [Calendar](https://developer.android.com/reference/kotlin/java/util/Calendar.html)? = null) 
+#### 4. Modify consent
 Consent is given (or revoked) for data ownership records. Consent defines "who" the data owner has given utilization rights.
 
 Parameters:
@@ -84,34 +126,7 @@ tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")), {
 });
 ```
 
-&nbsp;
-
-##### getConsent(source: String, callback: ([TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)) -> Unit? = null, origin: String?)  
-Get the latest `ConsentModel` for a `source` and `origin`. If `origin` is unset, the default set during construction is used.
-
-Parameters:
-- **source &#8594; String**  
-  An identifier in your system corresponding to the raw data.  
-  _i.e. a user_id_
-
-
-- **callback &#8594; ([TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent) &#8594; Unit?)**
-  A callback function executed on completion. Input (**[TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)**) is the returned consent.
-
-
-- **origin &#8594; String?**  
-An optional override of the default origin set during initialization
-
-Example:
-```
-tiki.getConsent("12345", {
-  response: TikiSdkConsent -> print(response)
-});
-```
-
-&nbsp;
-
-##### applyConsent(source: String, destination: [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination), request: (String) &#8594; Unit, onBlocked: (String) &#8594; Unit) 
+#### 5. Apply consent
 Apply consent to a data transaction. If consent is granted for the `source` and `destination` and has not expired, the request is executed.
 
 Parameters:
