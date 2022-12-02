@@ -123,6 +123,11 @@ dependencies {
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 }
 
+apply plugin: "org.jetbrains.dokka"
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("../doc/api"))
+}
+
 def groovyShell = new GroovyShell()
 def flutterExtension = groovyShell.parse( new File("$rootDir/app/flutter-extension.gradle") )
 flutterExtension.addRepository(project)
