@@ -46,6 +46,9 @@ jobs:
       - name: "Patch Flutter"
         run: |
           cd tiki-sdk-android
+          git fetch --tags
+          latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          git checkout $latestTag
           cp build-variants.patch /opt/hostedtoolcache/flutter/3.3.4-stable/x64/
           cd /opt/hostedtoolcache/flutter/3.3.4-stable/x64
           git apply build-variants.patch
@@ -54,6 +57,9 @@ jobs:
       - name: "Flutter Pub Get"
         run: |
           cd tiki-sdk-flutter
+          git fetch --tags
+          latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          git checkout $latestTag
           flutter pub get
           cd ..
 

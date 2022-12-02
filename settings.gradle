@@ -25,4 +25,13 @@ rootProject.name = "TIKI SDK"
 
 include ':app'
 
+setBinding(new Binding([gradle: this]))                                // new
+evaluate(new File(                                                     // new
+        settingsDir.parentFile,                                              // new
+        'tiki-sdk-flutter/.android/include_flutter.groovy'                         // new
+))
 
+
+
+include ':tiki-sdk-flutter'
+project(':tiki-sdk-flutter').projectDir = new File('../tiki-sdk-flutter')
