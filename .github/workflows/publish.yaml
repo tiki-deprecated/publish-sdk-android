@@ -46,6 +46,7 @@ jobs:
       - name: "Patch Flutter"
         run: |
           cd tiki-sdk-android
+          git checkout github_action
           cp build-variants.patch /opt/hostedtoolcache/flutter/3.3.4-stable/x64/
           cd /opt/hostedtoolcache/flutter/3.3.4-stable/x64
           git apply build-variants.patch
