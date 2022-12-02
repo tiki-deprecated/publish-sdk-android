@@ -10,15 +10,22 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/tiki/tiki-sdk-flutter")
+
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+        maven {
+            url = uri("https://storage.googleapis.com/download.flutter.io")
+        }
     }
+
 }
 rootProject.name = "TIKI SDK"
 
-include ':app'                                    // assumed existing content
-setBinding(new Binding([gradle: this]))                                // new
-evaluate(new File(                                                     // new
-        settingsDir.parentFile,                                              // new
-        'tiki-sdk-flutter/.android/include_flutter.groovy'                         // new
-))
+include ':app'
 
 
