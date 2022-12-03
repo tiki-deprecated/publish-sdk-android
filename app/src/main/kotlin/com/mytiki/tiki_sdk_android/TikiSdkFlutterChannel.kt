@@ -46,7 +46,10 @@ class TikiSdkFlutterChannel(
             loader.ensureInitializationComplete(context, null)
             val flutterEngine = FlutterEngine(context, null, false)
             flutterEngine.dartExecutor.executeDartEntrypoint(
-                DartEntrypoint.createDefault()
+                DartEntrypoint(
+                    loader.findAppBundlePath(),
+                    "package:tiki-sdk-flutter/main.dart",
+                    "main")
             )
             methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
         }
