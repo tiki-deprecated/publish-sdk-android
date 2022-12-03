@@ -44,11 +44,10 @@ class TikiSdkFlutterChannel(
             val loader = FlutterLoader()
             loader.startInitialization(context)
             loader.ensureInitializationComplete(context, null)
-            val flutterEngine = FlutterEngine(context)
+            val flutterEngine = FlutterEngine(context, null, false)
             flutterEngine.dartExecutor.executeDartEntrypoint(
                 DartEntrypoint.createDefault()
             )
-            GeneratedPluginRegister.registerGeneratedPlugins(flutterEngine)
             methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
         }
         buildSdk()
