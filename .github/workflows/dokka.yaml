@@ -21,26 +21,39 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout TIKI SDK Android
+        uses: actions/checkout@v3
+        with:
+          repository: tiki/tiki-sdk-android
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: build
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Generate Docs
-        run: ./gradlew dokkaHtml
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dokkaHtml
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './doc/api'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

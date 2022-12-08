@@ -11,26 +11,29 @@ jobs:
       name: Production
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout TIKI SDK Android"
+      - name: Checkout TIKI SDK Android
         uses: actions/checkout@v3
         with:
           repository: tiki/tiki-sdk-android
 
-      - name: "Set up Java"
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: "Setup Android SDK"
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v2
 
-      - name: "Assemble AAR"
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Assemble AAR
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assemble
         env:
-          GITHUB_USER: $${{ github.actor }}
+          GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Publish AAR"
@@ -40,5 +43,7 @@ jobs:
         env:
           OSSRH_USER: ${{ secrets.OSSRH_USER }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-          GITHUB_USER: $${{ github.actor }}
+          GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
