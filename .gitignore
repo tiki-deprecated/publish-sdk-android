@@ -22,3 +22,5 @@ secring.gpg
 
 # Autogen'd docs
 doc/api
+
+lib

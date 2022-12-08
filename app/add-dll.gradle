@@ -1,0 +1,160 @@
+import org.apache.commons.io.FileUtils
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+
+static void clean(String rootDir){
+    FileUtils.deleteDirectory(new File("$rootDir/app/build/tmp/dlls"))
+    FileUtils.deleteDirectory(new File("$rootDir/app/src/debug/jniLibs"))
+    FileUtils.deleteDirectory(new File("$rootDir/app/src/main/jniLibs"))
+}
+
+static void fetch(String url, String tmp){
+    makeDir(tmp)
+    File zip = download(url, tmp)
+    unzipFiles(tmp, zip)
+}
+
+static void load(String src, String dest){
+    File out = new File(dest)
+    makeDir(out.getParent())
+    out.bytes = new File(src).bytes
+}
+
+private static def makeDir(String path){
+    File directory = new File(path);
+    if (! directory.exists()){
+        directory.mkdirs();
+    }
+}
+
+private static File download(path, tmp){
+    URL url = new URL(path)
+    String filename = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
+    File file = new File("$tmp/${filename}.zip")
+    file.bytes = url.bytes
+    return file
+}
+
+private static void unzipFiles(String dir, File src) {
+    ZipFile zip = new ZipFile(src, ZipFile.OPEN_READ)
+    zip.entries().each {
+        String[] path = it.getName().split("/")
+        String[] file = (path[path.length - 1]).split("\\.")
+        if (file.length == 2 && file[1] == "so") {
+            String parent = path[path.length - 2]
+            Files.createDirectories(new File("$dir/$parent").toPath())
+            File out = new File("$dir/$parent/${path[path.length - 1]}")
+            Files.copy(zip.getInputStream(it), out.toPath())
+        }
+    }
+}
+
+static void listFiles(File f, List<File> files){
+    f.listFiles().each {
+        if (it.isDirectory())
+            return listFiles(it, files)
+        else
+            files.add(it)
+    }
+}
+
+static void flutter(String rootDir, String flutterEngine){
+    String flutterBucket = 'https://storage.googleapis.com/download.flutter.io/io/flutter'
+    fetch(
+            "$flutterBucket/arm64_v8a_debug/$flutterEngine/arm64_v8a_debug-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/debug"
+    )
+    fetch(
+            "$flutterBucket/armeabi_v7a_debug/$flutterEngine/armeabi_v7a_debug-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/debug"
+    )
+    fetch(
+            "$flutterBucket/x86_debug/$flutterEngine/x86_debug-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/debug"
+    )
+    fetch(
+            "$flutterBucket/x86_64_debug/$flutterEngine/x86_64_debug-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/debug"
+    )
+    fetch(
+            "$flutterBucket/arm64_v8a_release/$flutterEngine/arm64_v8a_release-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/release"
+    )
+    fetch(
+            "$flutterBucket/armeabi_v7a_release/$flutterEngine/armeabi_v7a_release-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/release"
+    )
+    fetch(
+            "$flutterBucket/x86_64_release/$flutterEngine/x86_64_release-${flutterEngine}.jar",
+            "$rootDir/app/build/tmp/dlls/libflutter/release"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/debug/arm64-v8a/libflutter.so",
+            "$rootDir/app/src/debug/jniLibs/arm64-v8a/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/debug/armeabi-v7a/libflutter.so",
+            "$rootDir/app/src/debug/jniLibs/armeabi-v7a/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/debug/x86/libflutter.so",
+            "$rootDir/app/src/debug/jniLibs/x86/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/debug/x86_64/libflutter.so",
+            "$rootDir/app/src/debug/jniLibs/x86_64/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/release/arm64-v8a/libflutter.so",
+            "$rootDir/app/src/main/jniLibs/arm64-v8a/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/release/armeabi-v7a/libflutter.so",
+            "$rootDir/app/src/main/jniLibs/armeabi-v7a/libflutter.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/libflutter/release/x86_64/libflutter.so",
+            "$rootDir/app/src/main/jniLibs/x86_64/libflutter.so"
+    )
+}
+
+static void sqlite(String rootDir){
+    String url = 'https://www.sqlite.org/2022/sqlite-android-3400000.aar'
+    fetch(url, "$rootDir/app/build/tmp/dlls/sqlite")
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/arm64-v8a/libsqliteX.so",
+            "$rootDir/app/src/debug/jniLibs/arm64-v8a/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/armeabi-v7a/libsqliteX.so",
+            "$rootDir/app/src/debug/jniLibs/armeabi-v7a/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/x86/libsqliteX.so",
+            "$rootDir/app/src/debug/jniLibs/x86/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/x86_64/libsqliteX.so",
+            "$rootDir/app/src/debug/jniLibs/x86_64/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/arm64-v8a/libsqliteX.so",
+            "$rootDir/app/src/main/jniLibs/arm64-v8a/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/armeabi-v7a/libsqliteX.so",
+            "$rootDir/app/src/main/jniLibs/armeabi-v7a/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/x86/libsqliteX.so",
+            "$rootDir/app/src/main/jniLibs/x86/libsqlite3.so"
+    )
+    load(
+            "$rootDir/app/build/tmp/dlls/sqlite/x86_64/libsqliteX.so",
+            "$rootDir/app/src/main/jniLibs/x86_64/libsqlite3.so"
+    )
+}
+
