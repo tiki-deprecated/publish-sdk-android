@@ -87,7 +87,7 @@ tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")), {
 &nbsp;
 
 ##### getConsent(source: String, callback: ([TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)) -> Unit? = null, origin: String?)  
-Get the latest `ConsentModel` for a `source` and `origin`. If `origin` is unset, the default set during construction is used.
+Get the latest `TikiSdkConsent` for a `source` and `origin`. If `origin` is unset, the default set during construction is used.
 
 Parameters:
 - **source &#8594; String**  
