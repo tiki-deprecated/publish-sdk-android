@@ -54,7 +54,7 @@ Set the application context. Required for the [MethodChannel](https://api.flutte
 Example:
 
 ```
-    TikiSdk tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context);
+    TikiSdk tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
 ```
 
 #### 3. Assign ownership
@@ -89,7 +89,7 @@ Example:
 
 ```
 val callback = { response: String -> print(response) }
-tiki.assignOwnership("12345", "point", callback, listOf("email_address"));
+tiki.assignOwnership("12345", "point", callback, listOf("email_address"))
 ```
 
 #### 4. Modify consent

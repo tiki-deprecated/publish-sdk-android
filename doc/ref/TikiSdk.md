@@ -45,7 +45,7 @@ Example:
 
 ```
 val callback = { response: String -> print(response) }
-tiki.assignOwnership("12345", "point", callback, listOf("email_address"));
+tiki.assignOwnership("12345", "point", callback, listOf("email_address"))
 ```
 
 &nbsp;
@@ -81,7 +81,7 @@ Example:
 ```
 tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")), { 
   response: TikiSdkConsent -> print(response) 
-});
+})
 ```
 
 &nbsp;
@@ -136,5 +136,5 @@ Example:
 ```
 applyConsent("12345", TikiSdkDestination(listOf("*"), listOf("*")), { 
   _: String -> print("Consent Approved. Send data to backend.")
-});
+})
 ```
