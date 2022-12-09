@@ -1,12 +1,12 @@
 package com.mytiki.tiki_sdk_android
 
-import android.content.Context
 import androidx.annotation.NonNull
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
-import io.flutter.embedding.engine.loader.FlutterLoader
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import io.flutter.plugin.common.MethodChannel.Result
+import java.util.*
 
 /**
  * Tiki sdk plugin
@@ -18,71 +18,41 @@ import io.flutter.plugin.common.MethodChannel
  * @param context
  */
 
-class TikiSdkFlutterChannel(
-    private val apiKey: String,
-    private val origin: String,
-    private val tikiSdk: TikiSdk,
-    context: Context? = null
-) : MethodChannel.MethodCallHandler  {
+class TikiSdkFlutterChannel : FlutterPlugin, MethodCallHandler  {
+    private lateinit var channel: MethodChannel
+    private var callbacks: MutableMap<String, (Boolean, String) -> Unit> = mutableMapOf()
 
-    var methodChannel: MethodChannel? = null
-
-    companion object {
-        const val channelId = "tiki_sdk_flutter"
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tiki_sdk_flutter")
+        channel.setMethodCallHandler(this)
     }
 
-    init {
-        if (context != null) {
-            setupChannel(context)
-        }
-    }
-
-    private fun setupChannel(context: Context) {
-        if (methodChannel == null) {
-            val loader = FlutterLoader()
-            loader.startInitialization(context)
-            loader.ensureInitializationComplete(context, null)
-            val flutterEngine = FlutterEngine(context)
-            flutterEngine.dartExecutor.executeDartEntrypoint(
-                DartEntrypoint.createDefault()
-            )
-            methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelId)
-        }
-        buildSdk()
-    }
-
-    private fun buildSdk() {
-        methodChannel!!.setMethodCallHandler(this)
-        methodChannel!!.invokeMethod(
-            "build", mapOf(
-                "apiKey" to apiKey,
-                "origin" to origin,
-                "requestId" to "build"
-            )
-        )
-    }
-
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
-        val requestId = call.argument<String>("requestId")
-        val response = call.argument<String?>("response")
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        val requestId: String? = call.argument<String>("requestId")
+        val response: String? = call.argument<String?>("response")
         if (requestId == null) result.error("-1", "missing requestId argument", call.arguments)
-        val callback = tikiSdk.callbacks[requestId]
+        val callback = callbacks[requestId]
+        println("method: ${call.method} response: ${response ?: ""}")
         when (call.method) {
             "success" -> {
-                if (callback != null) {
-                    val valueToReturn: String = response.let{ "" }
-                    callback(true, valueToReturn)
-                }
+                if (callback != null) callback(true, response ?: "")
             }
             "error" -> {
-                if (callback != null) {
-                    val valueToReturn: String = response.let{ "" }
-                    callback(false, valueToReturn)
-                }
+                if (callback != null) callback(false, response ?: "")
             }
             else -> result.notImplemented()
         }
-        tikiSdk.callbacks.remove(requestId)
+        callbacks.remove(requestId)
     }
 
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
+
+    fun invokeMethod(method: String, arguments: MutableMap<String,Any?>, callback: ((Boolean, String) -> Unit)) {
+        val requestId = UUID.randomUUID().toString()
+        callbacks[requestId] = callback
+        arguments["requestId"] = requestId
+        channel.invokeMethod(method, arguments)
+    }
 }

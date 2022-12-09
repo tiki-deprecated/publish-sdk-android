@@ -13,3 +13,6 @@ build/tmp
 build/outputs
 build/repo
 build
+
+src/main/jniLibs
+src/debug/jniLibs
