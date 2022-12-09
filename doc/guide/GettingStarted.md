@@ -26,9 +26,7 @@ repositories {
 
 Add the dependency in your App's `build.gradle` file (`PROJECT_ROOT/app/build.gradle`)
 ```
-dependencies {
-    implementation("com.mytiki.tiki-sdk-android:0.0.3")
-
+implementation("com.mytiki.tiki-sdk-android:0.0.3")
 ```
 
 ### Usage
@@ -54,7 +52,7 @@ Set the application context. Required for the [MethodChannel](https://api.flutte
 Example:
 
 ```
-    val tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
+val tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
 ```
 
 #### 3. Assign ownership
