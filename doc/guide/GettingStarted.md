@@ -27,8 +27,8 @@ repositories {
 Add the dependency in your App's `build.gradle` file (`PROJECT_ROOT/app/build.gradle`)
 ```
 dependencies {
-    implementation("com.mytiki.tiki_sdk_android:0.0.1")
-}
+    implementation("com.mytiki.tiki-sdk-android:0.0.3")
+
 ```
 
 ### Usage
