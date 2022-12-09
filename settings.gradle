@@ -25,7 +25,7 @@ dependencyResolutionManagement {
             url 'https://storage.googleapis.com/download.flutter.io'
         }
     }
-
 }
+
 rootProject.name = "tiki-sdk-android"
 include ':app'

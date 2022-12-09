@@ -104,6 +104,29 @@ afterEvaluate {
                 groupId = 'com.mytiki'
                 artifactId = 'tiki-sdk-android'
                 version = android.getDefaultConfig().getVersionName()
+                pom {
+                    name = 'TIKI SDK [Android]'
+                    description = "A package for adding TIKI's decentralized infrastructure to Android projects. Add tokenized data ownership, consent, and rewards to your app in minutes."
+                    url = 'https://docs.mytiki.com/docs/tiki-sdk-android-getting-started'
+                    licenses {
+                        license {
+                            name = 'MIT'
+                            url = 'https://github.com/tiki/tiki-sdk-android/blob/main/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = 'The TIKI Team'
+                            email = 'hello@mytiki.com'
+                            organization = 'TIKI'
+                            organizationUrl = 'https://mytiki.com'
+                        }
+                    }
+                    scm {
+                        url = 'https://github.com/tiki/tiki-sdk-android'
+                        tag = android.getDefaultConfig().getVersionName()
+                    }
+                }
             }
         }
         repositories {

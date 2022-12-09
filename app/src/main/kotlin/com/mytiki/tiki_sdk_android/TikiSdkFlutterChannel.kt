@@ -32,7 +32,6 @@ class TikiSdkFlutterChannel : FlutterPlugin, MethodCallHandler  {
         val response: String? = call.argument<String?>("response")
         if (requestId == null) result.error("-1", "missing requestId argument", call.arguments)
         val callback = callbacks[requestId]
-        println("method: ${call.method} response: ${response ?: ""}")
         when (call.method) {
             "success" -> {
                 if (callback != null) callback(true, response ?: "")
