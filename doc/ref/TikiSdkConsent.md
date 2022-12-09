@@ -40,5 +40,5 @@ The transaction id for `this`
 _read / write_
 
 ##### expiry &#8596; [Calendar](https://developer.android.com/reference/kotlin/java/util/Calendar.html)
-The date the consent is valid until. Do not set (`Null`) for perpetual consent.
+The date the consent is valid until. Do not set (`null`) for perpetual consent.
 _read / write_
