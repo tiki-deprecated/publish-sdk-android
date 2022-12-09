@@ -1,20 +1,25 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.loader.FlutterLoader
+import io.flutter.plugins.GeneratedPluginRegistrant
 import java.util.*
 
-class TikiSdk(
-    apiId: String,
-    origin: String,
-    context: Context
-) {
-    var callbacks: MutableMap<String, (Boolean, String) -> Unit> = mutableMapOf()
-    var tikiSdkFlutterChannel: TikiSdkFlutterChannel
+class TikiSdk(apiId: String, origin: String, context: Context) {
+    private var tikiSdkFlutterChannel: TikiSdkFlutterChannel
 
     init {
-        tikiSdkFlutterChannel = TikiSdkFlutterChannel(
-            apiId, origin, this, context
-        )
+        val loader = FlutterLoader()
+        loader.startInitialization(context)
+        loader.ensureInitializationComplete(context, null)
+        val flutterEngine = FlutterEngine(context)
+        flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        tikiSdkFlutterChannel = TikiSdkFlutterChannel()
+        flutterEngine.plugins.add(tikiSdkFlutterChannel)
+        build(apiId, origin)
     }
 
     /**
@@ -40,21 +45,17 @@ class TikiSdk(
         about: String? = null,
         origin: String? = null
     ) {
-        val requestId = UUID.randomUUID().toString()
-        tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
-            "assignOwnership", mapOf(
-                "requestId" to requestId,
+        tikiSdkFlutterChannel.invokeMethod(
+            "assignOwnership", mutableMapOf(
                 "source" to source,
                 "about" to about,
                 "type" to type,
                 "contains" to contains,
-                "origin" to origin,
+                "origin" to origin
             )
         )
-        callback?.let {
-            callbacks[requestId] = { result, response ->
-                if (result) callback(response)
-            }
+        { result, response ->
+            if (result) callback?.invoke(response)
         }
     }
 
@@ -75,29 +76,23 @@ class TikiSdk(
      * @param callback ((consent: [TikiSdkConsent]) -> Unit)? Optional callback to handle the  [TikiSdkConsent] object.
 
      */
-     fun modifyConsent(
+    fun modifyConsent(
         source: String,
         destination: TikiSdkDestination,
         callback: ((TikiSdkConsent) -> Unit)? = null,
         about: String? = null,
         reward: String? = null,
         expiry: Calendar? = null
-       ) {
-        val requestId = UUID.randomUUID().toString()
-        tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
-            "modifyConsent", mapOf(
-                "requestId" to requestId,
-                "source" to source,
-                "destination" to destination.toJson(),
-                "about" to about,
-                "reward" to reward,
-                "expiry" to expiry?.let{ it.timeInMillis / 1000 }
-            )
-        )
-        callback?.let {
-            callbacks[requestId] = { result, response ->
-                if (result) callback(TikiSdkConsent.fromJson(response))
-            }
+    ) {
+        tikiSdkFlutterChannel.invokeMethod("modifyConsent", mutableMapOf(
+            "source" to source,
+            "destination" to destination.toJson(),
+            "about" to about,
+            "reward" to reward,
+            "expiry" to expiry?.let { it.timeInMillis / 1000 }
+        ))
+        { result, response ->
+            if (result) callback?.invoke(TikiSdkConsent.fromJson(response))
         }
     }
 
@@ -116,19 +111,15 @@ class TikiSdk(
         source: String,
         callback: ((TikiSdkConsent) -> Unit)? = null,
         origin: String? = null
-    ){
-        val requestId = UUID.randomUUID().toString()
-        tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
-            "getConsent", mapOf(
-                "requestId" to requestId,
+    ) {
+        tikiSdkFlutterChannel.invokeMethod(
+            "getConsent", mutableMapOf(
                 "source" to source,
-                "origin" to origin,
+                "origin" to origin
             )
         )
-        callback?.let {
-            callbacks[requestId] = { result, response ->
-                if (result) callback(TikiSdkConsent.fromJson(response))
-            }
+        { result, response ->
+            if (result) callback?.invoke(TikiSdkConsent.fromJson(response))
         }
     }
 
@@ -150,19 +141,31 @@ class TikiSdk(
         request: (String) -> Unit,
         onBlocked: (String) -> Unit
     ) {
-        val requestId = UUID.randomUUID().toString()
-        tikiSdkFlutterChannel.methodChannel!!.invokeMethod(
-            "applyConsent", mapOf(
-                "requestId" to requestId,
+        tikiSdkFlutterChannel.invokeMethod(
+            "applyConsent", mutableMapOf(
                 "source" to source,
-                "destination" to destination.toJson(),
+                "destination" to destination.toJson()
             )
         )
-        callbacks[requestId] = { result, response ->
-            if(result){
+        { result, response ->
+            if (result) {
                 request(response)
-            }else{
+            } else {
                 onBlocked("no consent")
+            }
+        }
+    }
+
+    private fun build(apiId: String, origin: String) {
+        tikiSdkFlutterChannel.invokeMethod(
+            "build", mutableMapOf(
+                "apiId" to apiId,
+                "origin" to origin
+            )
+        )
+        { result, _ ->
+            if (!result) {
+                throw RuntimeException("Failed to build TikiSdk")
             }
         }
     }
