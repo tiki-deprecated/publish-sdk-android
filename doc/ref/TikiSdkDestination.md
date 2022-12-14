@@ -26,7 +26,7 @@ _i.e. NOT ads_
 ##### paths &#8594; List&lt;String>
 A list of paths, preferably URLs (without the scheme) or reverse FQDN. 
 Keep list short and use wildcard matching. Prefix with NOT to invert.  
-_i.e. NOT mytiki.com/.
+_i.e. NOT mytiki.com/
 
 ## Methods
 
