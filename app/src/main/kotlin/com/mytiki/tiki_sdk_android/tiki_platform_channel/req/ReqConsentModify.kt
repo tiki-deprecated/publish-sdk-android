@@ -23,7 +23,7 @@ data class ReqConsentModify(
     override val requestId: String,
     val ownershipId: String,
     val destination: TikiSdkDestination,
-    val about: String?,
-    val reward: String?,
-    val expiry: Int?
+    val about: String? = null,
+    val reward: String? = null,
+    val expiry: Int? = null
 ) : Req(requestId)
