@@ -24,6 +24,6 @@ data class ReqOwnershipAssign(
     val source: String,
     val type: TikiSdkDataTypeEnum,
     val contains: List<String>,
-    val about: String?,
-    val origin: String?
+    val about: String? = null,
+    val origin: String? = null
 ) : Req(requestId)
