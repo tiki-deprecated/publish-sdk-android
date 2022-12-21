@@ -18,5 +18,5 @@ import com.squareup.moshi.JsonClass
 data class ReqOwnershipGet(
     override val requestId: String,
     val source: String,
-    val origin: String?
+    val origin: String? = null
 ) : Req(requestId)
