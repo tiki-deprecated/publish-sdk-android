@@ -1,5 +1,6 @@
-package com.mytiki.tiki_sdk_android
+package com.mytiki.tiki_sdk_android.tiki_platform_channel.req
 
+import com.mytiki.tiki_sdk_android.TikiSdkDestination
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.ReqConsentApply
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
