@@ -23,5 +23,5 @@ data class ReqBuild(
     override val requestId: String,
     val apiId: String,
     val origin: String,
-    val address: String?
+    val address: String? = null
 ) : Req(requestId)
