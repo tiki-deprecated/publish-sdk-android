@@ -5,6 +5,7 @@
 package com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp
 
 import com.mytiki.tiki_sdk_android.TikiSdkOwnership
+import com.squareup.moshi.JsonClass
 
 /**
  * The response for the `assignOwnership` and `getOwnership` method calls in the Platform Channel.
@@ -15,6 +16,7 @@ import com.mytiki.tiki_sdk_android.TikiSdkOwnership
  * @property ownership
  * @constructor Create empty Rsp ownership
  */
+@JsonClass(generateAdapter = true)
 data class RspOwnership(
     override val requestId: String,
     val ownership : TikiSdkOwnership

@@ -21,5 +21,5 @@ import com.squareup.moshi.JsonClass
 data class RspConsentApply(
     override val requestId: String,
     val success: Boolean,
-    val reason: String?
+    val reason: String? = null
 ):Rsp(requestId)

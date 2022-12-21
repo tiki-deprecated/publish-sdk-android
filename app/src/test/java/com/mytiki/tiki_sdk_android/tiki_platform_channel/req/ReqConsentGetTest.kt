@@ -1,6 +1,9 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
 package com.mytiki.tiki_sdk_android.tiki_platform_channel.req
 
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.ReqConsentGet
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert
@@ -24,6 +27,9 @@ class ReqConsentGetTest {
         val adapter: JsonAdapter<ReqConsentGet> = moshi.adapter(ReqConsentGet::class.java)
         val req = ReqConsentGet("reqId", "source", "origin")
         val json = adapter.toJson(req)
-        Assert.assertEquals("{\"requestId\":\"reqId\",\"source\":\"source\",\"origin\":\"origin\"}",json)
+        Assert.assertEquals(
+            "{\"requestId\":\"reqId\",\"source\":\"source\",\"origin\":\"origin\"}",
+            json
+        )
     }
 }
