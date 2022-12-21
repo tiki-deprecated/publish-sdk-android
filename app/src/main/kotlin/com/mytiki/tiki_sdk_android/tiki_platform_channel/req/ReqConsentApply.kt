@@ -23,5 +23,5 @@ data class ReqConsentApply(
     override val requestId: String,
     val source: String,
     val destination: TikiSdkDestination,
-    val origin: String?
+    val origin: String? = null
 ) : Req(requestId)
