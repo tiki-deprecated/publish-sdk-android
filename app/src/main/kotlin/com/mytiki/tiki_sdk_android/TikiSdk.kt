@@ -17,6 +17,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
+/**
+ * The TIKI SDK main class. Use this to add tokenized data ownership, consent, and rewards.
+ *
+ * @constructor
+ *
+ * @param apiId The apiId for connecting to TIKI cloud.
+ * @param origin The default origin for all transactions.
+ * @param context The context of the application. Used to initialize Flutter Engine
+ * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
+ */
 class TikiSdk(apiId: String, origin: String, context: Context, address: String? = null) {
 
     private var tikiSdkFlutterChannel: TikiSdkFlutterChannel
@@ -199,7 +209,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      * @param destination TikiSdkDestination
      * @param origin String?
      * @param request () -> Unit
-     * @param onBlocked () -> Unit
+     * @param onBlocked ((String) -> Unit)?
      */
     fun applyConsent(
         source: String,
