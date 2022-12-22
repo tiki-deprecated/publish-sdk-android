@@ -29,7 +29,7 @@ open class TikiSdkDestination(
      * to invert. _i.e. NOT ads
      */
     val uses: List<String> = listOf("*"),
-){
+) {
     /**
      * TikiSdkDestination.ALL
      *

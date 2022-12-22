@@ -26,7 +26,8 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
 
     init {
         val buildRequest = ReqBuild("build", apiId, origin, address)
-        val buildRequestJson = (buildRequest)
+        val buildRequestJson = buildRequest.toJson()
+        var jsonString: String
         val loader = FlutterLoader()
         loader.startInitialization(context)
         loader.ensureInitializationComplete(context, null)
@@ -34,17 +35,18 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         tikiSdkFlutterChannel = TikiSdkFlutterChannel()
+        tikiSdkFlutterChannel.tikiSdk = this
         flutterEngine.plugins.add(tikiSdkFlutterChannel)
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "build", listOf( "request" to buildRequestJson )
+            "build", listOf("request" to buildRequestJson)
         )
         val deferred = CompletableDeferred<String?>()
         completables["build"] = deferred
         runBlocking(Dispatchers.IO) {
-            val response: String = deferred.await()!!
-            val rspBuild: RspBuild = moshi.adapter(RspBuild::class.java).fromJson(response)!!
-            this@TikiSdk.address = rspBuild.address
+            jsonString = deferred.await()!!
         }
+        val rspBuild: RspBuild = moshi.adapter(RspBuild::class.java).fromJson(jsonString)!!
+        this@TikiSdk.address = rspBuild.address
     }
 
     /** Assign ownership to a given source.
@@ -55,7 +57,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      * @param about String? Optional description about the data.
      * @param origin String? Optionally overrides the default origin
      *
-     * @return [TikiSdkOwnership]
+     * @return [TikiSdkOwnership] transaction Id
      */
     fun assignOwnership(
         source: String,
@@ -63,21 +65,23 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         contains: List<String>,
         about: String? = null,
         origin: String? = null
-    ): TikiSdkOwnership {
+    ): String {
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "assignOwnership", ReqOwnershipAssign(
-                requestId, source, type, contains, about, origin
-            ).toJson()
+            "assignOwnership", mapOf(
+                "request" to ReqOwnershipAssign(
+                    requestId, source, type, contains, about, origin
+                ).toJson()
+            )
         )
         val deferred = CompletableDeferred<String?>()
         completables[requestId] = deferred
-        runBlocking (Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             jsonString = deferred.await()!!
         }
         val rsp = moshi.adapter(RspOwnership::class.java).fromJson(jsonString)
-        return rsp!!.ownership
+        return rsp!!.ownership.transactionId
     }
 
     /**
@@ -95,13 +99,15 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "assignOwnership", ReqOwnershipGet(
-                requestId, source, origin
-            ).toJson()
+            "assignOwnership", mapOf(
+                "request" to ReqOwnershipGet(
+                    requestId, source, origin
+                ).toJson()
+            )
         )
         val deferred = CompletableDeferred<String?>()
         completables[requestId] = deferred
-        runBlocking (Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             jsonString = deferred.await()!!
         }
         val rsp = moshi.adapter(RspOwnership::class.java).fromJson(jsonString)
@@ -130,17 +136,19 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         about: String? = null,
         reward: String? = null,
         expiry: Date? = null
-    ): TikiSdkConsent{
+    ): TikiSdkConsent {
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "assignOwnership", ReqConsentModify(
-                requestId, ownershipId, destination, about, reward, expiry?.time
-            ).toJson()
+            "assignOwnership", mapOf(
+                "request" to ReqConsentModify(
+                    requestId, ownershipId, destination, about, reward, expiry?.time
+                ).toJson()
+            )
         )
         val deferred = CompletableDeferred<String?>()
         completables[requestId] = deferred
-        runBlocking (Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             jsonString = deferred.await()!!
         }
         val rsp = moshi.adapter(RspConsentGet::class.java).fromJson(jsonString)
@@ -166,13 +174,15 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "assignOwnership", ReqConsentGet(
-                requestId, source, origin
-            ).toJson()
+            "assignOwnership", mapOf(
+                "request" to ReqConsentGet(
+                    requestId, source, origin
+                ).toJson()
+            )
         )
         val deferred = CompletableDeferred<String?>()
         completables[requestId] = deferred
-        runBlocking (Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             jsonString = deferred.await()!!
         }
         val rsp = moshi.adapter(RspConsentGet::class.java).fromJson(jsonString)
@@ -194,26 +204,28 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
     fun applyConsent(
         source: String,
         destination: TikiSdkDestination,
-        origin: String?,
         request: () -> Unit,
-        onBlocked: (value: String) -> Unit
+        onBlocked: (value: String) -> Unit,
+        origin: String?,
     ) {
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
         tikiSdkFlutterChannel.channel.invokeMethod(
-            "assignOwnership", ReqConsentApply(
-                requestId, source, destination, origin
-            ).toJson()
+            "assignOwnership", mapOf(
+                "request" to ReqConsentApply(
+                    requestId, source, destination, origin
+                ).toJson()
+            )
         )
         val deferred = CompletableDeferred<String?>()
         completables[requestId] = deferred
-        runBlocking (Dispatchers.IO) {
+        runBlocking(Dispatchers.IO) {
             jsonString = deferred.await()!!
         }
         val rsp = moshi.adapter(RspConsentApply::class.java).fromJson(jsonString)
-        if(rsp!!.success){
+        if (rsp!!.success) {
             request()
-        }else{
+        } else {
             onBlocked(rsp.reason ?: "no consent")
         }
     }

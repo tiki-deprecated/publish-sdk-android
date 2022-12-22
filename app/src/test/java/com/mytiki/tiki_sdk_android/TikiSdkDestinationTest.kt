@@ -14,6 +14,7 @@ class TikiSdkDestinationTest {
         Assert.assertEquals("*", tikiSdkDestination?.uses?.get(0))
         Assert.assertEquals("*", tikiSdkDestination?.paths?.get(0))
     }
+
     @Test
     fun encode_TikiSdkDestination_ALL_and_NONE_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
