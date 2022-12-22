@@ -20,6 +20,15 @@ class TikiSdkTest {
     }
 
     @Test
+    fun init_tiki_sdk_with_address() {
+        val context = getInstrumentation().targetContext
+        val tikiSdk = TikiSdk(API_KEY, ORIGIN, context)
+        val address = tikiSdk.address
+        val tikiSdk2 = TikiSdk(API_KEY, ORIGIN, context, address)
+        assertEquals(tikiSdk.address, tikiSdk2.address)
+    }
+
+    @Test
     fun assign_onwership() {
         val context = getInstrumentation().targetContext
         val tikiSdk = TikiSdk(API_KEY, ORIGIN, context)
