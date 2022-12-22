@@ -1,28 +1,51 @@
 package com.mytiki.tiki_sdk_android
 
-import org.json.JSONArray
-import org.json.JSONObject
+import com.squareup.moshi.JsonClass
 
-data class TikiSdkDestination(val uses: List<String>, val paths: List<String>) {
-    companion object {
-        fun fromJson(jsonString: String): TikiSdkDestination {
-            val jsonObject = JSONObject(jsonString)
-            val usesArr: JSONArray = jsonObject.getJSONArray("uses")
-            val uses: MutableList<String> =
-                MutableList(usesArr.length()) { i -> usesArr.getString(i) }
-            val pathsArr = jsonObject.getJSONArray("paths")
-            val paths = MutableList<String>(pathsArr.length()) { i -> pathsArr.getString(i) }
-            return TikiSdkDestination(
-                uses,
-                paths
-            )
-        }
-    }
+/**
+ * The destination to which the data is consented to be used.
+ *
+ * @property paths
+ * @property uses defaults to all uses
+ * @constructor Create empty Tiki sdk destination
+ */
+@JsonClass(generateAdapter = true)
+open class TikiSdkDestination(
+    /**
+     * The destination paths.
+     *
+     * A list of paths, preferably URL without the scheme or
+     * reverse FQDN. Keep list short and use wildcard (*)
+     * matching. Prefix with NOT to invert.
+     * _i.e. NOT mytiki.com
+     */
+    val paths: List<String>,
 
-    fun toJson(): String {
-        val jsonObject = JSONObject()
-        jsonObject.put("uses", JSONArray(uses))
-        jsonObject.put("paths", JSONArray(paths))
-        return jsonObject.toString()
-    }
+    /**
+     * The destination use cases.
+     *
+     * An optional list of application specific uses cases
+     * applicable to the given destination. Prefix with NOT
+     * to invert. _i.e. NOT ads
+     */
+    val uses: List<String> = listOf("*"),
+) {
+    /**
+     * TikiSdkDestination.ALL
+     *
+     * @constructor Create a TikiSdkDestination that includes all paths and uses.
+     */
+    object ALL : TikiSdkDestination(listOf("*"))
+
+    ///
+    ///
+    ///
+    /**
+     * TikiSdkDestination.NONE
+     *
+     * Should be used for denying all consents given before.
+     *
+     * @constructor Create a TikiSdkDestination without any paths or uses.
+     */
+    object NONE : TikiSdkDestination(listOf(), listOf())
 }
