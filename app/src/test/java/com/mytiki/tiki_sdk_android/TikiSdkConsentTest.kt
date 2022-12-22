@@ -10,7 +10,8 @@ class TikiSdkConsentTest {
     fun encode_TikiSdkConsent_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<TikiSdkConsent> = moshi.adapter(TikiSdkConsent::class.java)
-        val tikiSdkConsent = adapter.fromJson("{\"ownershipId\":\"ownership\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}")
+        val tikiSdkConsent =
+            adapter.fromJson("{\"ownershipId\":\"ownership\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}")
         Assert.assertEquals("ownership", tikiSdkConsent?.ownershipId)
         Assert.assertEquals("*", tikiSdkConsent?.destination?.uses?.get(0))
         Assert.assertEquals("txnId", tikiSdkConsent?.transactionId)
@@ -18,13 +19,18 @@ class TikiSdkConsentTest {
         Assert.assertNull(tikiSdkConsent?.reward)
         Assert.assertNull(tikiSdkConsent?.expiry)
     }
+
     @Test
     fun encode_TikiSdkConsent_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<TikiSdkConsent> = moshi.adapter(TikiSdkConsent::class.java)
         val tikiSdkConsent = TikiSdkConsent(
-            "ownership", TikiSdkDestination.ALL, "txnId")
+            "ownership", TikiSdkDestination.ALL, "txnId"
+        )
         val json = adapter.toJson(tikiSdkConsent)
-        Assert.assertEquals("{\"ownershipId\":\"ownership\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}",json)
+        Assert.assertEquals(
+            "{\"ownershipId\":\"ownership\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}",
+            json
+        )
     }
 }

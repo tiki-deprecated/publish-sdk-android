@@ -22,4 +22,4 @@ data class RspConsentApply(
     override val requestId: String,
     val success: Boolean,
     val reason: String? = null
-):Rsp(requestId)
+) : Rsp(requestId)

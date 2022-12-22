@@ -21,4 +21,4 @@ data class RspError(
     override val requestId: String,
     val message: String,
     val stackTrace: String
-): Rsp(requestId)
+) : Rsp(requestId)

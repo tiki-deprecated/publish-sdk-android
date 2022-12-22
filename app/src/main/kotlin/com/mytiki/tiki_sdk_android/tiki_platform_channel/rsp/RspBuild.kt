@@ -15,7 +15,7 @@ import com.squareup.moshi.JsonClass
  * @constructor Create empty Rsp build
  */
 @JsonClass(generateAdapter = true)
-data class RspBuild (
+data class RspBuild(
     override val requestId: String,
-    val address : String
-): Rsp(requestId)
+    val address: String
+) : Rsp(requestId)

@@ -5,6 +5,7 @@
 package com.mytiki.tiki_sdk_android.tiki_platform_channel.req
 
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.Moshi
 
 /**
  * The request for the `build` method call in the Platform Channel.
@@ -24,4 +25,9 @@ data class ReqBuild(
     val apiId: String,
     val origin: String,
     val address: String? = null
-) : Req(requestId)
+) : Req(requestId) {
+
+    fun toJson(): String {
+        return Moshi.Builder().build().adapter(ReqBuild::class.java).toJson(this)
+    }
+}

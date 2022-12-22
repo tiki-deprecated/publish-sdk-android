@@ -16,5 +16,5 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 open class Rsp(
-    open val requestId : String
+    open val requestId: String
 )

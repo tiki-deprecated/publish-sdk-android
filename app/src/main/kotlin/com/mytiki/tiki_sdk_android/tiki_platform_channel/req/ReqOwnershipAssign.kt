@@ -6,6 +6,7 @@ package com.mytiki.tiki_sdk_android.tiki_platform_channel.req
 
 import com.mytiki.tiki_sdk_android.TikiSdkDataTypeEnum
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.Moshi
 
 /**
  * The request for the `assignOwnership` method call in the Platform Channel.
@@ -26,4 +27,11 @@ data class ReqOwnershipAssign(
     val contains: List<String>,
     val about: String? = null,
     val origin: String? = null
-) : Req(requestId)
+) : Req(requestId) {
+
+    fun toJson(): String {
+        return Moshi.Builder().build().adapter(ReqOwnershipAssign::class.java).toJson(this)
+    }
+
+}
+
