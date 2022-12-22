@@ -1,4 +1,8 @@
-package com.mytiki.tiki_sdk_android
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -6,20 +10,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import java.util.*
 
 /**
- * Tiki sdk plugin
+ * Tiki sdk flutter channel
  *
- * @property apiKey
- * @property origin
- * @constructor
- *
- * @param context
+ * @constructor Create empty Tiki sdk flutter channel
  */
-
-class TikiSdkFlutterChannel : FlutterPlugin, MethodCallHandler  {
-    private lateinit var channel: MethodChannel
+class TikiSdkFlutterChannel : FlutterPlugin, MethodCallHandler {
+    lateinit var channel: MethodChannel
     private var callbacks: MutableMap<String, (Boolean, String) -> Unit> = mutableMapOf()
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -46,12 +44,5 @@ class TikiSdkFlutterChannel : FlutterPlugin, MethodCallHandler  {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
-    }
-
-    fun invokeMethod(method: String, arguments: MutableMap<String,Any?>, callback: ((Boolean, String) -> Unit)) {
-        val requestId = UUID.randomUUID().toString()
-        callbacks[requestId] = callback
-        arguments["requestId"] = requestId
-        channel.invokeMethod(method, arguments)
     }
 }

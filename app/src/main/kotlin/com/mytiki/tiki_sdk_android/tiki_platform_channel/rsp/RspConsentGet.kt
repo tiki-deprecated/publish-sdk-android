@@ -20,4 +20,4 @@ import com.squareup.moshi.JsonClass
 data class RspConsentGet(
     override val requestId: String,
     val consent: TikiSdkConsent
-): Rsp(requestId)
+) : Rsp(requestId)

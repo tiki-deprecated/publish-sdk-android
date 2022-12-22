@@ -10,7 +10,7 @@ class TikiSdkDataTypeEnumTest {
     fun encode_TikiSdkDataTypeEnum_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<TikiSdkDataTypeEnum> = moshi.adapter(TikiSdkDataTypeEnum::class.java)
-        val tikiSdkDataTypeEnum = adapter.fromJson("\"data_pool\"");
+        val tikiSdkDataTypeEnum = adapter.fromJson("\"data_pool\"")
         Assert.assertEquals(TikiSdkDataTypeEnum.data_pool.name, tikiSdkDataTypeEnum?.name)
     }
     @Test
