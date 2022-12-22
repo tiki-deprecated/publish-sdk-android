@@ -205,8 +205,8 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         source: String,
         destination: TikiSdkDestination,
         request: () -> Unit,
-        onBlocked: (value: String) -> Unit,
-        origin: String?,
+        onBlocked: ((value: String) -> Unit)? = null,
+        origin: String? = null,
     ) {
         val requestId = UUID.randomUUID().toString()
         var jsonString: String
@@ -226,7 +226,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
         if (rsp!!.success) {
             request()
         } else {
-            onBlocked(rsp.reason ?: "no consent")
+            onBlocked?.invoke(rsp.reason ?: "no consent")
         }
     }
 }
