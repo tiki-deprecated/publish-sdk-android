@@ -17,9 +17,9 @@ class RspConsentGetTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspConsentGet> = moshi.adapter(RspConsentGet::class.java)
         val json =
-            "{\"requestId\":\"reqId\",\"consent\":{\"ownershipId\":\"ownershipId\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}}"
+            "{\"consent\":{\"ownershipId\":\"ownershipId\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("reqId", req!!.requestId)
+        Assert.assertEquals(req!!.consent.ownershipId, "ownershipId")
     }
 
     @Test
@@ -27,10 +27,10 @@ class RspConsentGetTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspConsentGet> = moshi.adapter(RspConsentGet::class.java)
         val rsp =
-            RspConsentGet("reqId", TikiSdkConsent("ownershipId", TikiSdkDestination.ALL, "txnId"))
+            RspConsentGet(TikiSdkConsent("ownershipId", TikiSdkDestination.ALL, "txnId"))
         val json = adapter.toJson(rsp)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"consent\":{\"ownershipId\":\"ownershipId\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}}",
+            "{\"consent\":{\"ownershipId\":\"ownershipId\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]},\"transactionId\":\"txnId\"}}",
             json
         )
     }

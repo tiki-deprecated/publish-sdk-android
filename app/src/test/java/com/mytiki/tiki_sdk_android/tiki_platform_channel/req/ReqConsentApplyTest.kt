@@ -16,10 +16,9 @@ class ReqConsentApplyTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqConsentApply> = moshi.adapter(ReqConsentApply::class.java)
         val json =
-            "{\"requestId\":\"reqId\",\"source\":\"source\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]}}"
+            "{\"source\":\"source\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]}}"
         val req = adapter.fromJson(json)
         Assert.assertEquals(req!!.destination.paths[0], "*")
-        Assert.assertEquals(req.requestId, "reqId")
         Assert.assertEquals(req.source, "source")
     }
 
@@ -27,10 +26,10 @@ class ReqConsentApplyTest {
     fun encode_ReqConsentApply_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqConsentApply> = moshi.adapter(ReqConsentApply::class.java)
-        val req = ReqConsentApply("reqId", "source", TikiSdkDestination.ALL)
+        val req = ReqConsentApply("source", TikiSdkDestination.ALL)
         val json = adapter.toJson(req)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"source\":\"source\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]}}",
+            "{\"source\":\"source\",\"destination\":{\"paths\":[\"*\"],\"uses\":[\"*\"]}}",
             json
         )
     }

@@ -12,12 +12,11 @@ import com.squareup.moshi.JsonClass
  *
  * It returns the [consent]. Null if no consent was given.
  *
- * @property requestId
+
  * @property consent
  * @constructor Create empty Rsp consent get
  */
 @JsonClass(generateAdapter = true)
 data class RspConsentGet(
-    override val requestId: String,
     val consent: TikiSdkConsent
-) : Rsp(requestId)
+)

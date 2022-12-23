@@ -7,5 +7,8 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = false)
 enum class TikiSdkDataTypeEnum {
-    data_point, data_stream, data_pool
+    data_point,
+    data_stream,
+    data_pool;
+
 }

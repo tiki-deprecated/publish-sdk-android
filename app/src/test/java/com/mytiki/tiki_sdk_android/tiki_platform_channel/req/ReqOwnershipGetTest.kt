@@ -14,17 +14,17 @@ class ReqOwnershipGetTest {
     fun encode_ReqOwnershipGet_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqOwnershipGet> = moshi.adapter(ReqOwnershipGet::class.java)
-        val json = "{\"requestId\":\"reqId\",\"source\":\"source\"}"
+        val json = "{\"source\":\"source\"}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("reqId", req!!.requestId)
+        Assert.assertEquals(req!!.source, "source")
     }
 
     @Test
     fun encode_ReqOwnershipGet_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqOwnershipGet> = moshi.adapter(ReqOwnershipGet::class.java)
-        val req = ReqOwnershipGet("reqId", "source")
+        val req = ReqOwnershipGet("source")
         val json = adapter.toJson(req)
-        Assert.assertEquals("{\"requestId\":\"reqId\",\"source\":\"source\"}", json)
+        Assert.assertEquals("{\"source\":\"source\"}", json)
     }
 }

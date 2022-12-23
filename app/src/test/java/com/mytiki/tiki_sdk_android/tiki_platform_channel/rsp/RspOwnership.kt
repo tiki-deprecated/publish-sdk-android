@@ -17,9 +17,9 @@ class RspOwnershipTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspOwnership> = moshi.adapter(RspOwnership::class.java)
         val json =
-            "{\"requestId\":\"requestId\",\"ownership\":{\"source\":\"source\",\"type\":\"data_point\",\"origin\":\"com.mytiki.rsp\",\"transactionId\":\"txnId\",\"contains\":[]}}"
+            "{\"ownership\":{\"source\":\"source\",\"type\":\"data_point\",\"origin\":\"com.mytiki.rsp\",\"transactionId\":\"txnId\",\"contains\":[]}}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("requestId", req!!.requestId)
+        Assert.assertEquals("requestId", req!!.ownership.source, "source")
     }
 
     @Test
@@ -27,12 +27,11 @@ class RspOwnershipTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspOwnership> = moshi.adapter(RspOwnership::class.java)
         val rsp = RspOwnership(
-            "requestId",
             TikiSdkOwnership("source", TikiSdkDataTypeEnum.data_point, "com.mytiki.rsp", "txnId")
         )
         val json = adapter.toJson(rsp)
         Assert.assertEquals(
-            "{\"requestId\":\"requestId\",\"ownership\":{\"source\":\"source\",\"type\":\"data_point\",\"origin\":\"com.mytiki.rsp\",\"transactionId\":\"txnId\",\"contains\":[]}}",
+            "{\"ownership\":{\"source\":\"source\",\"type\":\"data_point\",\"origin\":\"com.mytiki.rsp\",\"transactionId\":\"txnId\",\"contains\":[]}}",
             json
         )
     }

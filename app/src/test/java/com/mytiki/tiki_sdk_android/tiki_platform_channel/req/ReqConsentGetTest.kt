@@ -14,21 +14,20 @@ class ReqConsentGetTest {
     fun encode_ReqConsentGet_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqConsentGet> = moshi.adapter(ReqConsentGet::class.java)
-        val json = "{\"requestId\":\"reqId\",\"source\":\"source\",\"origin\":\"origin\"}"
+        val json = "{\"source\":\"source\",\"origin\":\"origin\"}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals(req!!.requestId, "reqId")
-        Assert.assertEquals(req.source, "source")
-        Assert.assertEquals(req.origin, "origin")
+        Assert.assertEquals(req?.source, "source")
+        Assert.assertEquals(req?.origin, "origin")
     }
 
     @Test
     fun encode_ReqConsentGet_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqConsentGet> = moshi.adapter(ReqConsentGet::class.java)
-        val req = ReqConsentGet("reqId", "source", "origin")
+        val req = ReqConsentGet("source", "origin")
         val json = adapter.toJson(req)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"source\":\"source\",\"origin\":\"origin\"}",
+            "{\"source\":\"source\",\"origin\":\"origin\"}",
             json
         )
     }
