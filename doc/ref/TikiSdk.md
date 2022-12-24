@@ -63,7 +63,7 @@ Returns:
 Example:
 
 ```
-val tid = tiki.assignOwnership("12345", "point", listOf("email_address"))
+val tid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address"))
 ```
 
 &nbsp;
