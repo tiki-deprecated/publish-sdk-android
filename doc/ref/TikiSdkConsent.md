@@ -12,11 +12,6 @@ order: 3
 ##### TikiSdkConsent(ownershipId: String, destination: [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination), about: String, reward: String, transactionId: String, expiry: [Calendar](https://developer.android.com/reference/kotlin/java/util/Calendar.html)})  
 Builds a TikiSdkConsent for the data identified by `ownershipId`.
 
-## Companions
-
-##### fromJson(jsonString: String) : TikiSdkConsent
-Builds a TikiSdkConsent from a JSON string
-
 ## Properties
 
 ##### ownershipId &#8596; String
@@ -39,6 +34,6 @@ _read / write_
 The transaction id for `this`  
 _read / write_
 
-##### expiry &#8596; [Calendar](https://developer.android.com/reference/kotlin/java/util/Calendar.html)
-The date the consent is valid until. Do not set (`null`) for perpetual consent.
+##### expiry &#8596; [LocalDateTime](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/-local-date-time.html)
+The date the consent is valid until. Do not set (e.g., `null`) for perpetual consent.
 _read / write_

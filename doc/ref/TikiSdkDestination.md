@@ -12,10 +12,13 @@ order: 2
 ##### TikiSdkDestination(uses: List&lt;String>, paths: List&lt;String>)
 Creates a new destination from a list of `paths` and `uses`.
 
-## Companions
+## Types
 
-##### fromJson(jsonString: String) : TikiSdkDestination
-Builds a TikiSdkDestination from a JSON string
+##### ALL : TikiSdkDestination
+Create a TikiSdkDestination allowing all paths and uses (`[*]`)
+
+##### NONE : TikiSdkDestination
+Create a TikiSdkDestination disallowing all paths and uses (`[]`)
 
 ## Properties
 
@@ -27,8 +30,3 @@ _i.e. NOT ads_
 A list of paths, preferably URLs (without the scheme) or reverse FQDN. 
 Keep list short and use wildcard matching. Prefix with NOT to invert.  
 _i.e. NOT mytiki.com/
-
-## Methods
-
-##### toJson() &#8594; String
-Serialize the destination as a human-readable JSON string.
