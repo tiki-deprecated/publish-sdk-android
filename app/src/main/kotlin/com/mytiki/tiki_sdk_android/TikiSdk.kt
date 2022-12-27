@@ -12,6 +12,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.plugins.GeneratedPluginRegistrant
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 /**
@@ -26,23 +27,26 @@ import java.util.*
  */
 class TikiSdk(apiId: String, origin: String, context: Context, address: String? = null) {
 
-    private var tikiSdkFlutterChannel: TikiPlatformChannel
-    val address: String
+    private lateinit var tikiSdkFlutterChannel: TikiPlatformChannel
+    lateinit var address: String
 
     init {
-        val loader = FlutterLoader()
-        loader.startInitialization(context)
-        loader.ensureInitializationComplete(context, null)
-        val flutterEngine = FlutterEngine(context)
-        flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-        GeneratedPluginRegistrant.registerWith(flutterEngine)
-        tikiSdkFlutterChannel = TikiPlatformChannel()
-        flutterEngine.plugins.add(tikiSdkFlutterChannel)
-
-        val method = TikiPlatformChannelMethodEnum.BUILD
-        val buildRequest = ReqBuild(apiId, origin, address)
-        val rspBuild: RspBuild = tikiSdkFlutterChannel.invokeMethod(method, buildRequest)!!
-        this@TikiSdk.address = rspBuild.address
+        android.os.Handler(context.mainLooper).post {
+            val loader = FlutterLoader()
+            loader.startInitialization(context)
+            loader.ensureInitializationComplete(context, null)
+            val flutterEngine = FlutterEngine(context)
+            flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+            GeneratedPluginRegistrant.registerWith(flutterEngine)
+            tikiSdkFlutterChannel = TikiPlatformChannel()
+            flutterEngine.plugins.add(tikiSdkFlutterChannel)
+            val method = TikiPlatformChannelMethodEnum.BUILD
+            val buildRequest = ReqBuild(apiId, origin, address)
+            val rspBuild: RspBuild = runBlocking {
+                tikiSdkFlutterChannel.invokeMethod(method, buildRequest)!!
+            }
+            this.address = rspBuild.address
+        }
     }
 
     /** Assign ownership to a given source.
@@ -55,7 +59,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      *
      * @return [TikiSdkOwnership] transaction Id
      */
-    fun assignOwnership(
+    suspend fun assignOwnership(
         source: String,
         type: TikiSdkDataTypeEnum,
         contains: List<String>,
@@ -77,7 +81,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      *
      * @return [TikiSdkOwnership], null if not found
      */
-    fun getOwnership(
+    suspend fun getOwnership(
         source: String,
         origin: String? = null
     ): TikiSdkOwnership? {
@@ -104,7 +108,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      * @param expiry Date? Optional expiration for the consent.
      * @return
      */
-    fun modifyConsent(
+    suspend fun modifyConsent(
         ownershipId: String,
         destination: TikiSdkDestination,
         about: String? = null,
@@ -130,7 +134,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      *
      * @return TikiSdkConsent
      */
-    fun getConsent(
+    suspend fun getConsent(
         source: String,
         origin: String? = null
     ): TikiSdkConsent? {
@@ -153,7 +157,7 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
      * @param request () -> Unit
      * @param onBlocked ((String) -> Unit)?
      */
-    fun applyConsent(
+    suspend fun applyConsent(
         source: String,
         destination: TikiSdkDestination,
         request: () -> Unit,

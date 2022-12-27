@@ -14,7 +14,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
 import org.json.JSONObject
 import java.util.*
 
@@ -52,11 +52,10 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
-    inline fun <reified T, reified R> invokeMethod(
+    suspend inline fun <reified T, reified R> invokeMethod(
         method: TikiPlatformChannelMethodEnum,
         request: R
     ): T? {
-        var jsonString: String
         val requestId = UUID.randomUUID().toString()
         val deferred = CompletableDeferred<String?>()
         val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
@@ -67,9 +66,9 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
             )
         )
         completables[requestId] = deferred
-        runBlocking(Dispatchers.IO) {
-            jsonString = deferred.await()!!
+        val jsonString = deferred.await()!!
+        return runInterruptible {
+            Moshi.Builder().build().adapter(T::class.java).fromJson(jsonString)
         }
-        return Moshi.Builder().build().adapter(T::class.java).fromJson(jsonString)
     }
 }
