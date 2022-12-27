@@ -14,7 +14,7 @@ class TikiSdkOwnershipTest {
             "{\"source\":\"source\",\"type\":\"data_point\",\"origin\":\"com.mytiki.test\",\"transactionId\":\"txnId\",\"contains\":[\"test data\"]}"
         val ownership = adapter.fromJson(json)
         Assert.assertEquals("source", ownership?.source)
-        Assert.assertEquals(TikiSdkDataTypeEnum.data_point, ownership?.type?.name)
+        Assert.assertEquals(TikiSdkDataTypeEnum.data_point, ownership?.type)
         Assert.assertEquals("com.mytiki.test", ownership?.origin)
         Assert.assertEquals("txnId", ownership?.transactionId)
         Assert.assertNull(ownership?.about)

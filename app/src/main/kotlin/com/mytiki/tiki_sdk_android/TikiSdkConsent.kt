@@ -1,7 +1,7 @@
 package com.mytiki.tiki_sdk_android
 
 import com.squareup.moshi.JsonClass
-import java.time.LocalDateTime
+import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class TikiSdkConsent(
@@ -33,5 +33,5 @@ data class TikiSdkConsent(
     /**
      *  The Consent expiration. Null for no expiration.
      */
-    val expiry: LocalDateTime? = null
+    val expiry: Date? = null
 )
