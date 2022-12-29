@@ -13,8 +13,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runInterruptible
+import okio.IOException
 import org.json.JSONObject
 import java.util.*
 
@@ -26,7 +26,7 @@ import java.util.*
 class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
 
     lateinit var channel: MethodChannel
-    var completables: MutableMap<String, CompletableDeferred<String?>> = mutableMapOf()
+    var completables: MutableMap<String, ((String?, Error?) -> Unit)> = mutableMapOf()
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tiki_sdk_flutter")
@@ -39,11 +39,11 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         val requestId = jsonMap["requestId"]
         when (call.method) {
             "success" -> {
-                completables[requestId]?.complete(response)
+                completables[requestId]?.invoke(response, null)
             }
             "error" -> {
                 val error = Moshi.Builder().build().adapter(RspError::class.java).fromJson(response)
-                completables[requestId]?.completeExceptionally(Error(error?.message))
+                completables[requestId]?.invoke(null, Error(error?.message))
             }
         }
     }
@@ -52,12 +52,12 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
-    suspend inline fun <reified T, reified R> invokeMethod(
-        method: TikiPlatformChannelMethodEnum,
+    inline fun <reified T, reified R> invokeMethod(
+        method: MethodEnum,
         request: R
-    ): T? {
+    ): CompletableDeferred<T?> {
         val requestId = UUID.randomUUID().toString()
-        val deferred = CompletableDeferred<String?>()
+        val deferred = CompletableDeferred<T?>()
         val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
         channel.invokeMethod(
             method.methodCall, mapOf(
@@ -65,10 +65,19 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
                 "request" to jsonRequest
             )
         )
-        completables[requestId] = deferred
-        val jsonString = deferred.await()!!
-        return runInterruptible {
-            Moshi.Builder().build().adapter(T::class.java).fromJson(jsonString)
+        completables[requestId] = { jsonString : String?, error: Error? ->
+            if(error != null){
+                deferred.completeExceptionally(error)
+            }else{
+                try {
+                    val response = Moshi.Builder().build().adapter(T::class.java)
+                        .fromJson(jsonString ?: "")
+                    deferred.complete(response)
+                }catch(e: IOException){
+                    deferred.completeExceptionally(e)
+                }
+            }
         }
+        return deferred
     }
 }
