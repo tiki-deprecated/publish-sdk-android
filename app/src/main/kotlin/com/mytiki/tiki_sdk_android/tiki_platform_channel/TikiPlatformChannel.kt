@@ -4,6 +4,8 @@
  */
 package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
+import android.util.Log
+import android.util.Log.ERROR
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspError
 import com.squareup.moshi.Moshi
@@ -35,6 +37,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         val response = call.argument<String>("response")!!
+        Log.e("ON METHOD CALL", response)
         val jsonMap = JSONObject(response)
         val requestId = jsonMap["requestId"]
         when (call.method) {
@@ -59,6 +62,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         val requestId = UUID.randomUUID().toString()
         val deferred = CompletableDeferred<T?>()
         val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
+        Log.e("ON INVOKE METHOD", jsonRequest)
         channel.invokeMethod(
             method.methodCall, mapOf(
                 "requestId" to requestId,

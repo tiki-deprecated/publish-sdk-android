@@ -10,16 +10,19 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+//        maven {
+//            url = uri("https://maven.pkg.github.com/tiki/tiki-sdk-flutter")
+//            credentials {
+//                username = providers
+//                        .gradleProperty("gpr.user")
+//                        .getOrElse(System.getenv("GITHUB_USER"))
+//                password = providers
+//                        .gradleProperty("gpr.key")
+//                        .getOrElse(System.getenv("GITHUB_TOKEN"))
+//            }
+//        }
         maven {
-            url = uri("https://maven.pkg.github.com/tiki/tiki-sdk-flutter")
-            credentials {
-                username = providers
-                        .gradleProperty("gpr.user")
-                        .getOrElse(System.getenv("GITHUB_USER"))
-                password = providers
-                        .gradleProperty("gpr.key")
-                        .getOrElse(System.getenv("GITHUB_TOKEN"))
-            }
+           url "/Users/ricardo/dev/tiki-sdk-flutter/build/host/outputs/repo"
         }
         maven {
             url 'https://storage.googleapis.com/download.flutter.io'

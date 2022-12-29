@@ -26,12 +26,13 @@ import java.util.*
  * @param context The context of the application. Used to initialize Flutter Engine
  * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
  */
-class TikiSdk(apiId: String, origin: String, context: Context, address: String? = null) {
+class TikiSdk {
 
     private lateinit var tikiSdkFlutterChannel: TikiPlatformChannel
     lateinit var address: String
 
-    init {
+    fun init(apiId: String, origin: String, context: Context, address: String? = null) : CompletableDeferred<TikiSdk> {
+        val response = CompletableDeferred<TikiSdk>()
         android.os.Handler(context.mainLooper).post {
             val loader = FlutterLoader()
             loader.startInitialization(context)
@@ -43,13 +44,15 @@ class TikiSdk(apiId: String, origin: String, context: Context, address: String? 
             flutterEngine.plugins.add(tikiSdkFlutterChannel)
             val method = MethodEnum.BUILD
             val buildRequest = ReqBuild(apiId, origin, address)
-            val deferred: CompletableDeferred<RspBuild?> =
+            val rspBuildCompletable: CompletableDeferred<RspBuild?> =
                 tikiSdkFlutterChannel.invokeMethod(method, buildRequest)
             runBlocking {
-                val rspBuild = deferred.await()
+                val rspBuild = rspBuildCompletable.await()
                 this@TikiSdk.address = rspBuild!!.address
+                response.complete(this@TikiSdk)
             }
         }
+        return response
     }
 //
 //    /** Assign ownership to a given source.
