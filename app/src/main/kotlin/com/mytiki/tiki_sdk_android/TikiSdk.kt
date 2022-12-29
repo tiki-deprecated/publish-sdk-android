@@ -13,7 +13,6 @@ import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.plugins.GeneratedPluginRegistrant
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 /**
@@ -31,28 +30,22 @@ class TikiSdk {
     private lateinit var tikiSdkFlutterChannel: TikiPlatformChannel
     lateinit var address: String
 
-    fun init(apiId: String, origin: String, context: Context, address: String? = null) : CompletableDeferred<TikiSdk> {
-        val response = CompletableDeferred<TikiSdk>()
-        android.os.Handler(context.mainLooper).post {
-            val loader = FlutterLoader()
-            loader.startInitialization(context)
-            loader.ensureInitializationComplete(context, null)
-            val flutterEngine = FlutterEngine(context)
-            flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-            GeneratedPluginRegistrant.registerWith(flutterEngine)
-            tikiSdkFlutterChannel = TikiPlatformChannel()
-            flutterEngine.plugins.add(tikiSdkFlutterChannel)
-            val method = MethodEnum.BUILD
-            val buildRequest = ReqBuild(apiId, origin, address)
-            val rspBuildCompletable: CompletableDeferred<RspBuild?> =
-                tikiSdkFlutterChannel.invokeMethod(method, buildRequest)
-            runBlocking {
-                val rspBuild = rspBuildCompletable.await()
-                this@TikiSdk.address = rspBuild!!.address
-                response.complete(this@TikiSdk)
-            }
-        }
-        return response
+    suspend fun init(apiId: String, origin: String, context: Context, address: String? = null) : TikiSdk {
+        val loader = FlutterLoader()
+        loader.startInitialization(context)
+        loader.ensureInitializationComplete(context, null)
+        val flutterEngine = FlutterEngine(context)
+        flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        tikiSdkFlutterChannel = TikiPlatformChannel()
+        flutterEngine.plugins.add(tikiSdkFlutterChannel)
+        val method = MethodEnum.BUILD
+        val buildRequest = ReqBuild(apiId, origin, address)
+        val rspBuildCompletable: CompletableDeferred<RspBuild?> =
+            tikiSdkFlutterChannel.invokeMethod(method, buildRequest)
+        val rspBuild = rspBuildCompletable.await()
+        this.address = rspBuild!!.address
+        return this
     }
 //
 //    /** Assign ownership to a given source.

@@ -4,8 +4,6 @@
  */
 package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
-import android.util.Log
-import android.util.Log.ERROR
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspError
 import com.squareup.moshi.Moshi
@@ -15,9 +13,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.runInterruptible
 import okio.IOException
-import org.json.JSONObject
 import java.util.*
 
 /**
@@ -37,9 +33,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         val response = call.argument<String>("response")!!
-        Log.e("ON METHOD CALL", response)
-        val jsonMap = JSONObject(response)
-        val requestId = jsonMap["requestId"]
+        val requestId = call.argument<String>("requestId")!!
         when (call.method) {
             "success" -> {
                 completables[requestId]?.invoke(response, null)
@@ -62,7 +56,6 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         val requestId = UUID.randomUUID().toString()
         val deferred = CompletableDeferred<T?>()
         val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
-        Log.e("ON INVOKE METHOD", jsonRequest)
         channel.invokeMethod(
             method.methodCall, mapOf(
                 "requestId" to requestId,
