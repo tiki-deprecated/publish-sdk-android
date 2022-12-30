@@ -14,16 +14,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val scope = MainScope()
-
         button.setOnClickListener {
             scope.launch {
-                tikiSdk = scope.async {
-                    TikiSdk().init(
+                tikiSdk = TikiSdk().init(
                         "b213d6bd-ccff-45c2-805e-4f0062d4ad5e",
                         "com.mytiki.tiki_sdk_android.integration_tests",
                         applicationContext
-                    )
-                }.await()
+                    ).await()
                 Log.e("MIKE", "addr: " + tikiSdk?.address)
             }
         }

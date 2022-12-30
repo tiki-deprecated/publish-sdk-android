@@ -62,15 +62,15 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
                 "request" to jsonRequest
             )
         )
-        completables[requestId] = { jsonString : String?, error: Error? ->
-            if(error != null){
+        completables[requestId] = { jsonString: String?, error: Error? ->
+            if (error != null) {
                 deferred.completeExceptionally(error)
-            }else{
+            } else {
                 try {
                     val response = Moshi.Builder().build().adapter(T::class.java)
                         .fromJson(jsonString ?: "")
                     deferred.complete(response)
-                }catch(e: IOException){
+                } catch (e: IOException) {
                     deferred.completeExceptionally(e)
                 }
             }

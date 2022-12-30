@@ -1,14 +1,15 @@
 package com.mytiki.tiki_sdk_android.integration_tests
 
-import androidx.annotation.UiThread
+import android.os.Handler
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mytiki.tiki_sdk_android.TikiSdk
-import com.mytiki.tiki_sdk_android.TikiSdkDataTypeEnum
-import com.mytiki.tiki_sdk_android.TikiSdkDestination
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -19,12 +20,21 @@ class TikiSdkTest {
     private val apiId: String = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
     private val origin: String = "com.mytiki.tiki_sdk_android.test"
 
+
+
     @Test
     fun init_tiki_sdk() {
-        runBlocking {
-            val context = InstrumentationRegistry.getInstrumentation().targetContext
-            val tikiSdk = TikiSdk().init(apiId, origin, context).await()
-            assert(tikiSdk.address.length > 32)
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        var tikiSdk: TikiSdk? = null
+        runTest{
+            withContext(Dispatchers.Main) {
+                tikiSdk = TikiSdk().init(
+                    "b213d6bd-ccff-45c2-805e-4f0062d4ad5e",
+                    "com.mytiki.tiki_sdk_android.integration_tests",
+                    context
+                ).await()
+                assert(tikiSdk!!.address.length > 32)
+            }
         }
     }
 //
