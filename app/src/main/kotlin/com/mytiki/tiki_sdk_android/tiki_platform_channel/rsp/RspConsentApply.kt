@@ -12,14 +12,13 @@ import com.squareup.moshi.JsonClass
  * It returns if the consent was applied in the *success* field.
  * For failed requests, a *reason* should be provided.
  *
- * @property requestId
+
  * @property success
  * @property reason
  * @constructor Create empty Rsp consent apply
  */
 @JsonClass(generateAdapter = true)
 data class RspConsentApply(
-    override val requestId: String,
     val success: Boolean,
     val reason: String? = null
-) : Rsp(requestId)
+)

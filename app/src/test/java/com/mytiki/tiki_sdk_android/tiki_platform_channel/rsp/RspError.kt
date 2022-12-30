@@ -14,19 +14,19 @@ class RspErrorTest {
     fun encode_RspError_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspError> = moshi.adapter(RspError::class.java)
-        val json = "{\"requestId\":\"reqId\",\"message\":\"error\",\"stackTrace\":\"stackTrace\"}"
+        val json = "{\"message\":\"error\",\"stackTrace\":\"stackTrace\"}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("reqId", req!!.requestId)
+        Assert.assertEquals(req!!.message, "error")
     }
 
     @Test
     fun encode_RspError_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspError> = moshi.adapter(RspError::class.java)
-        val rsp = RspError("reqId", "error", "stackTrace")
+        val rsp = RspError("error", "stackTrace")
         val json = adapter.toJson(rsp)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"message\":\"error\",\"stackTrace\":\"stackTrace\"}",
+            "{\"message\":\"error\",\"stackTrace\":\"stackTrace\"}",
             json
         )
     }

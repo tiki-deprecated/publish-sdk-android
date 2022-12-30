@@ -37,9 +37,6 @@ open class TikiSdkDestination(
      */
     object ALL : TikiSdkDestination(listOf("*"))
 
-    ///
-    ///
-    ///
     /**
      * TikiSdkDestination.NONE
      *

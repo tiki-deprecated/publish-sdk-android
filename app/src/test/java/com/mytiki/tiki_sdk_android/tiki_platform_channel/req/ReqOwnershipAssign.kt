@@ -16,9 +16,9 @@ class ReqOwnershipAssignTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqOwnershipAssign> = moshi.adapter(ReqOwnershipAssign::class.java)
         val json =
-            "{\"requestId\":\"reqId\",\"source\":\"source\",\"type\":\"data_point\",\"contains\":[\"testData\"]}"
+            "{\"source\":\"source\",\"type\":\"data_point\",\"contains\":[\"testData\"]}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("reqId", req!!.requestId)
+        Assert.assertEquals(req!!.source, "source")
     }
 
     @Test
@@ -26,14 +26,13 @@ class ReqOwnershipAssignTest {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqOwnershipAssign> = moshi.adapter(ReqOwnershipAssign::class.java)
         val req = ReqOwnershipAssign(
-            "reqId",
             "source",
             TikiSdkDataTypeEnum.data_point,
             listOf("testData")
         )
         val json = adapter.toJson(req)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"source\":\"source\",\"type\":\"data_point\",\"contains\":[\"testData\"]}",
+            "{\"source\":\"source\",\"type\":\"data_point\",\"contains\":[\"testData\"]}",
             json
         )
     }

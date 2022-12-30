@@ -5,7 +5,6 @@
 package com.mytiki.tiki_sdk_android.tiki_platform_channel.req
 
 import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
 
 /**
  * The request for the `build` method call in the Platform Channel.
@@ -13,7 +12,7 @@ import com.squareup.moshi.Moshi
  * It requires an *apiId]* and an *origin]*. If no *address* is provided the SDK
  * will create a new one
  *
- * @property requestId
+
  * @property apiId
  * @property origin
  * @property address
@@ -21,13 +20,7 @@ import com.squareup.moshi.Moshi
  */
 @JsonClass(generateAdapter = true)
 data class ReqBuild(
-    override val requestId: String,
     val apiId: String,
     val origin: String,
     val address: String? = null
-) : Req(requestId) {
-
-    fun toJson(): String {
-        return Moshi.Builder().build().adapter(ReqBuild::class.java).toJson(this)
-    }
-}
+)

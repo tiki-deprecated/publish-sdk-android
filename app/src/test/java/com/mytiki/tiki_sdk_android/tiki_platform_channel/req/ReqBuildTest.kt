@@ -14,9 +14,8 @@ class ReqBuildTest {
     fun encode_ReqBuild_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqBuild> = moshi.adapter(ReqBuild::class.java)
-        val json = "{\"requestId\":\"reqId\",\"apiId\":\"apiId\",\"origin\":\"origin\"}"
+        val json = "{\"apiId\":\"apiId\",\"origin\":\"origin\"}"
         val reqBuild = adapter.fromJson(json)
-        Assert.assertEquals("reqId", reqBuild?.requestId)
         Assert.assertEquals("apiId", reqBuild?.apiId)
         Assert.assertEquals("origin", reqBuild?.origin)
         Assert.assertNull(reqBuild!!.address)
@@ -27,10 +26,10 @@ class ReqBuildTest {
     fun encode_ReqBuild_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<ReqBuild> = moshi.adapter(ReqBuild::class.java)
-        val req = ReqBuild("reqId", "apiId", "origin")
+        val req = ReqBuild("apiId", "origin")
         val json = adapter.toJson(req)
         Assert.assertEquals(
-            "{\"requestId\":\"reqId\",\"apiId\":\"apiId\",\"origin\":\"origin\"}",
+            "{\"apiId\":\"apiId\",\"origin\":\"origin\"}",
             json
         )
     }

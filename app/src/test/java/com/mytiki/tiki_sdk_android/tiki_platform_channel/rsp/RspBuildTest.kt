@@ -15,17 +15,17 @@ class RspBuildTest {
     fun encode_RspBuild_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspBuild> = moshi.adapter(RspBuild::class.java)
-        val json = "{\"requestId\":\"requestId\",\"address\":\"address\"}"
+        val json = "{\"address\":\"address\"}"
         val req = adapter.fromJson(json)
-        Assert.assertEquals("requestId", req!!.requestId)
+        Assert.assertEquals("address", req!!.address)
     }
 
     @Test
     fun encode_RspBuild_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspBuild> = moshi.adapter(RspBuild::class.java)
-        val req = RspBuild("requestId", "address")
+        val req = RspBuild("address")
         val json = adapter.toJson(req)
-        Assert.assertEquals("{\"requestId\":\"requestId\",\"address\":\"address\"}", json)
+        Assert.assertEquals("{\"address\":\"address\"}", json)
     }
 }

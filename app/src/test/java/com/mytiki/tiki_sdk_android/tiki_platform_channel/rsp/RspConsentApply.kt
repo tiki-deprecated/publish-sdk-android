@@ -14,17 +14,17 @@ class RspConsentApplyTest {
     fun encode_RspConsentApply_from_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspConsentApply> = moshi.adapter(RspConsentApply::class.java)
-        val json = "{\"requestId\":\"requestId\",\"success\":true}"
+        val json = "{\"success\":true}"
         val rsp = adapter.fromJson(json)
-        Assert.assertEquals("requestId", rsp!!.requestId)
+        Assert.assertTrue(rsp!!.success)
     }
 
     @Test
     fun encode_RspConsentApply_to_JSON() {
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<RspConsentApply> = moshi.adapter(RspConsentApply::class.java)
-        val rsp = RspConsentApply("requestId", true)
+        val rsp = RspConsentApply(true)
         val json = adapter.toJson(rsp)
-        Assert.assertEquals("{\"requestId\":\"requestId\",\"success\":true}", json)
+        Assert.assertEquals("{\"success\":true}", json)
     }
 }

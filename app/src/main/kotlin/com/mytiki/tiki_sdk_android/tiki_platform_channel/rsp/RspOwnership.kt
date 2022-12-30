@@ -12,12 +12,11 @@ import com.squareup.moshi.JsonClass
  *
  * Returns the [ownership] or Null if not found.
  *
- * @property requestId
+
  * @property ownership
  * @constructor Create empty Rsp ownership
  */
 @JsonClass(generateAdapter = true)
 data class RspOwnership(
-    override val requestId: String,
     val ownership: TikiSdkOwnership
-) : Rsp(requestId)
+)

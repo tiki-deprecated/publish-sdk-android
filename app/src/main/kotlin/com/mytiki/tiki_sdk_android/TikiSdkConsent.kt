@@ -1,6 +1,7 @@
 package com.mytiki.tiki_sdk_android
 
 import com.squareup.moshi.JsonClass
+import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class TikiSdkConsent(
@@ -30,7 +31,7 @@ data class TikiSdkConsent(
     val reward: String? = null,
 
     /**
-     *  The Consent expiration in milliseconds since Epoch. Null for no expiration.
+     *  The Consent expiration. Null for no expiration.
      */
-    val expiry: Int? = null
+    val expiry: Date? = null
 )
