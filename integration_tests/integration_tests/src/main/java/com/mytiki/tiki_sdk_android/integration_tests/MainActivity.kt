@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             scope.launch {
                 tikiSdk = TikiSdk().init(
-                        "b213d6bd-ccff-45c2-805e-4f0062d4ad5e",
-                        "com.mytiki.tiki_sdk_android.integration_tests",
-                        applicationContext
-                    ).await()
+                    "b213d6bd-ccff-45c2-805e-4f0062d4ad5e",
+                    "com.mytiki.tiki_sdk_android.integration_tests",
+                    applicationContext
+                ).await()
                 Log.e("TEST", "addr: " + tikiSdk?.address)
             }
         }

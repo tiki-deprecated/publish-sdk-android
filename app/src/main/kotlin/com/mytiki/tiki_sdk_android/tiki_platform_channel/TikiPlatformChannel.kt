@@ -4,8 +4,10 @@
  */
 package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
+import android.util.Log
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspError
+import com.mytiki.tiki_sdk_android.util.TimeStampToDateAdapter
 import com.squareup.moshi.Moshi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -34,6 +36,9 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         val response = call.argument<String>("response")!!
         val requestId = call.argument<String>("requestId")!!
+        Log.e("Ricardo - call", call.method)
+        Log.e("Ricardo - reqId", requestId)
+        Log.e("Ricardo - rsp", response)
         when (call.method) {
             "success" -> {
                 completables[requestId]?.invoke(response, null)
@@ -53,9 +58,12 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         method: MethodEnum,
         request: R
     ): CompletableDeferred<T?> {
+        val moshi: Moshi = Moshi.Builder()
+            .add(TimeStampToDateAdapter())
+            .build()
         val requestId = UUID.randomUUID().toString()
         val deferred = CompletableDeferred<T?>()
-        val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
+        val jsonRequest = moshi.adapter(R::class.java).toJson(request)
         channel.invokeMethod(
             method.methodCall, mapOf(
                 "requestId" to requestId,
@@ -67,8 +75,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
                 deferred.completeExceptionally(error)
             } else {
                 try {
-                    val response = Moshi.Builder().build().adapter(T::class.java)
-                        .fromJson(jsonString ?: "")
+                    val response = moshi.adapter(T::class.java).fromJson(jsonString ?: "")
                     deferred.complete(response)
                 } catch (e: IOException) {
                     deferred.completeExceptionally(e)

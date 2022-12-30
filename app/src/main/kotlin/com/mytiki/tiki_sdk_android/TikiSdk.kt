@@ -1,13 +1,13 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.MethodEnum
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.TikiPlatformChannel
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.*
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspBuild
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspConsentApply
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspConsentGet
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspOwnership
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.TikiPlatformChannel
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.MethodEnum
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.*
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspBuild
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.loader.FlutterLoader
@@ -29,7 +29,12 @@ class TikiSdk {
     private lateinit var tikiPlatformChannel: TikiPlatformChannel
     lateinit var address: String
 
-    fun init(apiId: String, origin: String, context: Context, address: String? = null): Deferred<TikiSdk> {
+    fun init(
+        apiId: String,
+        origin: String,
+        context: Context,
+        address: String? = null
+    ): Deferred<TikiSdk> {
         return MainScope().async {
             val loader = FlutterLoader()
             loader.startInitialization(context)
@@ -43,7 +48,10 @@ class TikiSdk {
             flutterEngine.plugins.add(tikiPlatformChannel)
             yield()
             val rspBuild = tikiPlatformChannel
-                .invokeMethod<RspBuild, ReqBuild>(MethodEnum.BUILD, ReqBuild(apiId, origin, address))
+                .invokeMethod<RspBuild, ReqBuild>(
+                    MethodEnum.BUILD,
+                    ReqBuild(apiId, origin, address)
+                )
                 .await()
             this@TikiSdk.address = rspBuild!!.address
             return@async this@TikiSdk
