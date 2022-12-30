@@ -1,36 +1,34 @@
 import org.apache.commons.io.FileUtils
+
 import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
-static void clean(String rootDir){
+static void clean(String rootDir) {
     FileUtils.deleteDirectory(new File("$rootDir/app/build/tmp/dlls"))
     FileUtils.deleteDirectory(new File("$rootDir/app/src/debug/jniLibs"))
     FileUtils.deleteDirectory(new File("$rootDir/app/src/main/jniLibs"))
 }
 
-static void fetch(String url, String tmp){
+static void fetch(String url, String tmp) {
     makeDir(tmp)
     File zip = download(url, tmp)
     unzipFiles(tmp, zip)
 }
 
-static void load(String src, String dest){
+static void load(String src, String dest) {
     File out = new File(dest)
     makeDir(out.getParent())
     out.bytes = new File(src).bytes
 }
 
-private static def makeDir(String path){
-    File directory = new File(path);
-    if (! directory.exists()){
-        directory.mkdirs();
+private static def makeDir(String path) {
+    File directory = new File(path)
+    if (!directory.exists()) {
+        directory.mkdirs()
     }
 }
 
-private static File download(path, tmp){
+private static File download(path, tmp) {
     URL url = new URL(path)
     String filename = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'))
     File file = new File("$tmp/${filename}.zip")
@@ -52,7 +50,7 @@ private static void unzipFiles(String dir, File src) {
     }
 }
 
-static void listFiles(File f, List<File> files){
+static void listFiles(File f, List<File> files) {
     f.listFiles().each {
         if (it.isDirectory())
             return listFiles(it, files)
@@ -61,7 +59,7 @@ static void listFiles(File f, List<File> files){
     }
 }
 
-static void flutter(String rootDir, String flutterEngine){
+static void flutter(String rootDir, String flutterEngine) {
     String flutterBucket = 'https://storage.googleapis.com/download.flutter.io/io/flutter'
     fetch(
             "$flutterBucket/arm64_v8a_debug/$flutterEngine/arm64_v8a_debug-${flutterEngine}.jar",
@@ -121,7 +119,7 @@ static void flutter(String rootDir, String flutterEngine){
     )
 }
 
-static void sqlite(String rootDir){
+static void sqlite(String rootDir) {
     String url = 'https://www.sqlite.org/2022/sqlite-android-3400000.aar'
     fetch(url, "$rootDir/app/build/tmp/dlls/sqlite")
     load(

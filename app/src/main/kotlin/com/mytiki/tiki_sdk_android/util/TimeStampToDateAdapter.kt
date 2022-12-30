@@ -8,6 +8,7 @@ class TimeStampToDateAdapter : JsonAdapter<Date>() {
 
     @FromJson
     override fun fromJson(reader: JsonReader): Date? {
+        if (reader.peek() == JsonReader.Token.NULL) return reader.nextNull();
         return try {
             val dateAsString = reader.nextString()
             Date(dateAsString.toLong())

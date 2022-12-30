@@ -4,8 +4,10 @@
  */
 package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
+import android.util.Log
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspError
+import com.mytiki.tiki_sdk_android.util.TimeStampToDateAdapter
 import com.squareup.moshi.Moshi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -13,9 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
+import okio.IOException
 import java.util.*
 
 /**
@@ -26,7 +26,7 @@ import java.util.*
 class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
 
     lateinit var channel: MethodChannel
-    var completables: MutableMap<String, CompletableDeferred<String?>> = mutableMapOf()
+    var completables: MutableMap<String, ((String?, Error?) -> Unit)> = mutableMapOf()
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tiki_sdk_flutter")
@@ -35,15 +35,17 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         val response = call.argument<String>("response")!!
-        val jsonMap = JSONObject(response)
-        val requestId = jsonMap["requestId"]
+        val requestId = call.argument<String>("requestId")!!
+        Log.e("Ricardo - call", call.method)
+        Log.e("Ricardo - reqId", requestId)
+        Log.e("Ricardo - rsp", response)
         when (call.method) {
             "success" -> {
-                completables[requestId]?.complete(response)
+                completables[requestId]?.invoke(response, null)
             }
             "error" -> {
                 val error = Moshi.Builder().build().adapter(RspError::class.java).fromJson(response)
-                completables[requestId]?.completeExceptionally(Error(error?.message))
+                completables[requestId]?.invoke(null, Error(error?.message))
             }
         }
     }
@@ -53,23 +55,33 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
     }
 
     inline fun <reified T, reified R> invokeMethod(
-        method: TikiPlatformChannelMethodEnum,
+        method: MethodEnum,
         request: R
-    ): T? {
-        var jsonString: String
+    ): CompletableDeferred<T?> {
+        val moshi: Moshi = Moshi.Builder()
+            .add(TimeStampToDateAdapter())
+            .build()
         val requestId = UUID.randomUUID().toString()
-        val deferred = CompletableDeferred<String?>()
-        val jsonRequest = Moshi.Builder().build().adapter(R::class.java).toJson(request)
+        val deferred = CompletableDeferred<T?>()
+        val jsonRequest = moshi.adapter(R::class.java).toJson(request)
         channel.invokeMethod(
             method.methodCall, mapOf(
                 "requestId" to requestId,
                 "request" to jsonRequest
             )
         )
-        completables[requestId] = deferred
-        runBlocking(Dispatchers.IO) {
-            jsonString = deferred.await()!!
+        completables[requestId] = { jsonString: String?, error: Error? ->
+            if (error != null) {
+                deferred.completeExceptionally(error)
+            } else {
+                try {
+                    val response = moshi.adapter(T::class.java).fromJson(jsonString ?: "")
+                    deferred.complete(response)
+                } catch (e: IOException) {
+                    deferred.completeExceptionally(e)
+                }
+            }
         }
-        return Moshi.Builder().build().adapter(T::class.java).fromJson(jsonString)
+        return deferred
     }
 }

@@ -1,10 +1,7 @@
 ---
-title: TikiSdk
-excerpt: The primary object for interacting with the TIKI infrastructure. Use `TikiSdk` to assign ownership, modify, and apply consent.
-category: 6386a02f5b7bf00510590f34
-slug: tiki-sdk-android-tiki-sdk
-hidden: false
-order: 1
+title: TikiSdk excerpt: The primary object for interacting with the TIKI infrastructure.
+Use `TikiSdk` to assign ownership, modify, and apply consent. category: 6386a02f5b7bf00510590f34
+slug: tiki-sdk-android-tiki-sdk hidden: false order: 1
 ---
 
 ## Constructors
@@ -14,46 +11,54 @@ order: 1
 Parameters:
 
 - **apiId &#8594; String**
-  A unique identifier for your account. Create, revoke, and cycle Ids (not a secret but try and treat it with care) at [console.mytiki.com](https://console.mytiki.com).
+  A unique identifier for your account. Create, revoke, and cycle Ids (not a secret but try and
+  treat it with care) at [console.mytiki.com](https://console.mytiki.com).
 
 
 - **origin &#8594; String**  
-  Included in the on-chain transaction to denote the application of origination (can be overridden in individual requests). It should follow a reversed FQDN syntax.
-  i.e. com.mycompany.myproduct
+  Included in the on-chain transaction to denote the application of origination (can be overridden
+  in individual requests). It should follow a reversed FQDN syntax. i.e. com.mycompany.myproduct
 
 
 - **context &#8594; [Context](https://developer.android.com/reference/android/content/Context)**  
-  Set the application context. Required for the [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html) which communicates with the [Dart SDK](https://github.com/tiki/tiki-sdk-dart) binaries
+  Set the application context. Required for
+  the [MethodChannel](https://api.flutter.dev/flutter/services/MethodChannel-class.html) which
+  communicates with the [Dart SDK](https://github.com/tiki/tiki-sdk-dart) binaries
 
 
 - **address &#8594; String? = null**  
-  Set the user address (primarily for restoring the state on launch). If not set, a new key pair and address will be generated for the user.
+  Set the user address (primarily for restoring the state on launch). If not set, a new key pair and
+  address will be generated for the user.
 
 ## Methods
 
-##### assignOwnership(...) &#8594; String 
-Data ownership can be assigned to any data point, pool, or stream, creating an immutable, on-chain record.  
+##### assignOwnership(...) &#8594; String
+
+Data ownership can be assigned to any data point, pool, or stream, creating an immutable, on-chain
+record.
 
 Parameters:
+
 - **source &#8594; String**  
-An identifier in your system corresponding to the raw data.  
-_i.e. a user_id_
+  An identifier in your system corresponding to the raw data.  
+  _i.e. a user_id_
 
 
 - **type &#8594; String**  
-One of `"point"`, `"pool"`, or `"stream"`
+  One of `"point"`, `"pool"`, or `"stream"`
 
 
 - **contains &#8594; List&lt;String>**  
-A list of metadata tags describing the represented data
+  A list of metadata tags describing the represented data
 
 
 - **origin &#8594; String? = null**  
-An optional override of the default origin set during initialization
+  An optional override of the default origin set during initialization
 
 
 - **about &#8594; String? = null**  
-An optional description to provide additional context to the transaction. Most typically as human-readable text.
+  An optional description to provide additional context to the transaction. Most typically as
+  human-readable text.
 
 Returns:
 
@@ -69,27 +74,33 @@ val tid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("
 &nbsp;
 
 ##### modifyConsent(...) &#8594; [TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)
-Consent is given (or revoked) for data ownership records. Consent defines "who" the data owner has given utilization rights.
+
+Consent is given (or revoked) for data ownership records. Consent defines "who" the data owner has
+given utilization rights.
 
 Parameters:
+
 - **ownershipId &#8594; String**  
-The transaction id for the ownership grant
+  The transaction id for the ownership grant
 
 
 - **destination &#8594; [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination)**  
-A collection of paths and application use cases that consent has been granted (or revoked) for.
+  A collection of paths and application use cases that consent has been granted (or revoked) for.
 
 
 - **about &#8594; String? = null**  
-An optional description to provide additional context to the transaction. Most typically as human-readable text.
+  An optional description to provide additional context to the transaction. Most typically as
+  human-readable text.
 
 
 - **reward &#8594; String? = null**  
-An optional definition of a reward promised to the user in exchange for consent.
+  An optional definition of a reward promised to the user in exchange for consent.
 
 
-- **expiry &#8594; [LocalDateTime](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/-local-date-time.html)? = null**  
-The date upon which the consent is no longer valid. If not set, consent is perpetual.
+- **expiry
+  &#8594; [LocalDateTime](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/-local-date-time.html)
+  ? = null**  
+  The date upon which the consent is no longer valid. If not set, consent is perpetual.
 
 Returns:
 
@@ -97,6 +108,7 @@ Returns:
   the modified `TikiSdkConsent`
 
 Example:
+
 ```
 val consent =  tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")))
 ```
@@ -104,9 +116,12 @@ val consent =  tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*
 &nbsp;
 
 ##### getOwnership(source: String, origin: String?) &#8594; [TikiSdkOwnership](tiki-sdk-android-tiki-sdk-ownership)?
-Get the `TikiSdkOwnership` for a `source` and `origin`. If `origin` is unset, the default set during construction is used.
+
+Get the `TikiSdkOwnership` for a `source` and `origin`. If `origin` is unset, the default set during
+construction is used.
 
 Parameters:
+
 - **source &#8594; String**  
   An identifier in your system corresponding to the raw data.  
   _i.e. a user_id_
@@ -120,22 +135,26 @@ Returns:
   the assigned `TikiSdkOwnership`
 
 Example:
+
 ```
 val ownership = tiki.getOwnership("12345")
 ```
 
 &nbsp;
 
-##### getConsent(source: String, origin: String?) &#8594; [TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)?  
-Get the latest `TikiSdkConsent` for a `source` and `origin`. If `origin` is unset, the default set during construction is used.
+##### getConsent(source: String, origin: String?) &#8594; [TikiSdkConsent](tiki-sdk-android-tiki-sdk-consent)?
+
+Get the latest `TikiSdkConsent` for a `source` and `origin`. If `origin` is unset, the default set
+during construction is used.
 
 Parameters:
+
 - **source &#8594; String**  
   An identifier in your system corresponding to the raw data.  
   _i.e. a user_id_
 
 - **origin &#8594; String? = null**  
-An optional override of the default origin set during initialization
+  An optional override of the default origin set during initialization
 
 Returns:
 
@@ -143,16 +162,20 @@ Returns:
   the latest `TikiSdkConsent`
 
 Example:
+
 ```
 val consent = tiki.getConsent("12345")
 ```
 
 &nbsp;
 
-##### applyConsent(...) 
-Apply consent to a data transaction. If consent is granted for the `source` and `destination` and has not expired, the request is executed.
+##### applyConsent(...)
+
+Apply consent to a data transaction. If consent is granted for the `source` and `destination` and
+has not expired, the request is executed.
 
 Parameters:
+
 - **source &#8594; String**  
   An identifier in your system corresponding to the raw data.  
   _i.e. a user_id_
@@ -173,8 +196,8 @@ Parameters:
 - **origin &#8594; String? = null**  
   An optional override of the default origin set during initialization
 
-
 Example:
+
 ```
 applyConsent("12345", TikiSdkDestination(listOf("*"), listOf("*")), { 
   print("Consent Approved. Send data to backend.")
