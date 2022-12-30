@@ -56,7 +56,7 @@ Configuration parameters:
 Example:
 
 ```
-val tiki = TikiSdk("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
+val tiki = TikiSdk().init("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
 ```
 
 #### 3. Assign ownership

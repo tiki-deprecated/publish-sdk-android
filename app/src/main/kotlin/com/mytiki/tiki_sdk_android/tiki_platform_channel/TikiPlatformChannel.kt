@@ -54,6 +54,15 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
+    /**
+     * Invoke [method] in TIKI SDK Flutter
+     *
+     * @param T The type that will be returned in the CompletableDeferred
+     * @param R The type of the [request]
+     * @param method The method to be called from TIKI SDK Flutter
+     * @param request The request object for the [method]
+     * @return CompletableDeferred holding [T]
+     */
     inline fun <reified T, reified R> invokeMethod(
         method: MethodEnum,
         request: R

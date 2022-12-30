@@ -18,17 +18,24 @@ import java.util.*
 /**
  * The TIKI SDK main class. Use this to add tokenized data ownership, consent, and rewards.
  *
- * @constructor
- *
- * @param apiId The apiId for connecting to TIKI cloud.
- * @param origin The default origin for all transactions.
- * @param context The context of the application. Used to initialize Flutter Engine
- * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
- */
+ * @constructor Create empty Tiki sdk. [init] should be called to build the SDK.
+  */
 class TikiSdk {
     private lateinit var tikiPlatformChannel: TikiPlatformChannel
     lateinit var address: String
 
+    /**
+     * Initializes the TIKI SDK.
+     *
+     * It should be called before any other method. It sets up Flutter Engine and Platform Channel
+     * and builds the core of the TIKI SDK, calling TIKI SDK Dart through the Flutter Platform Channel.
+     *
+     * @param apiId The apiId for connecting to TIKI cloud.
+     * @param origin The default origin for all transactions.
+     * @param context The context of the application. Used to initialize Flutter Engine
+     * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
+     * @return Deferred<TikiSdk> - use await() to complete it.
+     */
     fun init(
         apiId: String,
         origin: String,
@@ -119,7 +126,7 @@ class TikiSdk {
      * @param about String? Optional description about the data.
      * @param reward String? Optional reward the user will receive for granting consent.
      * @param expiry Date? Optional expiration for the consent.
-     * @return
+     * @return TikiSdkConsent
      */
     suspend fun modifyConsent(
         ownershipId: String,

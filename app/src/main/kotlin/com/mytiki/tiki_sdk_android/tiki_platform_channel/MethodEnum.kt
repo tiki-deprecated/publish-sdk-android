@@ -1,5 +1,10 @@
 package com.mytiki.tiki_sdk_android.tiki_platform_channel
 
+/**
+ * TIKI SDK Flutter methods.
+ *
+ * @constructor Create empty Method enum
+ */
 enum class MethodEnum {
     BUILD {
         override val methodCall: String = "build"

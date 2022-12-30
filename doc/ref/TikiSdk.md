@@ -8,6 +8,16 @@ slug: tiki-sdk-android-tiki-sdk hidden: false order: 1
 
 ##### TikiSdk (...)
 
+Creates an empty TikiSdk. 
+
+## Methods
+
+##### init(...) &#8594; String
+
+Initializes the TIKI SDK. It should be called before any other method. It sets up Flutter Engine and 
+Platform Channel and builds the core of the TIKI SDK, calling TIKI SDK Dart through the Flutter 
+Platform Channel.
+
 Parameters:
 
 - **apiId &#8594; String**
@@ -29,8 +39,6 @@ Parameters:
 - **address &#8594; String? = null**  
   Set the user address (primarily for restoring the state on launch). If not set, a new key pair and
   address will be generated for the user.
-
-## Methods
 
 ##### assignOwnership(...) &#8594; String
 
