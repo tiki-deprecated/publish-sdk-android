@@ -1,13 +1,13 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.MethodEnum
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.TikiPlatformChannel
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.*
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspBuild
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspConsentApply
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspConsentGet
 import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspOwnership
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.TikiPlatformChannel
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.MethodEnum
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.req.*
+import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspBuild
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.loader.FlutterLoader
@@ -26,38 +26,28 @@ import java.util.*
  * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
  */
 class TikiSdk {
-
-    private lateinit var tikiSdkFlutterChannel: TikiPlatformChannel
+    private lateinit var tikiPlatformChannel: TikiPlatformChannel
     lateinit var address: String
 
-    suspend fun init(
-        apiId: String,
-        origin: String,
-        context: Context,
-        address: String? = null
-    ): CompletableDeferred<TikiSdk> {
-        val tikiSdkCompletable = CompletableDeferred<TikiSdk>()
-        val flutterEngineCompletable = CompletableDeferred<Boolean>()
-        tikiSdkFlutterChannel = TikiPlatformChannel()
-        withContext(Dispatchers.Main) {
+    fun init(apiId: String, origin: String, context: Context, address: String? = null): Deferred<TikiSdk> {
+        return MainScope().async {
             val loader = FlutterLoader()
             loader.startInitialization(context)
+            yield()
             loader.ensureInitializationComplete(context, null)
             val flutterEngine = FlutterEngine(context)
             flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
             GeneratedPluginRegistrant.registerWith(flutterEngine)
-            flutterEngine.plugins.add(tikiSdkFlutterChannel)
-            flutterEngineCompletable.complete(true)
+            val tikiPlatformChannel = TikiPlatformChannel()
+            this@TikiSdk.tikiPlatformChannel = tikiPlatformChannel
+            flutterEngine.plugins.add(tikiPlatformChannel)
+            yield()
+            val rspBuild = tikiPlatformChannel
+                .invokeMethod<RspBuild, ReqBuild>(MethodEnum.BUILD, ReqBuild(apiId, origin, address))
+                .await()
+            this@TikiSdk.address = rspBuild!!.address
+            return@async this@TikiSdk
         }
-        flutterEngineCompletable.await()
-        val method = MethodEnum.BUILD
-        val buildRequest = ReqBuild(apiId, origin, address)
-        val rspBuildCompletable: CompletableDeferred<RspBuild?> =
-            tikiSdkFlutterChannel.invokeMethod(method, buildRequest)
-        val rspBuild = rspBuildCompletable.await()
-        this.address = rspBuild!!.address
-        tikiSdkCompletable.complete(this)
-        return tikiSdkCompletable
     }
 
     /** Assign ownership to a given source.
@@ -79,7 +69,7 @@ class TikiSdk {
     ): String {
         val assignReq = ReqOwnershipAssign(source, type, contains, about, origin)
         val rspAssignCompletable: CompletableDeferred<RspOwnership?> =
-            tikiSdkFlutterChannel.invokeMethod(
+            tikiPlatformChannel.invokeMethod(
                 MethodEnum.ASSIGN_OWNERSHIP, assignReq
             )
         val rspAssign: RspOwnership = rspAssignCompletable.await()!!
@@ -100,7 +90,7 @@ class TikiSdk {
     ): TikiSdkOwnership? {
         val getReq = ReqConsentGet(source, origin)
         val rspGetCompletable: CompletableDeferred<RspOwnership?> =
-            tikiSdkFlutterChannel.invokeMethod(
+            tikiPlatformChannel.invokeMethod(
                 MethodEnum.GET_OWNERSHIP, getReq
             )
         val rspGet = rspGetCompletable.await()
@@ -132,7 +122,7 @@ class TikiSdk {
     ): TikiSdkConsent {
         val modifyReq = ReqConsentModify(ownershipId, destination, about, reward, expiry?.time)
         val rspModifyCompletable: CompletableDeferred<RspConsentGet?> =
-            tikiSdkFlutterChannel.invokeMethod(
+            tikiPlatformChannel.invokeMethod(
                 MethodEnum.MODIFY_CONSENT, modifyReq
             )
         val rspModify: RspConsentGet = rspModifyCompletable.await()!!
@@ -157,7 +147,7 @@ class TikiSdk {
     ): TikiSdkConsent? {
         val getReq = ReqConsentGet(source, origin)
         val rspConsentCompletable: CompletableDeferred<RspConsentGet?> =
-            tikiSdkFlutterChannel.invokeMethod(
+            tikiPlatformChannel.invokeMethod(
                 MethodEnum.GET_CONSENT, getReq
             )
         val rspGet: RspConsentGet? = rspConsentCompletable.await()
@@ -185,7 +175,7 @@ class TikiSdk {
     ) {
         val applyReq = ReqConsentApply(source, destination, origin)
         val rspApplyCompletable: CompletableDeferred<RspConsentApply?> =
-            tikiSdkFlutterChannel.invokeMethod(
+            tikiPlatformChannel.invokeMethod(
                 MethodEnum.APPLY_CONSENT, applyReq
             )
         val rspApply: RspConsentApply = rspApplyCompletable.await()!!

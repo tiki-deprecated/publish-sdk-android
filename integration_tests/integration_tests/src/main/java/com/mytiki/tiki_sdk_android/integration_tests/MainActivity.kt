@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
                         "com.mytiki.tiki_sdk_android.integration_tests",
                         applicationContext
                     ).await()
-                Log.e("MIKE", "addr: " + tikiSdk?.address)
+                Log.e("TEST", "addr: " + tikiSdk?.address)
             }
         }
     }
