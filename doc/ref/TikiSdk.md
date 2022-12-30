@@ -1,7 +1,10 @@
 ---
-title: TikiSdk excerpt: The primary object for interacting with the TIKI infrastructure.
-Use `TikiSdk` to assign ownership, modify, and apply consent. category: 6386a02f5b7bf00510590f34
-slug: tiki-sdk-android-tiki-sdk hidden: false order: 1
+title: TikiSdk 
+excerpt: The primary object for interacting with the TIKI infrastructure. Use `TikiSdk` to assign ownership, modify, and apply consent. 
+category: 6386a02f5b7bf00510590f34
+slug: tiki-sdk-android-tiki-sdk 
+hidden: false 
+order: 1
 ---
 
 ## Constructors

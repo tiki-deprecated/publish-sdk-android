@@ -1,7 +1,10 @@
 ---
-title: TikiSdkDestination excerpt: Defines destinations and use cases (optional) allowed or
-disallowed. Serializable for inclusion in transactions. category: 6386a02f5b7bf00510590f34 slug:
-tiki-sdk-android-tiki-sdk-destination hidden: false order: 2
+title: TikiSdkDestination 
+excerpt: Defines destinations and use cases (optional) allowed or disallowed. Serializable for inclusion in transactions. 
+category: 6386a02f5b7bf00510590f34 
+slug: tiki-sdk-android-tiki-sdk-destination 
+hidden: false 
+order: 2
 ---
 
 ## Constructors

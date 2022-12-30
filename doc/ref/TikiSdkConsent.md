@@ -1,7 +1,10 @@
 ---
-title: TikiSdkConsent excerpt: A Consent Object. Representative of the NFT created on-chain.
-Requires a corresponding Data Ownership NFT (see [TikiSdk](tiki-sdk-android-tiki-sdk)). category:
-6386a02f5b7bf00510590f34 slug: tiki-sdk-android-tiki-sdk-consent hidden: false order: 3
+title: TikiSdkConsent 
+excerpt: A Consent Object. Representative of the NFT created on-chain. Requires a corresponding Data Ownership NFT (see [TikiSdk](tiki-sdk-android-tiki-sdk)). 
+category: 6386a02f5b7bf00510590f34 
+slug: tiki-sdk-android-tiki-sdk-consent 
+hidden: false 
+order: 3
 ---
 
 ## Constructors
