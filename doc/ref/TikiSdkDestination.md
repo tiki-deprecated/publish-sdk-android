@@ -4,7 +4,7 @@ excerpt: Defines destinations and use cases (optional) allowed or disallowed. Se
 category: 6386a02f5b7bf00510590f34 
 slug: tiki-sdk-android-tiki-sdk-destination 
 hidden: false 
-order: 2
+order: 3
 ---
 
 ## Constructors

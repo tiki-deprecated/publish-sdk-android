@@ -2,6 +2,7 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
+
 package com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp
 
 import com.mytiki.tiki_sdk_android.TikiSdkConsent
