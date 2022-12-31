@@ -36,6 +36,12 @@ Parameters:
 - **address &#8594; String? = null**  
   Set the user address (primarily for restoring the state on launch). If not set, a new key pair and address will be generated for the user.
 
+Returns:
+
+- **Deferred&lt;TikiSdk>**  
+  `this` initialized
+
+
 Example:
 
 ```
