@@ -71,7 +71,7 @@ Parameters:
   An identifier in your system corresponding to the raw data. _i.e. a user_id_
 
 
-- **type &#8594; String**  
+- **type &#8594; [TikiSdkDataTypeEnum](tiki-sdk-android-tiki-sdk-data-type-enum)**  
   `"data_point"`, `"data_pool"`, or `"data_stream"`
 
   

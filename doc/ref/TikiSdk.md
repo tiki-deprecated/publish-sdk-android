@@ -58,8 +58,8 @@ Parameters:
   _i.e. a user_id_
 
 
-- **type &#8594; String**  
-  One of `"point"`, `"pool"`, or `"stream"`
+- **type &#8594; [TikiSdkDataTypeEnum](tiki-sdk-android-tiki-sdk-data-type-enum)**  
+  One of `"data_point"`, `"data_pool"`, or `"data_stream"`
 
 
 - **contains &#8594; List&lt;String>**  
