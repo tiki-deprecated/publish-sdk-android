@@ -88,7 +88,7 @@ Returns:
 Example:
 
 ```
-val tid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address")).await()
+val tid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address"))
 ```
 
 &nbsp;
@@ -129,7 +129,7 @@ Returns:
 Example:
 
 ```
-val consent =  tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*"))).await()
+val consent =  tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")))
 ```
 
 &nbsp;
@@ -158,7 +158,7 @@ Returns:
 Example:
 
 ```
-val ownership = tiki.getOwnership("12345").await()
+val ownership = tiki.getOwnership("12345")
 ```
 
 &nbsp;
@@ -187,7 +187,7 @@ Returns:
 Example:
 
 ```
-val consent = tiki.getConsent("12345").await()
+val consent = tiki.getConsent("12345")
 ```
 
 &nbsp;

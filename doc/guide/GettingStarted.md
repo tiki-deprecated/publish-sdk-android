@@ -97,7 +97,7 @@ Example:
 ```
 MainScope().launch { 
   ...
-  val oid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address")).await()
+  val oid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address"))
 }
 ```
 
