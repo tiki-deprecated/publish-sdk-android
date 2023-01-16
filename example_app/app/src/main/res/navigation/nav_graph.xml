@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/walletFragment">
+
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.wallet.WalletListFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/wallet_fragment">
+
+        <action
+            android:id="@+id/action_wallet_fragment_to_stream_list_fragment"
+            app:destination="@id/steamListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/steamListFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.stream.list.StreamListFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/stream_list_fragment">
+
+        <action
+            android:id="@+id/acion_back_to_stream_list_from_log"
+            app:destination="@id/walletFragment"
+            app:popUpTo="@id/walletFragment" />
+        <action
+            android:id="@+id/action_streamListFragment_to_logFragment"
+            app:destination="@id/logFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/logFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.stream.log.StreamLogFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/stream_log_fragment">
+        <action
+            android:id="@+id/action_logFragment_to_StreamListFragment"
+            app:destination="@id/steamListFragment"
+            app:popUpTo="@id/steamListFragment" />
+    </fragment>
+</navigation>
