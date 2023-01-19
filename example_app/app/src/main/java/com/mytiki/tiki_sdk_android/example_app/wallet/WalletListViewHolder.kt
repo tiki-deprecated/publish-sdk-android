@@ -13,7 +13,7 @@ class WalletListViewHolder(private val binding: WalletItemBinding?) : RecyclerVi
     fun bind(tikiSdkAddress: String) {
         itemView.findViewById<TextView>(R.id.addressTextView).text = tikiSdkAddress
         itemView.setOnClickListener {
-            Navigation.findNavController(itemView).navigate(R.id.action_wallet_fragment_to_stream_list_fragment, bundleOf())
+//            Navigation.findNavController(itemView).navigate(R.id.action_wallet_fragment_to_stream_list_fragment, bundleOf())
         }
     }
 }

@@ -19,20 +19,20 @@ class WalletListViewModel : ViewModel() {
         get() = _isLoading
 
     fun createWallet(context : Context) {
-        _isLoading.value = true
-        var tikiSdk : TikiSdk? = null
-        viewModelScope.launch {
-            TikiSdkContainer.init(context)
-            tikiSdk = TikiSdkContainer.currentSdk
-        }.invokeOnCompletion {
-            if(it == null){
-                _wallets.value!!.add(tikiSdk!!.address).apply{
-                    _wallets.postValue(_wallets.value)
-                }
-            }else{
-                throw it
-            }
-            _isLoading.value = false
-        }
+//        _isLoading.value = true
+//        var tikiSdk : TikiSdk? = null
+//        viewModelScope.launch {
+//            TikiSdkContainer.init(context)
+//            tikiSdk = TikiSdkContainer.currentSdk
+//        }.invokeOnCompletion {
+//            if(it == null){
+//                _wallets.value!!.add(tikiSdk!!.address).apply{
+//                    _wallets.postValue(_wallets.value)
+//                }
+//            }else{
+//                throw it
+//            }
+//            _isLoading.value = false
+//        }
     }
 }

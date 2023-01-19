@@ -17,6 +17,6 @@ class StreamListAdapter(private val viewModel: StreamListViewModel) : RecyclerVi
 
     override fun onBindViewHolder(holder: StreamListViewHolder, position: Int) {
         val stream = viewModel.streams.value!![position]
-        holder.bind(stream)
+//        holder.bind(stream)
     }
 }
