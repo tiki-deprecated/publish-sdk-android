@@ -19,20 +19,6 @@ class TikiSdkContainer {
             return currentSdk
         }
 
-        suspend fun init (context: Context, address: String? = null) {
-            if(address != null && tikiSdkMap.containsKey(address)){
-                _currentSdk = tikiSdkMap[address]!!
-            }else{
-                val deferred = CompletableDeferred<TikiSdk>()
-                withContext(Dispatchers.IO) {
-                    val apiId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
-                    val origin = "com.mytiki.tiki_sdk_android.test"
-                    _currentSdk = TikiSdk().init(apiId, origin, context, address).await()
-                    tikiSdkMap[_currentSdk!!.address] = _currentSdk!!
-                    deferred.complete(_currentSdk!!)
-                }
-                _currentSdk = deferred.await()
-            }
-        }
+
     }
 }

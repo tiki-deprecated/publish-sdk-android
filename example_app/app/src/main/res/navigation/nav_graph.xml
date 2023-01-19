@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/walletFragment"
         android:name="com.mytiki.tiki_sdk_android.example_app.wallet.WalletListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="Wallet"
         tools:layout="@layout/wallet_fragment">
 
         <action
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/steamListFragment"
         android:name="com.mytiki.tiki_sdk_android.example_app.stream.list.StreamListFragment"
-        android:label="@string/second_fragment_label"
+        android:label="Streams"
         tools:layout="@layout/stream_list_fragment">
 
         <action
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/logFragment"
         android:name="com.mytiki.tiki_sdk_android.example_app.stream.log.StreamLogFragment"
-        android:label="@string/second_fragment_label"
+        android:label="Log"
         tools:layout="@layout/stream_log_fragment">
         <action
             android:id="@+id/action_logFragment_to_StreamListFragment"
