@@ -11,7 +11,7 @@ class WalletListAdapter(private val viewModel: TryItOutViewModel) : RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletListViewHolder {
         val binding: WalletItemBinding = WalletItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false)
-        return WalletListViewHolder(binding)
+        return WalletListViewHolder(binding, viewModel)
     }
 
     override fun getItemCount() : Int {

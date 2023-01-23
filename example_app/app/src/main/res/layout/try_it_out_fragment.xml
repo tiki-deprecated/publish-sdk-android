@@ -34,7 +34,7 @@
                 android:padding="8dp"
                 android:text="Wallet"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/wallet_card"
@@ -48,6 +48,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|start"
                     android:padding="16dp"
+                    android:text="Create Wallet"
                     app:drawableEndCompat="@drawable/arrow_forward" />
             </androidx.cardview.widget.CardView>
 
@@ -81,8 +82,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|start"
-                            android:padding="16dp"
-                            android:text="@{viewModel.ownership.transactionId}" />
+                            android:padding="16dp" />
 
                     </LinearLayout>
 

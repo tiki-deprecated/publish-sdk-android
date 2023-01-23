@@ -6,14 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mytiki.tiki_sdk_android.TikiSdk
-import com.mytiki.tiki_sdk_android.TikiSdkConsent
-import com.mytiki.tiki_sdk_android.TikiSdkOwnership
+import androidx.navigation.Navigation
+import com.mytiki.tiki_sdk_android.*
 import com.mytiki.tiki_sdk_android.example_app.stream.Stream
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -67,7 +67,28 @@ class TryItOutViewModel : ViewModel() {
                     _wallets.postValue(_wallets.value)
                 }
                 _selectedWalletAddress.postValue(tikiSdk.address)
+                tikiSdk.assignOwnership(stream.value!!.source, TikiSdkDataTypeEnum.data_stream, listOf("generic data"), "Data stream created with TIKI SDK Sample App")
+                val ownership = tikiSdk.getOwnership(stream.value!!.source)
+                _ownerships.value!!.toMutableMap().apply{
+                    this.put(tikiSdk.address, ownership!!)
+                    _ownerships.postValue(this)
+                }
+                val path: String = URL(stream.value?.url).host!!
+                val use: String = stream.value!!.httpMethod
+                val destination = TikiSdkDestination(listOf(path), listOf(use))
+                val expiry: Calendar = Calendar.getInstance().apply {
+                    this.add(Calendar.YEAR, 10)
+                }
+                val consent: TikiSdkConsent = tikiSdk.modifyConsent(ownership!!.transactionId, destination, "Consent given to echo data in remote server", "Test the SDK", expiry.time)
+                _consents.value!!.toMutableMap().apply{
+                    this.put(ownership.transactionId, consent)
+                    _consents.postValue(this)
+                }
+                _isConsentGiven.value = true
+                _isLoading.value = false
             }
         }
     }
+
+
 }

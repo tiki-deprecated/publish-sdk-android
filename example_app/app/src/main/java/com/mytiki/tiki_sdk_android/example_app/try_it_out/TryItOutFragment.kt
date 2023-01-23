@@ -37,8 +37,9 @@ class TryItOutFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if(viewModel.selectedWalletAddress.value != null){
+            binding.walletAddress.text = viewModel.selectedWalletAddress.value
             binding.ownershipAndConsent.visibility = View.VISIBLE
-            binding.ownershipId.text = viewModel.ownership?.transactionId
+            binding.ownershipId.text = viewModel.ownership!!.transactionId
             binding.consentId.text = viewModel.consent?.transactionId
             binding.toggleConsent.isChecked = viewModel.isConsentGiven.value == true
         }
