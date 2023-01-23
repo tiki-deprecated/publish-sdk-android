@@ -1,17 +1,21 @@
 package com.mytiki.tiki_sdk_android.example_app.try_it_out
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.TikiSdkConsent
 import com.mytiki.tiki_sdk_android.TikiSdkOwnership
 import com.mytiki.tiki_sdk_android.example_app.stream.Stream
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TryItOutViewModel : ViewModel() {
 
@@ -33,8 +37,8 @@ class TryItOutViewModel : ViewModel() {
     private var _isConsentGiven: MutableLiveData<Boolean> = MutableLiveData(false)
     val isConsentGiven: LiveData<Boolean> = _isConsentGiven
 
-    private var _selectedWalletAddress: MutableLiveData<String> = MutableLiveData("")
-    val selectedWalletAddress: LiveData<String> = _selectedWalletAddress
+    private var _selectedWalletAddress: MutableLiveData<String?> = MutableLiveData()
+    val selectedWalletAddress: LiveData<String?> = _selectedWalletAddress
 
     val tikiSdk: TikiSdk?
         get() = wallets.value?.get(selectedWalletAddress.value)
@@ -45,19 +49,24 @@ class TryItOutViewModel : ViewModel() {
     val consent: TikiSdkConsent?
         get() = consents.value?.get(ownership?.transactionId)
 
-    suspend fun loadTikiSdk (context: Context, address: String? = null) {
+    private val _requests: MutableLiveData<MutableList<TryItOutReq>> = MutableLiveData(mutableListOf())
+    val requests: LiveData<MutableList<TryItOutReq>> = _requests
+
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun loadTikiSdk (context: Context, address: String? = null) {
         if(address != null && wallets.value?.containsKey(address) == true){
-            _selectedWalletAddress.postValue(address!!)
-        }else{
-            val deferred = CompletableDeferred<Boolean>()
-            withContext(Dispatchers.IO) {
+            _selectedWalletAddress.postValue(address)
+        }else {
+            viewModelScope.launch {
                 val apiId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
                 val origin = "com.mytiki.tiki_sdk_android.test"
                 val tikiSdk = TikiSdk().init(apiId, origin, context, address).await()
                 _wallets.value!!.put(tikiSdk.address, tikiSdk).apply {
                     _wallets.postValue(_wallets.value)
                 }
-                deferred.complete(true)
+                _selectedWalletAddress.postValue(tikiSdk.address)
             }
         }
     }

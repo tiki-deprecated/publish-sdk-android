@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletFragmentBinding
+import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
 
 class WalletListFragment : Fragment() {
-    private lateinit var viewModel: WalletListViewModel
+    private val viewModel by activityViewModels<TryItOutViewModel>()
 
     private var _binding: WalletFragmentBinding? = null
     private val binding get() = _binding!!
@@ -25,7 +28,6 @@ class WalletListFragment : Fragment() {
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WalletListViewModel::class.java)
         val adapter = WalletListAdapter(viewModel)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -36,7 +38,7 @@ class WalletListFragment : Fragment() {
             binding.button.isEnabled = !it
         })
         binding.button.setOnClickListener {
-            viewModel.createWallet(requireContext())
+            viewModel.loadTikiSdk(requireContext())
         }
     }
 }

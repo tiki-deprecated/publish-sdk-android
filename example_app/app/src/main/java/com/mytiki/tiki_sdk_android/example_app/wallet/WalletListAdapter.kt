@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletItemBinding
+import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
 
-class WalletListAdapter(private val viewModel: WalletListViewModel) : RecyclerView.Adapter<WalletListViewHolder>() {
+class WalletListAdapter(private val viewModel: TryItOutViewModel) : RecyclerView.Adapter<WalletListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletListViewHolder {
         val binding: WalletItemBinding = WalletItemBinding.inflate(
@@ -19,7 +20,7 @@ class WalletListAdapter(private val viewModel: WalletListViewModel) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: WalletListViewHolder, position: Int) {
-        val tikiSdk = viewModel.wallets.value!![position]
-        holder.bind(tikiSdk)
+        val address = viewModel.wallets.value?.keys?.toList()?.get(position)
+        holder.bind(address!!)
     }
 }
