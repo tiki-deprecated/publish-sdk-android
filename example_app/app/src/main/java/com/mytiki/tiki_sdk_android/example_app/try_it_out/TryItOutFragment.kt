@@ -50,13 +50,13 @@ class TryItOutFragment : Fragment() {
             Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
         }
         binding.toggleConsent.setOnClickListener{
-            viewModel.togglConsent()
+            viewModel.toggleConsent()
         }
         binding.ownershipCard.setOnClickListener{
             Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_ownershipFragment)
         }
         binding.consenCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_consentFragment)
         }
         binding.destinationCard.setOnClickListener{
             Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_destinationFragment)

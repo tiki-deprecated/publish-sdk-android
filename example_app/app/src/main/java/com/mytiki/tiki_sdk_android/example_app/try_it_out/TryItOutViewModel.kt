@@ -92,7 +92,7 @@ class TryItOutViewModel : ViewModel() {
         }
     }
     
-    fun togglConsent(){
+    fun toggleConsent(){
         val path: String = URL(stream.value!!.url).host
         val use: String = stream.value!!.httpMethod
         val destination = if (isConsentGiven.value!!) {

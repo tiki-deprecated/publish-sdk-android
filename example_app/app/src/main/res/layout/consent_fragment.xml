@@ -6,16 +6,16 @@
     android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    tools:context=".ownership.OwnershipFragment">
+    tools:context=".consent.ConsentFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Ownership NFT"
+        android:text="Consent NFT"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:background="#F2F3F7" />
+        android:background="#F2F3F7"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
                 android:id="@+id/hash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:textStyle="bold" 
                 android:textSize="16sp"
                 android:padding="8dp"/>
@@ -52,17 +53,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:paddingTop="8dp"
-                android:text="Source" />
+                android:text="Destination" />
 
             <TextView
-                android:id="@+id/source"
+                android:id="@+id/paths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
+
+            <TextView
+                android:id="@+id/uses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-              
-        android:textStyle="bold" 
+                android:textStyle="bold"
                 android:textSize="16sp"
                 android:padding="8dp" />
 
@@ -72,50 +77,6 @@
                 android:background="#DEDEDE"
                 android:padding="8dp" />
             
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="Origin" />
-
-            <TextView
-                android:id="@+id/origin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-              
-        android:textStyle="bold" 
-                android:textSize="16sp"
-                android:padding="8dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#DEDEDE"
-                android:padding="8dp" />
-            
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="Contains" />
-
-            <TextView
-                android:id="@+id/contains"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-              
-        android:textStyle="bold" 
-                android:textSize="16sp"
-                android:padding="8dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#DEDEDE"
-                android:padding="8dp" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,6 +85,50 @@
 
             <TextView
                 android:id="@+id/about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+              
+        android:textStyle="bold" 
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DEDEDE"
+                android:padding="8dp" />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Reward" />
+
+            <TextView
+                android:id="@+id/reward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+              
+        android:textStyle="bold" 
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DEDEDE"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Expiry" />
+
+            <TextView
+                android:id="@+id/expiry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_try_it_out_to_ownershipFragment"
             app:destination="@id/ownership_fragment" />
+        <action
+            android:id="@+id/action_try_it_out_to_consentFragment"
+            app:destination="@id/consent_fragment" />
     </fragment>
     <fragment
         android:id="@+id/walletListFragment"
@@ -43,4 +46,9 @@
         android:name="com.mytiki.tiki_sdk_android.example_app.ownership.OwnershipFragment"
         android:label="ownership_fragment"
         tools:layout="@layout/ownership_fragment" />
+    <fragment
+        android:id="@+id/consent_fragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.consent.ConsentFragment"
+        android:label="consent_fragment"
+        tools:layout="@layout/consent_fragment" />
 </navigation>
