@@ -12,10 +12,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:text="Destination"
-        app:drawableStartCompat="@drawable/arrow_back"
         android:textSize="32sp"
+        android:paddingBottom="16dp"
         android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView

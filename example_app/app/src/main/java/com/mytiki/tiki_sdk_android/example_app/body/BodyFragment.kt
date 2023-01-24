@@ -31,14 +31,14 @@ class BodyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.bodyTex.setText(viewModel.stream.value?.body)
+        binding.bodyTex.setText(viewModel.destination.value?.body)
         binding.bodyTex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.stream.value?.body = s.toString()
+                viewModel.destination.value?.body = s.toString()
             }
         })
     }

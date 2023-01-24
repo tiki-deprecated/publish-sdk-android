@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mytiki.tiki_sdk_android.*
-import com.mytiki.tiki_sdk_android.example_app.stream.Stream
+import com.mytiki.tiki_sdk_android.example_app.destination.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
@@ -33,9 +33,9 @@ class TryItOutViewModel : ViewModel() {
     val consents: LiveData<MutableMap<String, TikiSdkConsent>>
         get() = _consents
 
-    private var _stream: MutableLiveData<Stream> =
-        MutableLiveData(Stream(UUID.randomUUID().toString()))
-    val stream: LiveData<Stream> = _stream
+    private var _destination: MutableLiveData<Destination> =
+        MutableLiveData(Destination(UUID.randomUUID().toString()))
+    val destination: LiveData<Destination> = _destination
 
     private var _isConsentGiven: MutableLiveData<Boolean> = MutableLiveData(false)
     val isConsentGiven: LiveData<Boolean> = _isConsentGiven
@@ -72,18 +72,18 @@ class TryItOutViewModel : ViewModel() {
                 }
                 _selectedWalletAddress.postValue(tikiSdk.address)
                 tikiSdk.assignOwnership(
-                    stream.value!!.source,
+                    destination.value!!.source,
                     TikiSdkDataTypeEnum.data_stream,
                     listOf("generic data"),
-                    "Data stream created with TIKI SDK Sample App"
+                    "Data destination created with TIKI SDK Sample App"
                 )
-                val ownership = tikiSdk.getOwnership(stream.value!!.source)
+                val ownership = tikiSdk.getOwnership(destination.value!!.source)
                 _ownerships.value!!.toMutableMap().apply {
                     this.put(tikiSdk.address, ownership!!)
                     _ownerships.postValue(this)
                 }
-                val path: String = URL(stream.value?.url).host!!
-                val use: String = stream.value!!.httpMethod
+                val path: String = URL(destination.value?.url).host!!
+                val use: String = destination.value!!.httpMethod
                 val destination = TikiSdkDestination(listOf(path), listOf(use))
                 val expiry: Calendar = Calendar.getInstance().apply {
                     this.add(Calendar.YEAR, 10)
@@ -106,8 +106,8 @@ class TryItOutViewModel : ViewModel() {
     }
 
     fun toggleConsent() {
-        val path: String = URL(stream.value!!.url).host
-        val use: String = stream.value!!.httpMethod
+        val path: String = URL(destination.value!!.url).host
+        val use: String = destination.value!!.httpMethod
         val destination = if (isConsentGiven.value!!) {
             TikiSdkDestination.NONE
         } else {
@@ -144,15 +144,15 @@ class TryItOutViewModel : ViewModel() {
         } else {
             viewModelScope.launch {
                 try {
-                    val url = URL(stream.value!!.url)
+                    val url = URL(destination.value!!.url)
                     val path: String = url.host
-                    val use: String = stream.value!!.httpMethod
+                    val use: String = destination.value!!.httpMethod
                     val destination = TikiSdkDestination(listOf(path), listOf(use))
-                    tikiSdk!!.applyConsent(stream.value!!.source, destination, {
+                    tikiSdk!!.applyConsent(this@TryItOutViewModel.destination.value!!.source, destination, {
                         viewModelScope.launch(Dispatchers.IO) {
                             val con = url.openConnection() as HttpURLConnection
                             con.requestMethod = use
-                            val postData = stream.value!!.body.toByteArray()
+                            val postData = this@TryItOutViewModel.destination.value!!.body.toByteArray()
                             con.doOutput = true
                             val wr = DataOutputStream(con.outputStream)
                             wr.write(postData)

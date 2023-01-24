@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".try_it_out.TryItOutFragment">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel" />
-    </data>
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -25,7 +18,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
                 android:text="Try it out"
                 android:textSize="32sp"
                 android:textStyle="bold" />

@@ -1,6 +1,6 @@
-package com.mytiki.tiki_sdk_android.example_app.stream
+package com.mytiki.tiki_sdk_android.example_app.destination
 
-data class Stream(
+data class Destination(
     val source: String,
     var body: String = "{\"message\" : \"Hello Tiki!\"}",
     var httpMethod: String = "POST",

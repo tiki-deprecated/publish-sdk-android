@@ -70,7 +70,7 @@ class TryItOutFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val stream = viewModel.stream.value!!
+        val stream = viewModel.destination.value!!
         binding.destinationTitle.text = stream.httpMethod + " " + stream.url
         binding.bodyTitle.text = stream.body
         if (viewModel.selectedWalletAddress.value != null) {
