@@ -1,14 +1,13 @@
 package com.mytiki.tiki_sdk_android.example_app.wallet
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletFragmentBinding
 import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
@@ -27,13 +26,14 @@ class WalletListFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         val adapter = WalletListAdapter(viewModel)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.wallets.observe(viewLifecycleOwner, Observer {
-            adapter.notifyItemInserted(it.size - 1)
+            binding.recyclerView.adapter = adapter
         })
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding.button.isEnabled = !it

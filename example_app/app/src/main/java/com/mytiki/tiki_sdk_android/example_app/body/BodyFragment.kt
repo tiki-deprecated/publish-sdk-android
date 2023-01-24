@@ -3,10 +3,10 @@ package com.mytiki.tiki_sdk_android.example_app.body
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mytiki.tiki_sdk_android.example_app.databinding.BodyFragmentBinding
 import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
