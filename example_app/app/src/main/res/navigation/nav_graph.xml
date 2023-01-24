@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_try_it_out_to_destinationFragment"
             app:destination="@id/destination_fragment" />
+        <action
+            android:id="@+id/action_try_it_out_to_bodyFragment"
+            app:destination="@id/body_fragment" />
+        <action
+            android:id="@+id/action_try_it_out_to_ownershipFragment"
+            app:destination="@id/ownership_fragment" />
     </fragment>
     <fragment
         android:id="@+id/walletListFragment"
@@ -27,4 +33,14 @@
         android:name="com.mytiki.tiki_sdk_android.example_app.destination.DestinationFragment"
         android:label="destination_fragment"
         tools:layout="@layout/destination_fragment" />
+    <fragment
+        android:id="@+id/body_fragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.body.BodyFragment"
+        android:label="body_fragment"
+        tools:layout="@layout/body_fragment" />
+    <fragment
+        android:id="@+id/ownership_fragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.ownership.OwnershipFragment"
+        android:label="ownership_fragment"
+        tools:layout="@layout/ownership_fragment" />
 </navigation>

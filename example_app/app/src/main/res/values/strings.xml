@@ -1,12 +1,16 @@
 <resources>
+    <string name="app_name">ExampleApp</string>
+    <string name="title_activity_main">ExampleApp</string>
     <string-array name="http_methods">
         <item>POST</item>
         <item>GET</item>
     </string-array>
-    <integer-array name="interval">
+    <string-array name="interval">
         <item>1</item>
         <item>15</item>
         <item>30</item>
         <item>60</item>
-    </integer-array>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

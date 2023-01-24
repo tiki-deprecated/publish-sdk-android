@@ -53,16 +53,16 @@ class TryItOutFragment : Fragment() {
             viewModel.togglConsent()
         }
         binding.ownershipCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_ownershipFragment)
         }
         binding.consenCard.setOnClickListener{
             Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
         }
         binding.destinationCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_destinationFragment)
         }
         binding.bodyCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_bodyFragment)
         }
     }
 

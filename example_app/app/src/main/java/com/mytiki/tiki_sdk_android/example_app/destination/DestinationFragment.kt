@@ -1,6 +1,8 @@
 package com.mytiki.tiki_sdk_android.example_app.destination
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,14 +29,25 @@ class DestinationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.destination_fragment, container, false)
+    ): View {
+        _binding = DestinationFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMethodSpinner()
         initIntervalSpinner()
+        binding.url.setText(viewModel.stream.value?.url)
+        binding.url.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.stream.value?.url = s.toString()
+            }
+        })
     }
 
     private fun initIntervalSpinner() {
