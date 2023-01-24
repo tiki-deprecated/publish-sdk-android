@@ -1,21 +1,22 @@
 package com.mytiki.tiki_sdk_android.example_app.try_it_out
 
-import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation
 import com.mytiki.tiki_sdk_android.*
 import com.mytiki.tiki_sdk_android.example_app.stream.Stream
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.DataOutputStream
+import java.io.InputStreamReader
+import java.lang.Exception
+import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
 
 class TryItOutViewModel : ViewModel() {
 
@@ -40,6 +41,10 @@ class TryItOutViewModel : ViewModel() {
     private var _selectedWalletAddress: MutableLiveData<String?> = MutableLiveData()
     val selectedWalletAddress: LiveData<String?> = _selectedWalletAddress
 
+    private var _log: MutableLiveData<MutableList<TryItOutReq>> = MutableLiveData(mutableListOf())
+    val log: LiveData<MutableList<TryItOutReq>>
+        get() = _log
+
     val tikiSdk: TikiSdk?
         get() = wallets.value?.get(selectedWalletAddress.value)
 
@@ -48,9 +53,6 @@ class TryItOutViewModel : ViewModel() {
 
     val consent: TikiSdkConsent?
         get() = consents.value?.get(ownership?.transactionId)
-
-    private val _requests: MutableLiveData<MutableList<TryItOutReq>> = MutableLiveData(mutableListOf())
-    val requests: LiveData<MutableList<TryItOutReq>> = _requests
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -89,6 +91,104 @@ class TryItOutViewModel : ViewModel() {
             }
         }
     }
+    
+    fun togglConsent(){
+        val path: String = URL(stream.value!!.url).host
+        val use: String = stream.value!!.httpMethod
+        val destination = if (isConsentGiven.value!!) {
+            TikiSdkDestination.NONE
+        } else {
+            TikiSdkDestination(listOf(path), listOf(use))
+        }
+        viewModelScope.launch {
+            val consent: TikiSdkConsent = tikiSdk!!.modifyConsent(
+                ownership!!.transactionId,
+                destination,
+                "Consent given to echo data in remote server",
+                "Test the SDK",
+                Calendar.getInstance().apply {
+                    add(Calendar.YEAR, 10)
+                }.time
+            )
+            _consents.value!!.toMutableMap().apply{
+                this.put(consent.ownershipId, consent)
+                _consents.postValue(this)
+            }
+            isConsentGiven.value.apply {
+                _isConsentGiven.postValue(!isConsentGiven.value!!)
+            }
+        }
+    }
 
-
+    fun makeRequest() {
+        var logToAppend: TryItOutReq? = null
+        if (tikiSdk == null) {
+            logToAppend = TryItOutReq("🔴", "ERROR: Create a Wallet")
+            _log.value!!.toMutableList().apply{
+                this.add(logToAppend!!)
+                _log.postValue(this)
+            }
+        } else {
+            viewModelScope.launch {
+                try {
+                    val url = URL(stream.value!!.url)
+                    val path: String = url.host
+                    val use: String = stream.value!!.httpMethod
+                    val destination = TikiSdkDestination(listOf(path), listOf(use))
+                    tikiSdk!!.applyConsent(stream.value!!.source, destination, {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            val con = url.openConnection() as HttpURLConnection
+                            con.requestMethod = use
+                            val postData = stream.value!!.body.toByteArray()
+                            con.doOutput = true
+                            val wr = DataOutputStream(con.outputStream)
+                            wr.write(postData)
+                            wr.flush()
+                            wr.close()
+                            val responseCode = con.responseCode
+                            val income = BufferedReader(InputStreamReader(con.inputStream))
+                            val response = StringBuilder()
+                            var inputLine = income.readLine()
+                            while (inputLine != null) {
+                                response.append(inputLine)
+                                inputLine = income.readLine()
+                            }
+                            income.close()
+                            if (responseCode in 200..299) {
+                                logToAppend = TryItOutReq(
+                                    "🟢",
+                                    "${responseCode}: $response"
+                                )
+                                _log.value!!.toMutableList().apply{
+                                    this.add(logToAppend!!)
+                                    _log.postValue(this)
+                                }
+                            } else {
+                                logToAppend = TryItOutReq(
+                                    "🔴",
+                                    "${responseCode}: $response"
+                                )
+                                _log.value!!.toMutableList().apply{
+                                    this.add(logToAppend!!)
+                                    _log.postValue(this)
+                                }
+                            }
+                        }
+                    }, {
+                        logToAppend = TryItOutReq("🔴", "Blocked: consent required")
+                        _log.value!!.toMutableList().apply{
+                            this.add(logToAppend!!)
+                            _log.postValue(this)
+                        }
+                    })
+                } catch (e: Exception) {
+                    logToAppend = TryItOutReq("🔴", e.message.toString())
+                    _log.value!!.toMutableList().apply{
+                        this.add(logToAppend!!)
+                        _log.postValue(this)
+                    }
+                }
+            }
+        }
+    }
 }

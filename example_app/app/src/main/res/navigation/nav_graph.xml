@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_try_it_out_to_walletListFragment"
             app:destination="@id/walletListFragment" />
+        <action
+            android:id="@+id/action_try_it_out_to_destinationFragment"
+            app:destination="@id/destination_fragment" />
     </fragment>
     <fragment
         android:id="@+id/walletListFragment"
         android:name="com.mytiki.tiki_sdk_android.example_app.wallet.WalletListFragment"
         android:label="wallet_fragment"
         tools:layout="@layout/wallet_fragment" />
+    <fragment
+        android:id="@+id/destination_fragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.destination.DestinationFragment"
+        android:label="destination_fragment"
+        tools:layout="@layout/destination_fragment" />
 </navigation>

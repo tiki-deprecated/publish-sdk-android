@@ -59,6 +59,7 @@
                 android:visibility = "gone">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/ownership_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp">
@@ -91,7 +92,8 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:id="@+id/consen_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -140,7 +142,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:id="@+id/destination_card"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -170,7 +174,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:id="@+id/body_card">
 
                 <LinearLayout
                     android:layout_width="match_parent"

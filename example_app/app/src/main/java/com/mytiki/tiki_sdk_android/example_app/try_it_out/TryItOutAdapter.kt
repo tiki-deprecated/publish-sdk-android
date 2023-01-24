@@ -16,13 +16,10 @@ class TryItOutAdapter(private val viewModel: TryItOutViewModel) : RecyclerView.A
     }
 
     override fun getItemCount() : Int {
-        val size = viewModel.requests.value!!.size
-        return size
+        return viewModel.log.value!!.size
     }
 
     override fun onBindViewHolder(holder: TryItOutViewHolder, position: Int) {
-        val req = viewModel.requests.value!![position].req
-        val timestamp = viewModel.requests.value!![position].timestamp
-        holder.bind(req, timestamp)
+        holder.bind(viewModel.log.value!![position], holder.itemView.context)
     }
 }

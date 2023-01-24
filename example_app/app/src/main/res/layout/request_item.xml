@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:gravity="center|start"
         android:padding="16dp"
+        android:maxLines="1"
         android:layout_weight="1"
+        android:ellipsize="end"
         />
     <TextView
         android:id="@+id/timestamp"
