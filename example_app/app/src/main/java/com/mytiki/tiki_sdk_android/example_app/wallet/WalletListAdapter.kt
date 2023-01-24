@@ -6,15 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletItemBinding
 import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
 
-class WalletListAdapter(private val viewModel: TryItOutViewModel) : RecyclerView.Adapter<WalletListViewHolder>() {
+class WalletListAdapter(private val viewModel: TryItOutViewModel) :
+    RecyclerView.Adapter<WalletListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletListViewHolder {
         val binding: WalletItemBinding = WalletItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
+            LayoutInflater.from(parent.context), parent, false
+        )
         return WalletListViewHolder(binding, viewModel)
     }
 
-    override fun getItemCount() : Int {
+    override fun getItemCount(): Int {
         val size = viewModel.wallets.value!!.size
         return size
     }

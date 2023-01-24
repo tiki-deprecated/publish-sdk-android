@@ -4,35 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:padding="16dp"
+    android:background="#F2F3F7"
     tools:context=".consent.ConsentFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:text="Consent NFT"
         android:textSize="32sp"
-        android:textStyle="bold"
-        android:background="#F2F3F7"/>
+        android:paddingBottom="8dp"
+        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/ownership_detail_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:id="@+id/ownership_detail_card">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp">
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
                 android:text="Hash" />
 
             <TextView
@@ -40,16 +37,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:textStyle="bold" 
+                android:padding="8dp"
                 android:textSize="16sp"
-                android:padding="8dp"/>
-            
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#DEDEDE"
-                 />
-            
+                android:background="#DEDEDE" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,23 +56,24 @@
                 android:id="@+id/paths"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 />
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/uses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:textStyle="bold"
+                android:padding="8dp"
                 android:textSize="16sp"
-                android:padding="8dp" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#DEDEDE"
                 android:padding="8dp" />
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,17 +85,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-              
-        android:textStyle="bold" 
+
+                android:padding="8dp"
                 android:textSize="16sp"
-                android:padding="8dp" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#DEDEDE"
                 android:padding="8dp" />
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,10 +107,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-              
-        android:textStyle="bold" 
+
+                android:padding="8dp"
                 android:textSize="16sp"
-                android:padding="8dp" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
@@ -132,10 +129,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-              
-        android:textStyle="bold" 
+
+                android:padding="8dp"
                 android:textSize="16sp"
-                android:padding="8dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

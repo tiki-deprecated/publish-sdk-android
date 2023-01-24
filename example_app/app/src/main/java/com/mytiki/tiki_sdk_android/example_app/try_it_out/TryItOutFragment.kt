@@ -1,14 +1,11 @@
 package com.mytiki.tiki_sdk_android.example_app.try_it_out
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mytiki.tiki_sdk_android.example_app.R
@@ -46,32 +43,37 @@ class TryItOutFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        binding.walletCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_walletListFragment)
+        binding.walletCard.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_try_it_out_to_walletListFragment)
         }
-        binding.toggleConsent.setOnClickListener{
+        binding.toggleConsent.setOnClickListener {
             viewModel.toggleConsent()
         }
-        binding.ownershipCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_ownershipFragment)
+        binding.ownershipCard.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_try_it_out_to_ownershipFragment)
         }
-        binding.consenCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_consentFragment)
+        binding.consenCard.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_try_it_out_to_consentFragment)
         }
-        binding.destinationCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_destinationFragment)
+        binding.destinationCard.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_try_it_out_to_destinationFragment)
         }
-        binding.bodyCard.setOnClickListener{
-            Navigation.findNavController(binding.root).navigate(R.id.action_try_it_out_to_bodyFragment)
+        binding.bodyCard.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_try_it_out_to_bodyFragment)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        val stream = viewModel.stream.value!!
+        val stream = viewModel.destination.value!!
         binding.destinationTitle.text = stream.httpMethod + " " + stream.url
         binding.bodyTitle.text = stream.body
-        if(viewModel.selectedWalletAddress.value != null){
+        if (viewModel.selectedWalletAddress.value != null) {
             binding.walletAddress.text = viewModel.selectedWalletAddress.value
             binding.ownershipAndConsent.visibility = View.VISIBLE
             binding.ownershipId.text = viewModel.ownership!!.transactionId
@@ -81,7 +83,7 @@ class TryItOutFragment : Fragment() {
             timer!!.schedule(
                 delay = 0L,
                 period = stream.interval * 1000L
-            ){
+            ) {
                 viewModel.makeRequest()
             }
         }

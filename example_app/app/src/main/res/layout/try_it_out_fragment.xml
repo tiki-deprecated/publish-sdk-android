@@ -3,15 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".try_it_out.TryItOutFragment">
-    <data>
-        <variable
-            name="viewModel"
-            type="com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel" />
-    </data>
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="#F2F3F7">
 
         <LinearLayout
@@ -23,7 +18,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
                 android:text="Try it out"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -34,7 +29,7 @@
                 android:padding="8dp"
                 android:text="Wallet"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/wallet_card"
@@ -52,11 +47,12 @@
                     app:drawableEndCompat="@drawable/arrow_forward" />
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout android:id="@+id/ownership_and_consent"
+            <LinearLayout
+                android:id="@+id/ownership_and_consent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility = "gone">
+                android:visibility="gone">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ownership_card"
@@ -90,10 +86,10 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/consen_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:id="@+id/consen_card">
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -140,11 +136,10 @@
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/destination_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:id="@+id/destination_card"
-                >
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -172,10 +167,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/body_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:id="@+id/body_card">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
