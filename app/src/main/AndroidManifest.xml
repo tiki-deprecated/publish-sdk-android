@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.mytiki.tiki_sdk_android">
+<!--
+  ~ Copyright (c) TIKI Inc.
+  ~ MIT license. See LICENSE file in root directory.
+  -->
 
-</manifest>
+<manifest package="com.mytiki.tiki_sdk_android"/>

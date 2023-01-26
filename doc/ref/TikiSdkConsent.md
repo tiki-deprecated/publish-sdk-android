@@ -1,14 +1,24 @@
 ---
-title: TikiSdkConsent excerpt: A Consent Object. Representative of the NFT created on-chain.
-Requires a corresponding Data Ownership NFT (see [TikiSdk](tiki-sdk-android-tiki-sdk)). category:
-6386a02f5b7bf00510590f34 slug: tiki-sdk-android-tiki-sdk-consent hidden: false order: 3
+title: TikiSdkConsent 
+excerpt: A Consent Object. Representative of the NFT created on-chain. Requires a corresponding Data Ownership NFT (see [TikiSdkOwnership](tiki-sdk-android-tiki-sdk-ownership)). 
+category: 6386a02f5b7bf00510590f34 
+slug: tiki-sdk-android-tiki-sdk-consent 
+hidden: false 
+order: 5
 ---
 
 ## Constructors
 
-##### TikiSdkConsent(ownershipId: String, destination: [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination), about: String, reward: String, transactionId: String, expiry: [Calendar](https://developer.android.com/reference/kotlin/java/util/Calendar.html)})
+##### TikiSdkConsent(...)
 
-Builds a TikiSdkConsent for the data identified by `ownershipId`.
+Parameters:
+
+- **ownershipId → String**
+- **destination → [TikiSdkDestination](tiki-sdk-android-tiki-sdk-destination)**
+- **transactionId → String**
+- **about → String? = null**
+- **reward → String? = null**
+- **expiry → Int? = null**
 
 ## Properties
 

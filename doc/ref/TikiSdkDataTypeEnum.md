@@ -1,7 +1,10 @@
 ---
-title: TikiSdkDataTypeEnum excerpt: An enumeration of the supported data aggregation types.
-category: 6386a02f5b7bf00510590f34 slug: tiki-sdk-android-tiki-sdk-data-type-enum hidden: false
-order: 4
+title: TikiSdkDataTypeEnum 
+excerpt: An enumeration of the supported data aggregation types.
+category: 6386a02f5b7bf00510590f34 
+slug: tiki-sdk-android-tiki-sdk-data-type-enum 
+hidden: false
+order: 2
 ---
 
 ## Entries

@@ -1,15 +1,16 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android.integration_tests
 
-import android.os.Handler
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.TikiSdkDataTypeEnum
 import com.mytiki.tiki_sdk_android.TikiSdkDestination
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.Assert
@@ -22,7 +23,6 @@ class TikiSdkTest {
 
     private val apiId: String = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
     private val origin: String = "com.mytiki.tiki_sdk_android.test"
-
 
     @Test
     fun init_tiki_sdk() {

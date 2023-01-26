@@ -26,14 +26,16 @@ repositories {
 
 Add the dependency in your App's `build.gradle` file (`PROJECT_ROOT/app/build.gradle`)
 ```
-implementation("com.mytiki:tiki-sdk-android:0.0.5")
+implementation("com.mytiki:tiki-sdk-android:1.0.0")
 ```
 
 ### Usage
 
 #### 1. [Sign up](https://console.mytiki.com) (free) for a TIKI developer account to get an API ID.
 
-#### 2. Construct the [TIKI SDK](tiki-sdk-android-tiki-sdk)
+#### 2. Initialize the [TIKI SDK](tiki-sdk-android-tiki-sdk)
+
+_Note: Must be called from the main UI thread_
 
 Configuration parameters:
 
@@ -56,7 +58,9 @@ Configuration parameters:
 Example:
 
 ```
-val tiki = TikiSdk().init("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", context)
+MainScope().launch { 
+  val tiki = TikiSdk().init("565b3268-cdc0-4e5c-94c8-5d8f53d4577c", "com.mycompany.myproduct", applicationContext).await()
+}
 ```
 
 #### 3. Assign ownership
@@ -67,7 +71,7 @@ Parameters:
   An identifier in your system corresponding to the raw data. _i.e. a user_id_
 
 
-- **type &#8594; String**  
+- **type &#8594; [TikiSdkDataTypeEnum](tiki-sdk-android-tiki-sdk-data-type-enum)**  
   `"data_point"`, `"data_pool"`, or `"data_stream"`
 
   
@@ -91,7 +95,10 @@ Returns:
 Example:
 
 ```
-val oid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address"))
+MainScope().launch { 
+  ...
+  val oid = tiki.assignOwnership("12345", TikiSdkDataTypeEnum.data_point, listOf("email_address"))
+}
 ```
 
 #### 4. Modify consent
@@ -114,7 +121,7 @@ Parameters:
   An optional definition of a reward promised to the user in exchange for consent.
 
 
-- **expiry &#8594; [LocalDateTime](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-local-date-time/-local-date-time.html)? = null**  
+- **expiry &#8594; Date? = null**  
   The date upon which the consent is no longer valid. If not set, consent is perpetual.
 
 Returns:
@@ -124,7 +131,10 @@ Returns:
 
 Example:
 ```
-val consent = tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")))
+MainScope().launch { 
+  ...
+  val consent = tiki.modifyConsent(oid, TikiSdkDestination(listOf("*"), listOf("*")))
+}
 ```
 
 #### 5. Apply consent
@@ -154,7 +164,10 @@ Parameters:
 
 Example:
 ```
-applyConsent("12345", TikiSdkDestination(listOf("*"), listOf("*")), { 
-  print("Consent Approved. Send data to backend.")
-});
+MainScope().launch { 
+  ...
+  tiki.applyConsent("12345", TikiSdkDestination(listOf("*"), listOf("*")), { 
+    print("Consent Approved. Send data to backend.")
+  });
+}
 ```

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android
 
 import com.squareup.moshi.JsonClass
@@ -10,5 +15,4 @@ enum class TikiSdkDataTypeEnum {
     data_point,
     data_stream,
     data_pool;
-
 }
