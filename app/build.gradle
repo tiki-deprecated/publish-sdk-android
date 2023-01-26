@@ -1,6 +1,6 @@
 buildscript {
     ext.flutterEngine = "1.0.0-c08d7d5efc9aa6eb3c30cfb3be6dc09bca5e7631"
-    ext.sdkVersion = "0.0.24"
+    ext.sdkVersion = "0.0.25"
     repositories {
         mavenCentral()
     }
@@ -20,8 +20,8 @@ android {
     compileSdk 33
     defaultConfig {
         minSdk 21
-        versionCode 3
-        versionName "0.0.6"
+        versionCode 4
+        versionName "0.0.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
