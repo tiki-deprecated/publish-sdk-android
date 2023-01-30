@@ -44,7 +44,7 @@ jobs:
           OSSRH_USER: ${{ secrets.OSSRH_USER }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
           GITHUB_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
 
