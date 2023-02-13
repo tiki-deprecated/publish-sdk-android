@@ -39,7 +39,7 @@ _Note: Must be called from the main UI thread_
 
 Configuration parameters:
 
-- **apiId &#8594; String**   
+- **publishingId &#8594; String**   
   A unique identifier for your account. Create, revoke, and cycle Ids _(not a secret but try and treat it with care)_ at [console.mytiki.com](https://console.mytiki.com).
 
 

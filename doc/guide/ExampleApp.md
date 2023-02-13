@@ -48,9 +48,9 @@ The first initialization of the SDK is done without passing a wallet address as 
 #### example_app/app/src/main/java/com/mytiki/tiki_sdk_android/example_app/try_it_out/TryItOutViewModel.kt - lines 67 to 73
 
 ```
-val apiId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
+val publishingId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
 val origin = "com.mytiki.tiki_sdk_android.test"
-val tikiSdk = TikiSdk().init(apiId, origin, context, address).await()
+val tikiSdk = TikiSdk().init(publishingId, origin, context, address).await()
 _wallets.value!!.put(tikiSdk.address, tikiSdk).apply {
     _wallets.postValue(_wallets.value)
 }

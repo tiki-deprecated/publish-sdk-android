@@ -37,9 +37,6 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         val response = call.argument<String>("response")!!
         val requestId = call.argument<String>("requestId")!!
-        Log.e("Ricardo - call", call.method)
-        Log.e("Ricardo - reqId", requestId)
-        Log.e("Ricardo - rsp", response)
         when (call.method) {
             "success" -> {
                 completables[requestId]?.invoke(response, null)

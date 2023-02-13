@@ -64,9 +64,9 @@ class TryItOutViewModel : ViewModel() {
             _selectedWalletAddress.postValue(address)
         } else {
             viewModelScope.launch {
-                val apiId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
+                val publishingId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
                 val origin = "com.mytiki.tiki_sdk_android.test"
-                val tikiSdk = TikiSdk().init(apiId, origin, context, address).await()
+                val tikiSdk = TikiSdk().init(publishingId, origin, context, address).await()
                 _wallets.value!!.put(tikiSdk.address, tikiSdk).apply {
                     _wallets.postValue(_wallets.value)
                 }
