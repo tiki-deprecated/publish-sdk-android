@@ -21,7 +21,7 @@ Initializes the TIKI SDK. It should be called before any other method. It sets u
 
 Parameters:
 
-- **apiId &#8594; String**
+- **publishingId &#8594; String**
   A unique identifier for your account. Create, revoke, and cycle Ids (not a secret but try and treat it with care) at [console.mytiki.com](https://console.mytiki.com).
 
 

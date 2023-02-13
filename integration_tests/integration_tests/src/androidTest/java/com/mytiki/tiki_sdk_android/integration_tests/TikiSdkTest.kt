@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class TikiSdkTest {
 
-    private val apiId: String = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
+    private val publishingId: String = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
     private val origin: String = "com.mytiki.tiki_sdk_android.test"
 
     @Test
@@ -29,7 +29,7 @@ class TikiSdkTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         var tikiSdk: TikiSdk? = null
         runTest {
-            tikiSdk = TikiSdk().init(apiId, origin, context).await()
+            tikiSdk = TikiSdk().init(publishingId, origin, context).await()
             assert(tikiSdk!!.address.length > 32)
         }
     }
@@ -41,9 +41,9 @@ class TikiSdkTest {
         var tikiSdk2: TikiSdk? = null
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val address = tikiSdk!!.address
-                tikiSdk2 = TikiSdk().init(apiId, origin, context, address).await()
+                tikiSdk2 = TikiSdk().init(publishingId, origin, context, address).await()
                 Assert.assertEquals(tikiSdk!!.address, tikiSdk2!!.address)
             }
         }
@@ -55,7 +55,7 @@ class TikiSdkTest {
         var tikiSdk: TikiSdk
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val ownershipId = tikiSdk.assignOwnership(
                     "source",
                     TikiSdkDataTypeEnum.data_point,
@@ -72,7 +72,7 @@ class TikiSdkTest {
         var tikiSdk: TikiSdk
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val ownershipId = tikiSdk.assignOwnership(
                     "source",
                     TikiSdkDataTypeEnum.data_point,
@@ -90,7 +90,7 @@ class TikiSdkTest {
         var tikiSdk: TikiSdk
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val ownershipId = tikiSdk.assignOwnership(
                     "source",
                     TikiSdkDataTypeEnum.data_point,
@@ -108,7 +108,7 @@ class TikiSdkTest {
         var tikiSdk: TikiSdk
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val ownershipId = tikiSdk.assignOwnership(
                     "source",
                     TikiSdkDataTypeEnum.data_point,
@@ -127,7 +127,7 @@ class TikiSdkTest {
         var tikiSdk: TikiSdk
         runTest {
             withContext(Dispatchers.Main) {
-                tikiSdk = TikiSdk().init(apiId, origin, context).await()
+                tikiSdk = TikiSdk().init(publishingId, origin, context).await()
                 val ownershipId =
                     tikiSdk.assignOwnership(
                         "source",

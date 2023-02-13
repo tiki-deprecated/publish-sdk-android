@@ -35,14 +35,14 @@ class TikiSdk {
      * It should be called before any other method. It sets up Flutter Engine and Platform Channel
      * and builds the core of the TIKI SDK, calling TIKI SDK Dart through the Flutter Platform Channel.
      *
-     * @param apiId The apiId for connecting to TIKI cloud.
+     * @param publishingId The publishingId for connecting to TIKI cloud.
      * @param origin The default origin for all transactions.
      * @param context The context of the application. Used to initialize Flutter Engine
      * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
      * @return Deferred<TikiSdk> - use await() to complete it.
      */
     fun init(
-        apiId: String,
+        publishingId: String,
         origin: String,
         context: Context,
         address: String? = null
@@ -62,7 +62,7 @@ class TikiSdk {
             val rspBuild = tikiPlatformChannel
                 .invokeMethod<RspBuild, ReqBuild>(
                     MethodEnum.BUILD,
-                    ReqBuild(apiId, origin, address)
+                    ReqBuild(publishingId, origin, address)
                 )
                 .await()
             this@TikiSdk.address = rspBuild!!.address
