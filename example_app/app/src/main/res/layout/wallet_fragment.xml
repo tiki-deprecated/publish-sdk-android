@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F2F3F7"
     android:padding="16dp"
-    tools:context=".wallet.WalletListFragment">
+    tools:context=".WalletListFragment">
 
     <TextView
         android:id="@+id/title"

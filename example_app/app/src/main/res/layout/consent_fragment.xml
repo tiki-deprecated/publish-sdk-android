@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#F2F3F7"
-    tools:context=".consent.ConsentFragment">
+    tools:context=".ConsentFragment">
 
     <TextView
         android:layout_width="match_parent"

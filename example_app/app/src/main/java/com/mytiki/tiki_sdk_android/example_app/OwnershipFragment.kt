@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.example_app.ownership
+package com.mytiki.tiki_sdk_android.example_app
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mytiki.tiki_sdk_android.example_app.databinding.OwnershipFragmentBinding
-import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
-import java.util.*
 
 class OwnershipFragment : Fragment() {
 
-    private val viewModel by activityViewModels<TryItOutViewModel>()
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     private var _binding: OwnershipFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private var timer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,14 +25,14 @@ class OwnershipFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.hash.text = viewModel.ownership!!.transactionId
+        binding.hash.text = viewModel.ownership.value!!.transactionId
 
-        binding.source.text = viewModel.ownership!!.source
+        binding.source.text = viewModel.ownership.value!!.source
 
-        binding.contains.text = viewModel.ownership!!.contains.joinToString(", ")
+        binding.contains.text = viewModel.ownership.value!!.contains.joinToString(", ")
 
-        binding.about.text = viewModel.ownership!!.about
+        binding.about.text = viewModel.ownership.value!!.about
 
-        binding.origin.text = viewModel.ownership!!.origin
+        binding.origin.text = viewModel.ownership.value!!.origin
     }
 }

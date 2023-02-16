@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#F2F3F7"
-    tools:context=".destination.DestinationFragment">
+    tools:context=".DestinationFragment">
 
     <TextView
         android:layout_width="match_parent"

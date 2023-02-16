@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.example_app.try_it_out
+package com.mytiki.tiki_sdk_android.example_app
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mytiki.tiki_sdk_android.example_app.R
 import com.mytiki.tiki_sdk_android.example_app.databinding.TryItOutFragmentBinding
-import com.mytiki.tiki_sdk_android.example_app.wallet.TryItOutAdapter
 import java.util.*
 import kotlin.concurrent.schedule
 
-class TryItOutFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private val viewModel by activityViewModels<TryItOutViewModel>()
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     private var _binding: TryItOutFragmentBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +32,7 @@ class TryItOutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = TryItOutAdapter(viewModel)
+        val adapter = RequestsAdapter(viewModel)
         binding.requestsView.adapter = adapter
         binding.requestsView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.log.observe(viewLifecycleOwner) {
@@ -48,7 +46,7 @@ class TryItOutFragment : Fragment() {
                 .navigate(R.id.action_try_it_out_to_walletListFragment)
         }
         binding.toggleConsent.setOnClickListener {
-            viewModel.toggleConsent()
+            viewModel.modifyConsent(viewModel.toggleStatus.value!!)
         }
         binding.ownershipCard.setOnClickListener {
             Navigation.findNavController(binding.root)
@@ -70,22 +68,19 @@ class TryItOutFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val stream = viewModel.destination.value!!
-        binding.destinationTitle.text = stream.httpMethod + " " + stream.url
-        binding.bodyTitle.text = stream.body
-        if (viewModel.selectedWalletAddress.value != null) {
-            binding.walletAddress.text = viewModel.selectedWalletAddress.value
-            binding.ownershipAndConsent.visibility = View.VISIBLE
-            binding.ownershipId.text = viewModel.ownership!!.transactionId
-            binding.consentId.text = viewModel.consent?.transactionId
-            binding.toggleConsent.isChecked = viewModel.isConsentGiven.value == true
-            timer = Timer()
-            timer!!.schedule(
-                delay = 0L,
-                period = stream.interval * 1000L
-            ) {
-                viewModel.makeRequest()
-            }
+        binding.bodyTitle.text = viewModel.body.value!!
+        binding.destinationTitle.text = viewModel.httpMethod.value + " " + viewModel.url.value
+        binding.walletAddress.text = viewModel.tikiSdk.address
+        binding.ownershipAndConsent.visibility = View.VISIBLE
+        binding.ownershipId.text = if(viewModel.ownership.value != null) viewModel.ownership.value!!.transactionId else ""
+        binding.consentId.text = if(viewModel.consent.value != null) viewModel.consent.value!!.transactionId else ""
+        binding.toggleConsent.isChecked = viewModel.toggleStatus.value == true
+        timer = Timer()
+        timer!!.schedule(
+            delay = 0L,
+            period = viewModel.interval.value!! * 1000L
+        ) {
+            viewModel.makeRequest()
         }
     }
 

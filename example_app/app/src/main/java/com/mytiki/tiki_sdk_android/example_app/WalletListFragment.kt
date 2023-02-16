@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.example_app.wallet
+package com.mytiki.tiki_sdk_android.example_app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,10 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletFragmentBinding
-import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
 
 class WalletListFragment : Fragment() {
-    private val viewModel by activityViewModels<TryItOutViewModel>()
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     private var _binding: WalletFragmentBinding? = null
     private val binding get() = _binding!!
@@ -35,7 +34,7 @@ class WalletListFragment : Fragment() {
         viewModel.wallets.observe(viewLifecycleOwner, Observer {
             binding.recyclerView.adapter = adapter
         })
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        viewModel.toggleStatus.observe(viewLifecycleOwner, Observer {
             binding.button.isEnabled = !it
         })
         binding.button.setOnClickListener {

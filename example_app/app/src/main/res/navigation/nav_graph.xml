@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/try_it_out"
-        android:name="com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.HomeFragment"
         android:label="Try It Out"
-        tools:layout="@layout/try_it_out_fragment">
+        tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_try_it_out_to_walletListFragment"
             app:destination="@id/walletListFragment" />
@@ -28,27 +28,27 @@
     </fragment>
     <fragment
         android:id="@+id/walletListFragment"
-        android:name="com.mytiki.tiki_sdk_android.example_app.wallet.WalletListFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.WalletListFragment"
         android:label="wallet_fragment"
         tools:layout="@layout/wallet_fragment" />
     <fragment
         android:id="@+id/destination_fragment"
-        android:name="com.mytiki.tiki_sdk_android.example_app.destination.DestinationFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.DestinationFragment"
         android:label="destination_fragment"
         tools:layout="@layout/destination_fragment" />
     <fragment
         android:id="@+id/body_fragment"
-        android:name="com.mytiki.tiki_sdk_android.example_app.body.BodyFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.BodyFragment"
         android:label="body_fragment"
         tools:layout="@layout/body_fragment" />
     <fragment
         android:id="@+id/ownership_fragment"
-        android:name="com.mytiki.tiki_sdk_android.example_app.ownership.OwnershipFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.OwnershipFragment"
         android:label="ownership_fragment"
         tools:layout="@layout/ownership_fragment" />
     <fragment
         android:id="@+id/consent_fragment"
-        android:name="com.mytiki.tiki_sdk_android.example_app.consent.ConsentFragment"
+        android:name="com.mytiki.tiki_sdk_android.example_app.ConsentFragment"
         android:label="consent_fragment"
         tools:layout="@layout/consent_fragment" />
 </navigation>
