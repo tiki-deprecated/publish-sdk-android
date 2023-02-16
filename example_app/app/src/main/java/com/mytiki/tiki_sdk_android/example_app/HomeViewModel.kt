@@ -14,9 +14,10 @@ import android.util.Base64
 import android.util.Base64.DEFAULT
 import java.util.Calendar
 
-class HomeViewModel(var tikiSdk: TikiSdk) : ViewModel() {
+class HomeViewModel : ViewModel() {
 
-    var wallets: MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf(tikiSdk.address))
+    var tikiSdk: TikiSdk? = null
+    var wallets: MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf())
     val ownership: MutableLiveData<TikiSdkOwnership?> = MutableLiveData()
     val consent: MutableLiveData<TikiSdkConsent?> = MutableLiveData()
     var toggleStatus: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -36,27 +37,27 @@ class HomeViewModel(var tikiSdk: TikiSdk) : ViewModel() {
 
     fun loadTikiSdk(context: Context, address: String? = null) {
         viewModelScope.launch {
-            val publishingId = "2b8de004-cbe0-4bd5-bda6-b266d54f5c90"
+            val publishingId = "e12f5b7b-6b48-4503-8b39-28e4995b5f88"
             val origin = "com.mytiki.tiki_sdk_android.test"
-            val tikiSdk = TikiSdk().init(publishingId, origin, context, address).await()
-            wallets.value!!.add(tikiSdk.address).apply {
+            tikiSdk = TikiSdk().init(publishingId, origin, context, address).await()
+            wallets.value!!.add(tikiSdk!!.address).apply {
                 wallets.postValue(wallets.value)
             }
             getOrAssignOnwership()
         }
     }
 
-    fun getOrAssignOnwership() {
+    private fun getOrAssignOnwership() {
         viewModelScope.launch {
-            var localOwnership = tikiSdk.getOwnership(source)
+            var localOwnership = tikiSdk!!.getOwnership(source)
             if (localOwnership == null) {
-                val ownershipId: String = tikiSdk.assignOwnership(
+                val ownershipId: String = tikiSdk!!.assignOwnership(
                     source,
                     TikiSdkDataTypeEnum.data_stream,
                     listOf("generic data"),
                     "Data destination created with TIKI SDK Sample App"
                 )
-                localOwnership = tikiSdk.getOwnership(source)
+                localOwnership = tikiSdk!!.getOwnership(source)
             }
             ownership.value = localOwnership
         }
@@ -76,7 +77,7 @@ class HomeViewModel(var tikiSdk: TikiSdk) : ViewModel() {
                 val expiry: Calendar = Calendar.getInstance().apply {
                     this.add(Calendar.YEAR, 10)
                 }
-                val localConsent: TikiSdkConsent = tikiSdk.modifyConsent(
+                val localConsent: TikiSdkConsent = tikiSdk!!.modifyConsent(
                     ownership.value!!.transactionId,
                     destination,
                     "Consent given to echo data in remote server",
@@ -138,7 +139,7 @@ class HomeViewModel(var tikiSdk: TikiSdk) : ViewModel() {
         viewModelScope.launch {
             try {
                 val use: String = httpMethod.value!!
-                tikiSdk.applyConsent(
+                tikiSdk!!.applyConsent(
                     this@HomeViewModel.source,
                     TikiSdkDestination(listOf(path), listOf(use)),
                     onRequestCallback,

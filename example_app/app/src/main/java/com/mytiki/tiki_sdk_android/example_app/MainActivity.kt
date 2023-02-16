@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.loadTikiSdk(applicationContext)
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }

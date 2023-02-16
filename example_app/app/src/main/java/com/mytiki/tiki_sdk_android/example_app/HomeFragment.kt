@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mytiki.tiki_sdk_android.example_app.databinding.TryItOutFragmentBinding
+import com.mytiki.tiki_sdk_android.example_app.databinding.HomeFragmentBinding
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -16,7 +16,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel by activityViewModels<HomeViewModel>()
 
-    private var _binding: TryItOutFragmentBinding? = null
+    private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
 
     private var timer: Timer? = null
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = TryItOutFragmentBinding.inflate(inflater, container, false)
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
         setClickListeners()
         return binding.root
     }
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         binding.bodyTitle.text = viewModel.body.value!!
         binding.destinationTitle.text = viewModel.httpMethod.value + " " + viewModel.url.value
-        binding.walletAddress.text = viewModel.tikiSdk.address
+        binding.walletAddress.text = if(viewModel.tikiSdk != null) viewModel.tikiSdk!!.address else ""
         binding.ownershipAndConsent.visibility = View.VISIBLE
         binding.ownershipId.text = if(viewModel.ownership.value != null) viewModel.ownership.value!!.transactionId else ""
         binding.consentId.text = if(viewModel.consent.value != null) viewModel.consent.value!!.transactionId else ""

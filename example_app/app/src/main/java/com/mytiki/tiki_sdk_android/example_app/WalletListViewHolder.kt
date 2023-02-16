@@ -11,7 +11,7 @@ class WalletListViewHolder(
 ) : RecyclerView.ViewHolder(binding!!.root) {
     fun bind(tikiSdkAddress: String) {
         binding!!.addressTextView.text = tikiSdkAddress
-        if(tikiSdkAddress == viewModel.tikiSdk.address){
+        if(tikiSdkAddress == viewModel.tikiSdk?.address){
             binding.addressTextView.setTypeface(null, Typeface.BOLD)
         }
         itemView.setOnClickListener {
