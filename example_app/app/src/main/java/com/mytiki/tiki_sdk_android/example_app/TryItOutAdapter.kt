@@ -1,10 +1,10 @@
-package com.mytiki.tiki_sdk_android.example_app.wallet
+package com.mytiki.tiki_sdk_android.example_app.try_it_out
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mytiki.tiki_sdk_android.example_app.databinding.RequestItemBinding
-import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
+import com.mytiki.tiki_sdk_android.example_app.wallet.TryItOutViewHolder
 
 class TryItOutAdapter(private val viewModel: TryItOutViewModel) :
     RecyclerView.Adapter<TryItOutViewHolder>() {

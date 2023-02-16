@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.example_app.try_it_out
+package com.mytiki.tiki_sdk_android.example_app
 
 import java.text.DateFormat
 import java.text.DateFormat.getTimeInstance
