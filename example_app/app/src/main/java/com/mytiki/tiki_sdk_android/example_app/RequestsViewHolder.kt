@@ -8,7 +8,7 @@ import com.mytiki.tiki_sdk_android.example_app.databinding.RequestItemBinding
 
 class RequestsViewHolder(private val binding: RequestItemBinding?) :
     RecyclerView.ViewHolder(binding!!.root) {
-    fun bind(req: Request, context: Context) {
+    fun bind(req: RequestModel, context: Context) {
         itemView.findViewById<TextView>(R.id.req).text = req.icon + " " + req.message
         itemView.findViewById<TextView>(R.id.timestamp).text = req.timestamp
         itemView.setOnClickListener {

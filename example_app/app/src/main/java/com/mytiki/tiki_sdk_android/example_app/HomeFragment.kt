@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if(viewModel.tikiSdk.value == null) viewModel.loadTikiSdk(requireContext())
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         setClickListeners()
         return binding.root
@@ -70,7 +71,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         binding.bodyTitle.text = viewModel.body.value!!
         binding.destinationTitle.text = viewModel.httpMethod.value + " " + viewModel.url.value
-        binding.walletAddress.text = if(viewModel.tikiSdk != null) viewModel.tikiSdk!!.address else ""
+        binding.walletAddress.text = if(viewModel.tikiSdk.value != null) viewModel.tikiSdk.value!!.address else ""
         binding.ownershipAndConsent.visibility = View.VISIBLE
         binding.ownershipId.text = if(viewModel.ownership.value != null) viewModel.ownership.value!!.transactionId else ""
         binding.consentId.text = if(viewModel.consent.value != null) viewModel.consent.value!!.transactionId else ""

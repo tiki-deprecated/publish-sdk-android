@@ -19,19 +19,18 @@ open class TikiSdkDestination(
     /**
      * The destination paths.
      *
-     * A list of paths, preferably URL without the scheme or
-     * reverse FQDN. Keep list short and use wildcard (*)
-     * matching. Prefix with NOT to invert.
-     * _i.e. NOT mytiki.com
+     * A list of paths, preferably URL without the scheme or reverse-DNS.
+     * Keep list short and use wildcard () matching. Prefix with NOT to invert.
      */
     val paths: List<String>,
 
     /**
-     * The destination use cases.
+     * The destination use cases
      *
-     * An optional list of application specific uses cases
-     * applicable to the given destination. Prefix with NOT
-     * to invert. _i.e. NOT ads
+     * List of optional application-specific use cases applicable to the given
+     * destination.
+     * Use the prefix "NOT" to invert a use case. For example, "NOT ads" means
+     * that the data should not be used for ads.
      */
     val uses: List<String> = listOf("*"),
 ) {

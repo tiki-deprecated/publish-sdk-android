@@ -21,7 +21,7 @@ data class TikiSdkConsent(
     val destination: TikiSdkDestination,
 
     /**
-     *  The transaction id of this registry.
+     *  The transaction id of this registry in the blockchain.
      */
     val transactionId: String,
 

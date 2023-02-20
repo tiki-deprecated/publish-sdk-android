@@ -16,12 +16,12 @@ import java.util.Calendar
 
 class HomeViewModel : ViewModel() {
 
-    var tikiSdk: TikiSdk? = null
+    var tikiSdk: MutableLiveData<TikiSdk?> = MutableLiveData()
     var wallets: MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf())
-    val ownership: MutableLiveData<TikiSdkOwnership?> = MutableLiveData()
-    val consent: MutableLiveData<TikiSdkConsent?> = MutableLiveData()
+    var ownership: MutableLiveData<TikiSdkOwnership?> = MutableLiveData()
+    var consent: MutableLiveData<TikiSdkConsent?> = MutableLiveData()
     var toggleStatus: MutableLiveData<Boolean> = MutableLiveData(false)
-    var log: MutableLiveData<MutableList<Request>> = MutableLiveData(mutableListOf())
+    var log: MutableLiveData<MutableList<RequestModel>> = MutableLiveData(mutableListOf())
     var url: MutableLiveData<String> = MutableLiveData("https://postman-echo.com/post")
     var httpMethod: MutableLiveData<String> = MutableLiveData("POST")
     var interval: MutableLiveData<Int> = MutableLiveData(15)
@@ -39,25 +39,22 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             val publishingId = "e12f5b7b-6b48-4503-8b39-28e4995b5f88"
             val origin = "com.mytiki.tiki_sdk_android.test"
-            tikiSdk = TikiSdk().init(publishingId, origin, context, address).await()
-            wallets.value!!.add(tikiSdk!!.address).apply {
-                wallets.postValue(wallets.value)
-            }
+            tikiSdk.value = TikiSdk().init(publishingId, origin, context, address).await()
             getOrAssignOnwership()
         }
     }
 
     private fun getOrAssignOnwership() {
         viewModelScope.launch {
-            var localOwnership = tikiSdk!!.getOwnership(source)
+            var localOwnership = tikiSdk.value!!.getOwnership(source)
             if (localOwnership == null) {
-                val ownershipId: String = tikiSdk!!.assignOwnership(
+                val ownershipId: String = tikiSdk.value!!.assignOwnership(
                     source,
                     TikiSdkDataTypeEnum.data_stream,
                     listOf("generic data"),
                     "Data destination created with TIKI SDK Sample App"
                 )
-                localOwnership = tikiSdk!!.getOwnership(source)
+                localOwnership = tikiSdk.value!!.getOwnership(source)
             }
             ownership.value = localOwnership
         }
@@ -77,7 +74,7 @@ class HomeViewModel : ViewModel() {
                 val expiry: Calendar = Calendar.getInstance().apply {
                     this.add(Calendar.YEAR, 10)
                 }
-                val localConsent: TikiSdkConsent = tikiSdk!!.modifyConsent(
+                val localConsent: TikiSdkConsent = tikiSdk.value!!.modifyConsent(
                     ownership.value!!.transactionId,
                     destination,
                     "Consent given to echo data in remote server",
@@ -113,7 +110,7 @@ class HomeViewModel : ViewModel() {
                 income.close()
                 if (responseCode in 200..299) {
                     log.value!!.toMutableList().apply {
-                        this.add(Request(
+                        this.add(RequestModel(
                             "🟢",
                             "${responseCode}: $response"
                         ))
@@ -121,7 +118,7 @@ class HomeViewModel : ViewModel() {
                     }
                 } else {
                     log.value!!.toMutableList().apply {
-                        this.add(Request(
+                        this.add(RequestModel(
                             "🔴",
                             "${responseCode}: $response"
                         ))
@@ -131,7 +128,7 @@ class HomeViewModel : ViewModel() {
             }
         }
         val onBlockedCallback: (String) -> Unit = {
-            Request(
+            RequestModel(
                 "🔴",
                 it
             )
@@ -139,7 +136,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val use: String = httpMethod.value!!
-                tikiSdk!!.applyConsent(
+                tikiSdk.value?.applyConsent(
                     this@HomeViewModel.source,
                     TikiSdkDestination(listOf(path), listOf(use)),
                     onRequestCallback,
