@@ -93,7 +93,7 @@ class TikiSdk {
                 MethodEnum.ASSIGN_OWNERSHIP, assignReq
             )
         val rspAssign: RspOwnership = rspAssignCompletable.await()!!
-        return rspAssign.ownership.transactionId
+        return rspAssign.ownership!!.transactionId
     }
 
     /**
@@ -146,7 +146,7 @@ class TikiSdk {
                 MethodEnum.MODIFY_CONSENT, modifyReq
             )
         val rspModify: RspConsentGet = rspModifyCompletable.await()!!
-        return rspModify.consent
+        return rspModify.consent!!
     }
 
     /**
