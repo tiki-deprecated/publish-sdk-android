@@ -1,3 +1,5 @@
+package com.mytiki.tiki_sdk_android.ui.view
+
 import android.content.Context
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.ui.model.Offer
@@ -21,12 +23,10 @@ import com.mytiki.tiki_sdk_android.ui.model.Offer
  *
  * @param context
  */
-
-
 class OfferSheet(
     context: Context,
     private val offer: Offer,
     private val requireTerms: Boolean,
     private val termsText: String?,
     private val learnMoreText: String?
-) : BottomSheetDialog(context)
+) : BottomSheetDialog(context){}

@@ -1,10 +1,22 @@
+package com.mytiki.tiki_sdk_android.ui.view
+
 import android.content.Context
 import android.graphics.Color
 import android.graphics.fonts.FontFamily
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 /**
- * A dismissible bottom sheet that will be shown after the user accepts sharing its data. 
+ * Awesome completion sheet
+ *
+ * A dismissible bottom sheet that will be shown after the user accepts sharing its data.
+ *
+ * @property accentColor
+ * @property primaryColor
+ * @property backgroundColor
+ * @property font
+ * @constructor
+ *
+ * @param context
  */
 class AwesomeCompletionSheet(
   context: Context,
@@ -27,4 +39,4 @@ class AwesomeCompletionSheet(
    * The fontFamily from pubspec.
    */
   val font: FontFamily
-): BottomSheetDialog(context)
+): BottomSheetDialog(context){}

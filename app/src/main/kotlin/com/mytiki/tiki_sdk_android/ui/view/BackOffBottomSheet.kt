@@ -6,7 +6,17 @@ import android.graphics.fonts.FontFamily
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 /**
+ * Back off bottom sheet
+ *
  * A dismissible bottom sheet that will be shown after the user denies sharing its data.
+ *
+ * @property accentColor
+ * @property primaryColor
+ * @property backgroundColor
+ * @property font
+ * @constructor
+ *
+ * @param context
  */
 class BackOffBottomSheet(
     context: Context,
@@ -29,4 +39,4 @@ class BackOffBottomSheet(
      * The fontFamily from pubspec.
      */
     val font: FontFamily
-): BottomSheetDialog(context)
+): BottomSheetDialog(context){}
