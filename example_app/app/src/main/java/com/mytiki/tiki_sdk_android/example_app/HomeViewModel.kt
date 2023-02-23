@@ -27,7 +27,7 @@ class HomeViewModel : ViewModel() {
     var interval: MutableLiveData<Int> = MutableLiveData(15)
     var body: MutableLiveData<String> = MutableLiveData("{\"message\" : \"Hello Tiki!\"}")
 
-    private val source: String
+    val source: String
         get() {
             return Base64.encodeToString(body.value!!.toByteArray(), DEFAULT)
         }
@@ -35,41 +35,43 @@ class HomeViewModel : ViewModel() {
     private val path: String
         get() = URL(url.value).host!! + URL(url.value).path!!
 
-    fun loadTikiSdk(context: Context, address: String? = null) {
-        viewModelScope.launch {
+    suspend fun loadTikiSdk(context: Context, address: String? = null) {
             val publishingId = "e12f5b7b-6b48-4503-8b39-28e4995b5f88"
             val origin = "com.mytiki.tiki_sdk_android.test"
             tikiSdk.value = TikiSdk().init(publishingId, origin, context, address).await()
-            getOrAssignOnwership()
-        }
-    }
-
-    private fun getOrAssignOnwership() {
-        viewModelScope.launch {
-            var localOwnership = tikiSdk.value!!.getOwnership(source)
-            if (localOwnership == null) {
-                val ownershipId: String = tikiSdk.value!!.assignOwnership(
-                    source,
-                    TikiSdkDataTypeEnum.data_stream,
-                    listOf("generic data"),
-                    "Data destination created with TIKI SDK Sample App"
-                )
-                localOwnership = tikiSdk.value!!.getOwnership(source)
+            if(!wallets.value!!.contains(tikiSdk.value!!.address)) {
+                wallets.value!!.apply {
+                    val localList = this
+                    localList.add(tikiSdk.value!!.address)
+                    wallets.postValue(localList)
+                }
             }
-            ownership.value = localOwnership
-        }
+            getOrAssignOnwership()
     }
 
-    fun modifyConsent(allow: Boolean) {
-        viewModelScope.launch {
+    suspend fun getOrAssignOnwership() {
+        var localOwnership = tikiSdk.value!!.getOwnership(source)
+        if (localOwnership == null) {
+            tikiSdk.value!!.assignOwnership(
+                source,
+                TikiSdkDataTypeEnum.data_stream,
+                listOf("generic data"),
+                "Data destination created with TIKI SDK Sample App"
+            )
+            localOwnership = tikiSdk.value!!.getOwnership(source)
+        }
+        ownership.value = localOwnership
+    }
+
+    suspend fun modifyConsent(allow: Boolean) {
             if (ownership.value == null) {
                 getOrAssignOnwership()
             }else {
                 val use: String = httpMethod.value!!
                 val destination = if (allow) {
-                    TikiSdkDestination.NONE
-                } else {
                     TikiSdkDestination(listOf(path), listOf(use))
+                } else {
+                    TikiSdkDestination.NONE
                 }
                 val expiry: Calendar = Calendar.getInstance().apply {
                     this.add(Calendar.YEAR, 10)
@@ -83,13 +85,14 @@ class HomeViewModel : ViewModel() {
                 )
                 toggleStatus.value = allow
                 consent.value = localConsent
-            }
+
         }
     }
 
     fun makeRequest() {
         val onRequestCallback: () -> Unit = {
             viewModelScope.launch(Dispatchers.IO) {
+                toggleStatus.postValue(true)
                 val con = URL(url.value!!).openConnection() as HttpURLConnection
                 con.requestMethod = httpMethod.value
                 val postData =
@@ -128,10 +131,16 @@ class HomeViewModel : ViewModel() {
             }
         }
         val onBlockedCallback: (String) -> Unit = {
-            RequestModel(
-                "🔴",
-                it
-            )
+            log.value!!.toMutableList().apply {
+                this.add(
+                    RequestModel(
+                        "🔴",
+                        "Blocked: no consent"
+                    )
+                )
+                log.postValue(this)
+                toggleStatus.postValue(false)
+            }
         }
         viewModelScope.launch {
             try {

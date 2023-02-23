@@ -1,9 +1,11 @@
 package com.mytiki.tiki_sdk_android.example_app
 
 import android.graphics.Typeface
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletItemBinding
+import kotlinx.coroutines.launch
 
 class WalletListViewHolder(
     private val binding: WalletItemBinding?,
@@ -15,8 +17,10 @@ class WalletListViewHolder(
             binding.addressTextView.setTypeface(null, Typeface.BOLD)
         }
         itemView.setOnClickListener {
-            viewModel.loadTikiSdk(itemView.context, tikiSdkAddress)
-            Navigation.findNavController(itemView).popBackStack()
+            viewModel.viewModelScope.launch {
+                viewModel.loadTikiSdk(itemView.context, tikiSdkAddress)
+                Navigation.findNavController(itemView).popBackStack()
+            }
         }
     }
 }

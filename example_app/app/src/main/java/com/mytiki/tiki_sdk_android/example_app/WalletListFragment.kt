@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mytiki.tiki_sdk_android.example_app.databinding.WalletFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WalletListFragment : Fragment() {
     private val viewModel by activityViewModels<HomeViewModel>()
@@ -38,7 +42,9 @@ class WalletListFragment : Fragment() {
             binding.button.isEnabled = !it
         })
         binding.button.setOnClickListener {
-            viewModel.loadTikiSdk(requireContext())
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.loadTikiSdk(requireContext())
+            }
         }
     }
 }
