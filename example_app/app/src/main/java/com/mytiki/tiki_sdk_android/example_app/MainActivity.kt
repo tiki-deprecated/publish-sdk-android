@@ -7,14 +7,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.mytiki.tiki_sdk_android.example_app.databinding.MainActivityBinding
-import com.mytiki.tiki_sdk_android.example_app.try_it_out.TryItOutViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: MainActivityBinding
 
-    private val viewModel by viewModels<TryItOutViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

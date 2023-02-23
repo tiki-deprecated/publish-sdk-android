@@ -1,10 +1,10 @@
-package com.mytiki.tiki_sdk_android.example_app.try_it_out
+package com.mytiki.tiki_sdk_android.example_app
 
 import java.text.DateFormat
 import java.text.DateFormat.getTimeInstance
 import java.util.*
 
-data class TryItOutReq(val icon: String, val message: String) {
+data class RequestModel(val icon: String, val message: String) {
     private val dateFormat: DateFormat = getTimeInstance()
     val timestamp: String = dateFormat.format(Date())
 }

@@ -19,5 +19,5 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class RspConsentGet(
-    val consent: TikiSdkConsent
+    val consent: TikiSdkConsent?
 )

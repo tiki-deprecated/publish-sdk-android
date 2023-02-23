@@ -19,5 +19,5 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class RspOwnership(
-    val ownership: TikiSdkOwnership
+    val ownership: TikiSdkOwnership?
 )

@@ -39,7 +39,7 @@ class TikiSdk {
      * @param origin The default origin for all transactions.
      * @param context The context of the application. Used to initialize Flutter Engine
      * @param address The address of the user node in TIKI blockchain. If null a new address will be created.
-     * @return Deferred<TikiSdk> - use await() to complete it.
+     * @return Deferred<[TikiSdk]> - use await() to complete it.
      */
     fun init(
         publishingId: String,
@@ -93,7 +93,7 @@ class TikiSdk {
                 MethodEnum.ASSIGN_OWNERSHIP, assignReq
             )
         val rspAssign: RspOwnership = rspAssignCompletable.await()!!
-        return rspAssign.ownership.transactionId
+        return rspAssign.ownership!!.transactionId
     }
 
     /**
@@ -127,11 +127,11 @@ class TikiSdk {
      *  means revoked consent.
      *
      * @param ownershipId String The transaction id of the ownership registry.
-     * @param destination TikiSdkDestination
+     * @param destination [TikiSdkDestination] The destination to which the consent is given.
      * @param about String? Optional description about the data.
      * @param reward String? Optional reward the user will receive for granting consent.
      * @param expiry Date? Optional expiration for the consent.
-     * @return TikiSdkConsent
+     * @return [TikiSdkConsent]
      */
     suspend fun modifyConsent(
         ownershipId: String,
@@ -146,7 +146,7 @@ class TikiSdk {
                 MethodEnum.MODIFY_CONSENT, modifyReq
             )
         val rspModify: RspConsentGet = rspModifyCompletable.await()!!
-        return rspModify.consent
+        return rspModify.consent!!
     }
 
     /**
@@ -159,7 +159,7 @@ class TikiSdk {
      * @param source String
      * @param origin String?
      *
-     * @return TikiSdkConsent
+     * @return [TikiSdkConsent]
      */
     suspend fun getConsent(
         source: String,
