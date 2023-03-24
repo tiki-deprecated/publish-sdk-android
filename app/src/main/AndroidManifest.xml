@@ -1,7 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) TIKI Inc.
-  ~ MIT license. See LICENSE file in root directory.
-  -->
-
-<manifest package="com.mytiki.tiki_sdk_android"/>
+<manifest package="com.mytiki.tiki_sdk_android" />

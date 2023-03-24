@@ -1,14 +1,9 @@
-/*
- * Copyright (c) TIKI Inc.
- * MIT license. See LICENSE file in root directory.
- */
-
 package com.mytiki.tiki_sdk_android
 
 /**
  * Default accepted usecases
  */
-enum class LicenseUsecaseEnum(val value: String) {
+enum class LicenseUsecaseEnum(private val _value: String) {
     ATTRIBUTION("attribution"),
     RETARGETING("retargeting"),
     PERSONALIZATION("personalization"),
@@ -18,13 +13,17 @@ enum class LicenseUsecaseEnum(val value: String) {
     SUPPORT("support");
 
     /**
-     * Builds a `LicenseUsecaseEnum` from `value`.
-     *
-     * @param value string value of enum.
-     * @return `LicenseUsecaseEnum`
-     * @throws IllegalArgumentException if `value` is not a valid `LicenseUsecaseEnum` value.
+     * Returns the string value for the enum
      */
+    val value: String
+        get() = _value
+
     companion object {
+        /**
+         * Builds a [LicenseUsecaseEnum] from [value]
+         * @throws [IllegalArgumentException] if value is not a valid [LicenseUsecaseEnum] value
+         */
+        @Throws(IllegalArgumentException::class)
         fun fromValue(value: String): LicenseUsecaseEnum {
             for (type in values()) {
                 if (type.value == value) {

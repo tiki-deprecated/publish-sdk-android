@@ -11,25 +11,27 @@ import com.squareup.moshi.JsonClass
 /**
  * License use
  *
- * Define explicit uses for an asset. LicenseUses are extremely helpful in programmatic search
- * and enforcement of your LicenseRecords.
+ * Define explicit uses for an asset. [LicenseUse]s are extremely helpful in programmatic search
+ * and enforcement of your [LicenseRecord]s.
  *
- * usecases explicitly define HOW an asset may be used. Use either our list of common enumerations
- * or define your own using LicenseUsecase.
+ * [usecases] explicitly define HOW an asset may be used. Use either our list of common enumerations
+ * or define your own using [LicenseUsecase]
  *
- * destinations define WHO can use an asset. destinations narrow down usecases to a set of URLs,
- * categories of companies, or more. Use ECMAScript Regex to specify flexible and easily enforceable
- * rules.
+ * [destinations] define WHO can use an asset. [destinations] narrow down [usecases] to a set of
+ * URLs, categories of companies, or more. Use ECMAScript Regex to specify flexible and easily
+ * enforceable rules.
  *
- * @property usecases Usecases explicitly define HOW an asset may be used.
- * @property destinations Destinations explicitly define WHERE an asset may be used.
-*/
+ * @property usecases
+ * @property destinations
+ * @constructor Create empty License use
+ */
 @JsonClass(generateAdapter = true)
 data class LicenseUse(
     /**
      * Usecases explicitly define HOW an asset may be used.
      */
     @Json(name = "usecases") val usecases: List<LicenseUsecase>,
+
     /**
      * Destinations explicitly define WHERE an asset may be used.
      * Destinations can be: a wildcard URL (*.your-co.com),
