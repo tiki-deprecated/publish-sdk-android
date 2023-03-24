@@ -6,15 +6,20 @@
 package com.mytiki.tiki_sdk_android.core
 
 import CoreMethod
+import android.content.Context
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.core.rsp.RspError
 import com.mytiki.tiki_sdk_android.util.TimeStampToDateAdapter
 import com.squareup.moshi.Moshi
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.loader.FlutterLoader
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugins.GeneratedPluginRegistrant
 import kotlinx.coroutines.CompletableDeferred
 import okio.IOException
 import java.util.*
@@ -24,10 +29,20 @@ import java.util.*
  *
  * @constructor Create empty Tiki sdk flutter channel
  */
-class CoreChannel : FlutterPlugin, MethodCallHandler {
+class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
 
     lateinit var channel: MethodChannel
     var completables: MutableMap<String, ((String?, Error?) -> Unit)> = mutableMapOf()
+
+    init {
+        val loader = FlutterLoader()
+        loader.startInitialization(context)
+        loader.ensureInitializationComplete(context, null)
+        val flutterEngine = FlutterEngine(context)
+        flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        flutterEngine.plugins.add(this)
+    }
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "tiki_sdk_flutter")

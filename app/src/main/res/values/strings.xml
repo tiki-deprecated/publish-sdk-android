@@ -1,0 +1,4 @@
+<resources>
+    <string name="title_activity_tiki_sdk">TikiSdkActivity</string>
+    <string name="title_activity_tiki_sdk_settings">TikiSdkSettingsActivity</string>
+</resources>

@@ -1,13 +1,13 @@
 package com.mytiki.tiki_sdk_android
 
-import java.lang.IllegalArgumentException
-
 /**
  * Default accepted tags.
  *
- * - value: The string value of the tag.
+ * @property value
+ * @constructor Create empty Title tag enum
  */
 enum class TitleTagEnum(val value: String) {
+
     EMAIL_ADDRESS("email_address"),
     PHONE_NUMBER("phone_number"),
     PHYSICAL_ADDRESS("physical_address"),
@@ -51,7 +51,7 @@ enum class TitleTagEnum(val value: String) {
                     return type
                 }
             }
-            throw IllegalArgumentException("Invalid com.mytiki.tiki_sdk_android.TitleTagEnum value $value")
+            throw IllegalArgumentException("Invalid TitleTagEnum value $value")
         }
     }
 }
