@@ -1,4 +1,12 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android
+
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * License use
@@ -17,15 +25,17 @@ package com.mytiki.tiki_sdk_android
  * @property destinations
  * @constructor Create empty License use
  */
+@JsonClass(generateAdapter = true)
 data class LicenseUse(
     /**
      * Usecases explicitly define HOW an asset may be used.
      */
-    val usecases: List<LicenseUseCase>,
+    @Json(name = "usecases") val usecases: List<LicenseUsecase>,
 
     /**
      * Destinations explicitly define WHERE an asset may be used.
      * Destinations can be: a wildcard URL (*.your-co.com),
      * a string defining a category of
      */
-    val destinations: List<String>? = null)
+    @Json(name = "destinations") val destinations: List<String>? = null
+)

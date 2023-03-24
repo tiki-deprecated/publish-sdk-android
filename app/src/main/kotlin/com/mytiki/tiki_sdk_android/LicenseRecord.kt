@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android
 
 import TitleRecord
-import java.util.Date
+import java.util.*
 
 /**
  * License Records describe the terms around which a data asset may be used

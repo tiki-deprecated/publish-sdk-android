@@ -3,7 +3,7 @@ package com.mytiki.tiki_sdk_android
 /**
  * Default accepted usecases
  */
-enum class LicenseUseCaseEnum(private val _value: String) {
+enum class LicenseUsecaseEnum(private val _value: String) {
     ATTRIBUTION("attribution"),
     RETARGETING("retargeting"),
     PERSONALIZATION("personalization"),
@@ -20,11 +20,11 @@ enum class LicenseUseCaseEnum(private val _value: String) {
 
     companion object {
         /**
-         * Builds a [LicenseUseCaseEnum] from [value]
-         * @throws [IllegalArgumentException] if value is not a valid [LicenseUseCaseEnum] value
+         * Builds a [LicenseUsecaseEnum] from [value]
+         * @throws [IllegalArgumentException] if value is not a valid [LicenseUsecaseEnum] value
          */
         @Throws(IllegalArgumentException::class)
-        fun fromValue(value: String): LicenseUseCaseEnum {
+        fun fromValue(value: String): LicenseUsecaseEnum {
             for (type in values()) {
                 if (type.value == value) {
                     return type

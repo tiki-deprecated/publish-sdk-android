@@ -11,7 +11,7 @@ import com.mytiki.tiki_sdk_android.ui.UsedBullet
 import java.util.*
 
 /**
- * An Offer for creating a [LicenseRecord] for a [TitleRecord] identified by [ptr].
+ * An Offer for creating a [LicenseRecord] for a title identified by [ptr].
  */
 class Offer {
     private var _id: String? = null
@@ -87,7 +87,7 @@ class Offer {
         get() = _expiry
 
     /**
-     * A list of device-specific [Permission] required for the license.
+     * A list of device-specific [Manifest.permission] required for the license.
      */
     val requiredPermissions: List<Manifest.permission>
         get() = _requiredPermissions

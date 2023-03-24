@@ -4,6 +4,8 @@
  */
 
 import com.mytiki.tiki_sdk_android.TitleTag
+import com.squareup.moshi.JsonClass
+
 
 /**
  * Title record
@@ -19,6 +21,7 @@ import com.mytiki.tiki_sdk_android.TitleTag
  * @property origin Overrides the default origin from which the data was generated.
  * @constructor Create empty Title record
  */
+@JsonClass(generateAdapter = true)
 data class TitleRecord(
     /**
      * This record's id.

@@ -2,24 +2,26 @@ package com.mytiki.tiki_sdk_android
 
 import androidx.compose.ui.graphics.Color
 
+
 /**
  * Controls the UI theming for TikiSdk.
  */
 class Theme(
-        dark: Boolean = true,
-        private var primaryTextColor: Color = if (dark) Color(0xFFF6F6F6) else Color(0xFF1C0000),
-        private var primaryBackgroundColor: Color  = if (dark){
-            Color(0xFF1C1C1E)
-        } else {
-            Color(0xFF1C1C1E)
-        },
-        private var secondaryBackgroundColor: Color  = if (dark){
-            Color(0xFFF6F6F6).copy(alpha = 0.38f)
-        } else {
-            Color(0xFFF6F6F6)
-        },
-        private var accentColor: Color  = if (dark) Color(0xFF00B272) else Color(0xFF00B272),
-        private var fontFamily: String  = "SpaceGrotesk"){
+    dark: Boolean = true,
+    private var primaryTextColor: Color = if (dark) Color(0xFFF6F6F6) else Color(0xFF1C0000),
+    private var primaryBackgroundColor: Color = if (dark) {
+        Color(0xFF1C1C1E)
+    } else {
+        Color(0xFF1C1C1E)
+    },
+    private var secondaryBackgroundColor: Color = if (dark) {
+        Color(0xFFF6F6F6).copy(alpha = 0.38f)
+    } else {
+        Color(0xFFF6F6F6)
+    },
+    private var accentColor: Color = if (dark) Color(0xFF00B272) else Color(0xFF00B272),
+    private var fontFamily: String = "SpaceGrotesk"
+) {
 
     /**
      * Primary text color. Used in the default text items.
@@ -55,7 +57,7 @@ class Theme(
 
     /**
      * The default font family for all texts.
-    */
+     */
     val fontFamilyValue: String
         get() = fontFamily
 

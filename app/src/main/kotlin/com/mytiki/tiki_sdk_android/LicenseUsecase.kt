@@ -4,24 +4,24 @@ package com.mytiki.tiki_sdk_android
  * Use case for license.
  *
  * @param licenseUseCaseEnum the license use case enumeration. Default value is null.
- * @constructor creates a new instance of LicenseUseCase with a [LicenseUseCaseEnum] predefined value.
+ * @constructor creates a new instance of LicenseUsecase with a [LicenseUsecaseEnum] predefined value.
  */
-open class LicenseUseCase(private var licenseUseCaseEnum: LicenseUseCaseEnum? = null) {
+open class LicenseUsecase(private var licenseUseCaseEnum: LicenseUsecaseEnum? = null) {
 
     /**
-     * Custom value to be used in LicenseUseCase.
+     * Custom value to be used in LicenseUsecase.
      */
     private var customValue: String? = null
 
     /**
-     * Creates a new instance of LicenseUseCase with custom value.
+     * Creates a new instance of LicenseUsecase with custom value.
      *
      * @param customUseCase the custom use case for the license.
      */
-    constructor(customUseCase: String) : this(){
-        try{
-            licenseUseCaseEnum = LicenseUseCaseEnum.fromValue(customUseCase)
-        }catch (e: IllegalArgumentException) {
+    constructor(customUseCase: String) : this() {
+        try {
+            licenseUseCaseEnum = LicenseUsecaseEnum.fromValue(customUseCase)
+        } catch (e: IllegalArgumentException) {
             customValue = "custom:$customUseCase"
         }
     }
@@ -29,37 +29,37 @@ open class LicenseUseCase(private var licenseUseCaseEnum: LicenseUseCaseEnum? = 
     /**
      * Use case for license attribution.
      */
-    object ATTRIBUTION : LicenseUseCase(LicenseUseCaseEnum.ATTRIBUTION)
+    object ATTRIBUTION : LicenseUsecase(LicenseUsecaseEnum.ATTRIBUTION)
 
     /**
      * Use case for license retargeting.
      */
-    object RETARGETING : LicenseUseCase(LicenseUseCaseEnum.RETARGETING)
+    object RETARGETING : LicenseUsecase(LicenseUsecaseEnum.RETARGETING)
 
     /**
      * Use case for license personalization.
      */
-    object PERSONALIZATION : LicenseUseCase(LicenseUseCaseEnum.PERSONALIZATION)
+    object PERSONALIZATION : LicenseUsecase(LicenseUsecaseEnum.PERSONALIZATION)
 
     /**
      * Use case for license AI training.
      */
-    object AI_TRAINING : LicenseUseCase(LicenseUseCaseEnum.AI_TRAINING)
+    object AI_TRAINING : LicenseUsecase(LicenseUsecaseEnum.AI_TRAINING)
 
     /**
      * Use case for license distribution.
      */
-    object DISTRIBUTION : LicenseUseCase(LicenseUseCaseEnum.DISTRIBUTION)
+    object DISTRIBUTION : LicenseUsecase(LicenseUsecaseEnum.DISTRIBUTION)
 
     /**
      * Use case for license analytics.
      */
-    object ANALYTICS : LicenseUseCase(LicenseUseCaseEnum.ANALYTICS)
+    object ANALYTICS : LicenseUsecase(LicenseUsecaseEnum.ANALYTICS)
 
     /**
      * Use case for license support.
      */
-    object SUPPORT : LicenseUseCase(LicenseUseCaseEnum.SUPPORT)
+    object SUPPORT : LicenseUsecase(LicenseUsecaseEnum.SUPPORT)
 
     /**
      * Returns the license use case value.

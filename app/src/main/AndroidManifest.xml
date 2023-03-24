@@ -1,18 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mytiki.tiki_sdk_android">
-
-    <application>
-        <activity
-            android:name=".TikiSdkSettingsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_tiki_sdk_settings"
-            android:theme="@style/Theme.Tikisdkandroid" />
-        <activity
-            android:name=".TikiSdkActivity"
-            android:exported="false"
-            android:label="@string/title_activity_tiki_sdk"
-            android:theme="@style/Theme.Tikisdkandroid" />
-    </application>
-
-</manifest>
+<manifest package="com.mytiki.tiki_sdk_android" />
