@@ -3,11 +3,11 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.tiki_sdk_android.tiki_platform_channel
+package com.mytiki.tiki_sdk_android.core
 
-import android.util.Log
+import CoreMethod
 import androidx.annotation.NonNull
-import com.mytiki.tiki_sdk_android.tiki_platform_channel.rsp.RspError
+import com.mytiki.tiki_sdk_android.core.rsp.RspError
 import com.mytiki.tiki_sdk_android.util.TimeStampToDateAdapter
 import com.squareup.moshi.Moshi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -24,7 +24,7 @@ import java.util.*
  *
  * @constructor Create empty Tiki sdk flutter channel
  */
-class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
+class CoreChannel : FlutterPlugin, MethodCallHandler {
 
     lateinit var channel: MethodChannel
     var completables: MutableMap<String, ((String?, Error?) -> Unit)> = mutableMapOf()
@@ -62,7 +62,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
      * @return CompletableDeferred holding [T]
      */
     inline fun <reified T, reified R> invokeMethod(
-        method: MethodEnum,
+        method: CoreMethod,
         request: R
     ): CompletableDeferred<T?> {
         val moshi: Moshi = Moshi.Builder()
@@ -72,7 +72,7 @@ class TikiPlatformChannel : FlutterPlugin, MethodCallHandler {
         val deferred = CompletableDeferred<T?>()
         val jsonRequest = moshi.adapter(R::class.java).toJson(request)
         channel.invokeMethod(
-            method.methodCall, mapOf(
+            method.value, mapOf(
                 "requestId" to requestId,
                 "request" to jsonRequest
             )
