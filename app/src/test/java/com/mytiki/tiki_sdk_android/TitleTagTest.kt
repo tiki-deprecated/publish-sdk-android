@@ -4,46 +4,44 @@
  */
 
 package com.mytiki.tiki_sdk_android
-import com.mytiki.tiki_sdk_android.core.req.ReqBuild
-import com.mytiki.tiki_sdk_android.core.rsp.RspBuild
-import com.mytiki.tiki_sdk_android.util.LicenseUsecaseFromStringAdapter
+import com.mytiki.tiki_sdk_android.util.TitleTagFromStringAdapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import org.junit.Assert
 import org.junit.Test
 
-class LicenseUsecaseTest {
+class TitleTagTest {
     @Test
-    fun licenseUsecaseEnum_from_value() {
-        val licenseUsecaseEnum = LicenseUsecaseEnum.fromValue("support")
-        assert(licenseUsecaseEnum == LicenseUsecaseEnum.SUPPORT)
+    fun titleTagEnum_from_value() {
+        val titleTagEnum = TitleTagEnum.fromValue("advertising_data")
+        assert(titleTagEnum == TitleTagEnum.ADVERTISING_DATA)
     }
 
     @Test
-    fun licenseUsecase_from_value() {
-        val licenseUsecase = LicenseUsecase("support")
-        assert(licenseUsecase.value == LicenseUsecaseEnum.SUPPORT.value)
+    fun titleTag_from_value() {
+        val titleTag = TitleTag("advertising_data")
+        assert(titleTag.value == TitleTagEnum.ADVERTISING_DATA.value)
     }
 
     @Test
-    fun licenseUsecase_from_json() {
+    fun titleTag_from_json() {
         val moshi: Moshi = Moshi.Builder()
-            .add(LicenseUsecaseFromStringAdapter())
+            .add(TitleTagFromStringAdapter())
             .build()
-        val adapter: JsonAdapter<LicenseUsecase> = moshi.adapter(LicenseUsecase::class.java)
-        val json = "\"support\""
-        val licenseUsecase = adapter.fromJson(json)
-        Assert.assertEquals(LicenseUsecase.SUPPORT.value, licenseUsecase?.value)
+        val adapter: JsonAdapter<TitleTag> = moshi.adapter(TitleTag::class.java)
+        val json = "\"advertising_data\""
+        val titleTag = adapter.fromJson(json)
+        Assert.assertEquals(TitleTag.ADVERTISING_DATA.value, titleTag?.value)
     }
 
     @Test
-    fun licenseUsecase_to_json() {
+    fun titleTag_to_json() {
         val moshi: Moshi = Moshi.Builder()
-            .add(LicenseUsecaseFromStringAdapter())
+            .add(TitleTagFromStringAdapter())
             .build()
-        val adapter: JsonAdapter<LicenseUsecase> = moshi.adapter(LicenseUsecase::class.java)
-        val licenseUsecase = LicenseUsecase.SUPPORT
-        val json = adapter.toJson(licenseUsecase)
-        Assert.assertEquals("\"support\"", json)
+        val adapter: JsonAdapter<TitleTag> = moshi.adapter(TitleTag::class.java)
+        val titleTag = TitleTag.ADVERTISING_DATA
+        val json = adapter.toJson(titleTag)
+        Assert.assertEquals("\"advertising_data\"", json)
     }
 }
