@@ -2,12 +2,14 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
-package com.mytiki.tiki_sdk_android
+package com.mytiki.tiki_sdk_android.ui
 
 import android.Manifest
 import android.graphics.Bitmap
-import com.mytiki.tiki_sdk_android.ui.UsedBullet
-
+import com.mytiki.tiki_sdk_android.LicenseRecord
+import com.mytiki.tiki_sdk_android.LicenseUse
+import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.TitleTag
 import java.util.*
 
 /**
