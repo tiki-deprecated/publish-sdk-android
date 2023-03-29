@@ -1,6 +1,7 @@
-package com.mytiki.tiki_sdk_android
+package com.mytiki.tiki_sdk_android.ui
 
 import androidx.compose.ui.graphics.Color
+import com.mytiki.tiki_sdk_android.TikiSdk
 
 
 /**
