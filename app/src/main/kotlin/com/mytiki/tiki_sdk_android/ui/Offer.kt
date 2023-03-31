@@ -5,12 +5,11 @@
 package com.mytiki.tiki_sdk_android.ui
 
 import android.Manifest
-import android.graphics.Bitmap
-import com.mytiki.tiki_sdk_android.LicenseRecord
-import com.mytiki.tiki_sdk_android.LicenseUse
-import com.mytiki.tiki_sdk_android.TikiSdk
-import com.mytiki.tiki_sdk_android.TitleTag
+import android.content.Context
+import android.graphics.drawable.Drawable
+import com.mytiki.tiki_sdk_android.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * An Offer for creating a [LicenseRecord] for a title identified by [ptr].
@@ -20,11 +19,11 @@ class Offer {
     private var _ptr: String? = null
     private var _description: String? = null
     private var _terms: String? = null
-    private var _reward: Bitmap? = null
-    private var _usedBullet = mutableListOf<UsedBullet>()
+    private var _reward: Drawable? = null
+    private var _usedBullet = mutableListOf<Bullet>()
     private var _uses = mutableListOf<LicenseUse>()
     private var _tags = mutableListOf<TitleTag>()
-    private var _requiredPermissions = mutableListOf<Manifest.permission>()
+    private var _permissions = mutableListOf<Permission>()
     private var _expiry: Date? = null
 
     /**
@@ -43,13 +42,13 @@ class Offer {
      *
      * It should have 300x86 size and include assets for all screen depths.
      */
-    val reward: Bitmap?
+    val reward: Drawable?
         get() = _reward
 
     /**
      * The bullets that describes how the user data will be used.
      */
-    val usedBullet: List<UsedBullet>
+    val bullets: List<Bullet>
         get() = _usedBullet
 
     /**
@@ -91,13 +90,13 @@ class Offer {
     /**
      * A list of device-specific [Manifest.permission] required for the license.
      */
-    val requiredPermissions: List<Manifest.permission>
-        get() = _requiredPermissions
+    val permissions: List<Permission>
+        get() = _permissions
 
     /**
      * Sets the [id]
      */
-    fun setId(id: String): Offer {
+    fun id(id: String): Offer {
         _id = id
         return this
     }
@@ -105,31 +104,23 @@ class Offer {
     /**
      * Sets the [reward]
      */
-    fun setReward(reward: Bitmap): Offer {
+    fun reward(reward: Drawable): Offer {
         _reward = reward
         return this
     }
 
     /**
-     * Sets the [usedBullet]
+     * Adds a [Bullet]
      */
-    fun setUsedBullet(usedBullet: List<UsedBullet>): Offer {
-        _usedBullet = usedBullet.toMutableList()
-        return this
-    }
-
-    /**
-     * Adds a [usedBullet]
-     */
-    fun addUsedBullet(usedBullet: UsedBullet): Offer {
-        _usedBullet.add(usedBullet)
+    fun bullet(text: String, used: Boolean): Offer {
+        _usedBullet.add(Bullet(text, used))
         return this
     }
 
     /**
      * Sets the [ptr]
      */
-    fun setPtr(ptr: String): Offer {
+    fun ptr(ptr: String): Offer {
         _ptr = ptr
         return this
     }
@@ -137,7 +128,7 @@ class Offer {
     /**
      * Sets the [description]
      */
-    fun setDescription(description: String): Offer {
+    fun description(description: String): Offer {
         _description = description
         return this
     }
@@ -145,48 +136,26 @@ class Offer {
     /**
      * Set terms
      *
-     * @param terms
+     * @param context
+     * @param filename
      * @return this Offer
      */
-    fun setTerms(terms: String?): Offer {
-        _terms = terms
-        return this
-    }
-
-    /**
-     * Set uses
-     *
-     * @param uses
-     * @return this Offer
-     */
-    fun setUses(uses: List<LicenseUse>): Offer {
-        _uses = uses.toMutableList()
+    fun terms(context: Context, filename: String): Offer {
+        _terms = context.assets.open(filename).bufferedReader().use { it.readText() }
         return this
     }
 
     /**
      * Adds an item to the [uses] list.
      *
-     * @param use
+     * @param usecases
+     * @param destinations
      * @return this Offer
      */
-    fun addUse(use: LicenseUse): Offer {
-        _uses.add(use)
+    fun use(usecases: List<LicenseUsecase>, destinations: List<String> = mutableListOf()): Offer {
+        _uses.add(LicenseUse(usecases, destinations))
         return this
     }
-
-    /**
-     * Set tags
-     *
-     * @param tags
-     * @return this Offer
-     */
-    fun setTags(tags: List<TitleTag>): Offer {
-        _tags = tags.toMutableList()
-        return this
-    }
-
-    ///
 
     /**
      * Adds an item to the [tags] list.
@@ -194,7 +163,7 @@ class Offer {
      * @param tag
      * @return this Offer
      */
-    fun addTag(tag: TitleTag): Offer {
+    fun tag(tag: TitleTag): Offer {
         _tags.add(tag)
         return this
     }
@@ -202,35 +171,25 @@ class Offer {
     /**
      * Set the expiration of the [LicenseRecord]
      *
-     * @param expiry
+     * @param time
+     * @param unit
      * @return this Offer
      */
-    fun setExpiry(expiry: Date?): Offer {
-        _expiry = expiry
+    fun duration(time: Long, unit: TimeUnit): Offer {
+        val expiryTime = System.currentTimeMillis() + unit.toMillis(time)
+        _expiry = Date(expiryTime)
         return this
     }
 
-    /// Sets the [requiredPermissions]
 
     /**
-     * Set required permissions
-     *
-     * @param permissions
-     * @return this Offer
-     */
-    fun setRequiredPermissions(permissions: List<Manifest.permission>): Offer {
-        _requiredPermissions = permissions.toMutableList()
-        return this
-    }
-
-    /**
-     * Adds an item to the [requiredPermissions] list.
+     * Adds an item to the [permission] list.
      *
      * @param permission
      * @return
      */
-    fun addRequiredPermission(permission: Manifest.permission): Offer {
-        _requiredPermissions.add(permission)
+    fun permission(permission: Permission): Offer {
+        _permissions.add(permission)
         return this
     }
 
