@@ -7,20 +7,27 @@ package com.mytiki.tiki_sdk_android.integration_tests
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.*
+import com.mytiki.tiki_sdk_android.ui.Offer
+import com.mytiki.tiki_sdk_android.ui.Permission
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class IntegrationTests {
 
-    private val origin = "com.mytiki.iostest"
     private val publishingId = "e12f5b7b-6b48-4503-8b39-28e4995b5f88"
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val id = UUID.randomUUID().toString()
 
     @Test
@@ -28,15 +35,14 @@ class IntegrationTests {
         runBlocking {
             try {
                 TikiSdk.init(
-                    InstrumentationRegistry.getInstrumentation().context,
+                    context,
                     publishingId,
-                    id,
-                    {
-                        Assert.assertTrue(TikiSdk.isInitialized)
-                    }
-                )
+                    id
+                ) {
+                    Assert.assertTrue(TikiSdk.isInitialized)
+                }
             } catch (e: Exception) {
-                Assert.fail(e.message)
+                fail(e.message)
             }
         }
     }
@@ -45,21 +51,7 @@ class IntegrationTests {
     fun testTikiSdkConfig() {
         runBlocking {
             try {
-                TikiSdk.config()
-                    .theme
-                    .primaryTextColor(Color.WHITE)
-                    .primaryBackgroundColor(Color.WHITE)
-                    .secondaryBackgroundColor(Color.WHITE)
-                    .accentColor(Color.WHITE)
-                    .fontFamily("test")
-                    .and()
-                    .dark
-                    .primaryTextColor(Color.WHITE)
-                    .primaryBackgroundColor(Color.WHITE)
-                    .secondaryBackgroundColor(Color.WHITE)
-                    .accentColor(Color.WHITE)
-                    .fontFamily("test")
-                    .and()
+                TikiSdk
                     .offer
                     .id("randomId")
                     .bullet("test 1", true)
@@ -69,9 +61,9 @@ class IntegrationTests {
                     .description("testing")
                     .use(listOf(LicenseUsecase(LicenseUsecaseEnum.SUPPORT)))
                     .tag(TitleTag(TitleTagEnum.ADVERTISING_DATA))
-                    .duration(365 * 24 * 60 * 60)
+                    .duration(365 * 24 * 60 * 60, TimeUnit.SECONDS)
                     .permission(Permission.CAMERA)
-                    .terms("terms")
+                    .terms(context, "terms.md")
                     .add()
                     .offer
                     .id("randomId2")
@@ -82,25 +74,20 @@ class IntegrationTests {
                     .description("testing")
                     .use(listOf(LicenseUsecase(LicenseUsecaseEnum.SUPPORT)))
                     .tag(TitleTag(TitleTagEnum.ADVERTISING_DATA))
-                    .duration(365 * 24 * 60 * 60)
+                    .duration(365 * 24 * 60 * 60, TimeUnit.SECONDS)
                     .permission(Permission.CAMERA)
-                    .terms("terms")
+                    .terms(context, "terms.md")
                     .add()
                     .onAccept { _, _ -> }
                     .onDecline { _, _ -> }
-                    .onSettings { }
+                    .onSettings { MainScope().async{ } }
                     .disableAcceptEnding(false)
                     .disableDeclineEnding(true)
-                    .initialize(
-                        InstrumentationRegistry.getInstrumentation().context,
-                        publishingId,
-                        id,
-                        {
+                    .init(context, publishingId, id) {
                             Assert.assertTrue(TikiSdk.isInitialized)
                         }
-                    )
             } catch (e: Exception) {
-                Assert.fail(e.message)
+                fail(e.message)
             }
         }
     }
@@ -108,9 +95,9 @@ class IntegrationTests {
     @Test
     fun testLicense() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            try {
-                TikiSdk.config().initialize(publishingId, id) {
-                    try {
+            MainScope().async {
+                try {
+                    TikiSdk.init(context, publishingId, id) {
                         val offer = Offer()
                             .id("randomId")
                             .bullet("test 1", true)
@@ -118,34 +105,41 @@ class IntegrationTests {
                             .bullet("test 3", true)
                             .ptr("source")
                             .description("testing")
-                            .terms("terms")
+                            .terms(context, "terms.md")
                             .use(getLicenseUsecases())
                             .tag(TitleTag(TitleTagEnum.ADVERTISING_DATA))
                             .permission(Permission.CAMERA)
-                        val license = TikiSdk.license(
-                            offer.ptr,
-                            offer.uses,
-                            offer.terms,
-                            offer.tags,
-                            offer.description,
-                            offer.expiry
-                        )
-                        assertEquals("testing", license.description)
-                        assertEquals(UseCaseEnum.SUPPORT, license.uses[0].usecases[0].value)
-                        assertEquals(TitleTagEnum.ADVERTISING_DATA, license.title.tags[0].value)
+                        runBlocking {
+                            val licenseRecord: LicenseRecord = TikiSdk.license(
+                                offer.ptr,
+                                offer.uses,
+                                offer.terms,
+                                offer.tags,
+                                null,
+                                offer.description,
+                                offer.expiry
+                            ).await()
+                            assertEquals("testing", licenseRecord.description)
+                            assertEquals(
+                                LicenseUsecaseEnum.SUPPORT,
+                                licenseRecord.uses[0].usecases[0].value
+                            )
+                            assertEquals(
+                                TitleTagEnum.ADVERTISING_DATA,
+                                licenseRecord.title.tags[0].value
+                            )
+                        }
+                    }
                     } catch (e: Exception) {
                         fail()
                     }
                 }
-            } catch (e: Exception) {
-                fail()
             }
         }
-    }
 
-    private fun getLicenseUsecases(): List<UseCase> {
-        val usecases = ArrayList<UseCase>()
-        usecases.add(UseCase(UseCaseEnum.SUPPORT))
+    private fun getLicenseUsecases(): List<LicenseUsecase> {
+        val usecases = ArrayList<LicenseUsecase>()
+        usecases.add(LicenseUsecase(LicenseUsecaseEnum.SUPPORT))
         return usecases
     }
 }

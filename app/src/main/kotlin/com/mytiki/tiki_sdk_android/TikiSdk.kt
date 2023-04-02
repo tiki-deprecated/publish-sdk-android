@@ -172,7 +172,7 @@ object TikiSdk {
      * information for the accepted offer.
      * @returns The TikiSdk instance.
      */
-    fun onAccept(onAccept: ((Offer, LicenseRecord) -> Void)?): TikiSdk {
+    fun onAccept(onAccept: ((Offer, LicenseRecord) -> Unit)?): TikiSdk {
         _onAccept = onAccept
         return this
     }
@@ -189,7 +189,7 @@ object TikiSdk {
      *
      * @returns The TikiSdk instance.
      */
-    fun onDecline(onDecline: ((Offer, LicenseRecord?) -> Void)?): TikiSdk {
+    fun onDecline(onDecline: ((Offer, LicenseRecord?) -> Unit)?): TikiSdk {
         _onDecline = onDecline
         return this
     }
@@ -228,8 +228,8 @@ object TikiSdk {
         context: Context,
         publishingId: String,
         id: String,
-        origin: String?,
-        onComplete: (() -> Void)?
+        origin: String? = null,
+        onComplete: (() -> Unit)?
     ): Deferred<Unit> {
         return MainScope().async {
             val loader = FlutterLoader()
@@ -417,7 +417,7 @@ object TikiSdk {
         ptr: String,
         usecases: List<LicenseUsecase> = listOf(),
         destinations: List<String> = listOf(),
-        onPass: (() -> Void)? = null,
+        onPass: (() -> Unit)? = null,
         onFail: ((String?) -> Unit)? = null,
         origin: String? = null
     ): Deferred<Boolean> {
@@ -575,8 +575,8 @@ object TikiSdk {
     private var address: String? = null
     private var coreChannel: CoreChannel? = null
     private var _dark: Theme? = null
-    private var _onAccept: ((Offer, LicenseRecord) -> Void)? = null
-    private var _onDecline: ((Offer, LicenseRecord?) -> Void)? = null
+    private var _onAccept: ((Offer, LicenseRecord) -> Unit)? = null
+    private var _onDecline: ((Offer, LicenseRecord?) -> Unit)? = null
     private var _onSettings: (Context) -> Deferred<Unit> = {
         MainScope().async {
             settings(it)
