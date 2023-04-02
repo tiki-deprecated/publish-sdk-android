@@ -3,7 +3,7 @@ package com.mytiki.tiki_sdk_android.core.req
 import com.mytiki.tiki_sdk_android.LicenseUse
 import com.mytiki.tiki_sdk_android.TitleTag
 import com.squareup.moshi.Json
-import java.util.Date
+import java.util.*
 
 data class ReqLicense(
     @Json(name = "ptr") val ptr: String?,

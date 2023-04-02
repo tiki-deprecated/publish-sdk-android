@@ -11,12 +11,12 @@ import com.squareup.moshi.JsonClass
  * Use case for license.
  */
 @JsonClass(generateAdapter = true)
-class TitleTag(value: String){
+class TitleTag(value: String) {
 
     var value: String
         private set
 
-    init{
+    init {
         try {
             val titleTagEnum = TitleTagEnum.fromValue(value)
             this.value = titleTagEnum.value

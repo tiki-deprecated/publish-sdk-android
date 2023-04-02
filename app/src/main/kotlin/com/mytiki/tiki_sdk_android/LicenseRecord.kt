@@ -5,7 +5,7 @@
 
 package com.mytiki.tiki_sdk_android
 
-import TitleRecord
+import com.squareup.moshi.JsonClass
 import java.util.*
 
 /**
@@ -20,6 +20,7 @@ import java.util.*
  * @property description A human-readable description of the license
  * @property expiry The date when the license expires
  */
+@JsonClass(generateAdapter = true)
 data class LicenseRecord(
     val id: String?,
     val title: TitleRecord,

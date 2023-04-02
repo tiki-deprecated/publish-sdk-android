@@ -6,7 +6,6 @@
 package com.mytiki.tiki_sdk_android
 
 import CoreMethod
-import TitleRecord
 import android.content.Context
 import android.content.res.Configuration
 import com.mytiki.tiki_sdk_android.TikiSdk.init

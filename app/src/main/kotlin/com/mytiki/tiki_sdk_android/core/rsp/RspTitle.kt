@@ -1,6 +1,6 @@
 package com.mytiki.tiki_sdk_android.core.rsp
 
-import TitleRecord
+import com.mytiki.tiki_sdk_android.TitleRecord
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
