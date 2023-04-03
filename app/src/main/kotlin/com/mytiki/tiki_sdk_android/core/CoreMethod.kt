@@ -2,6 +2,7 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
+package com.mytiki.tiki_sdk_android.core
 
 /// The type of data origin for an ownership registry.
 enum class CoreMethod(val value: String) {
