@@ -5,11 +5,11 @@
 
 package com.mytiki.tiki_sdk_android
 
-import CoreMethod
 import android.content.Context
 import android.content.res.Configuration
 import com.mytiki.tiki_sdk_android.TikiSdk.init
 import com.mytiki.tiki_sdk_android.core.CoreChannel
+import com.mytiki.tiki_sdk_android.core.CoreMethod
 import com.mytiki.tiki_sdk_android.core.req.*
 import com.mytiki.tiki_sdk_android.core.rsp.*
 import com.mytiki.tiki_sdk_android.ui.Offer
