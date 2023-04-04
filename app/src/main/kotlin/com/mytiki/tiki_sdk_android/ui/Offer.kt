@@ -66,8 +66,8 @@ class Offer {
     /**
      * The legal terms of the offer.
      */
-    val terms: String?
-        get() = _terms
+    val terms: String
+        get() = _terms!!
 
     /**
      * The Use cases for the license.

@@ -2,7 +2,6 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
-
 package com.mytiki.tiki_sdk_android
 
 import com.squareup.moshi.JsonClass
@@ -11,12 +10,12 @@ import com.squareup.moshi.JsonClass
  * Use case for license.
  */
 @JsonClass(generateAdapter = true)
-class TitleTag(value: String){
+class TitleTag(value: String) {
 
     var value: String
         private set
 
-    init{
+    init {
         try {
             val titleTagEnum = TitleTagEnum.fromValue(value)
             this.value = titleTagEnum.value

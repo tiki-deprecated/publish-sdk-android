@@ -1,30 +1,31 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
 package com.mytiki.tiki_sdk_android
+
+import com.squareup.moshi.JsonClass
 
 /**
  * Use case for license.
  *
- * @param licenseUseCaseEnum the license use case enumeration. Default value is null.
- * @constructor creates a new instance of LicenseUsecase with a [LicenseUsecaseEnum] predefined value.
  */
-open class LicenseUsecase(private var licenseUseCaseEnum: LicenseUsecaseEnum? = null) {
+@JsonClass(generateAdapter = true)
+open class LicenseUsecase(value: String) {
 
-    /**
-     * Custom value to be used in LicenseUsecase.
-     */
-    private var customValue: String? = null
+    var value: String
+        private set
 
-    /**
-     * Creates a new instance of LicenseUsecase with custom value.
-     *
-     * @param customUseCase the custom use case for the license.
-     */
-    constructor(customUseCase: String) : this() {
+    init {
         try {
-            licenseUseCaseEnum = LicenseUsecaseEnum.fromValue(customUseCase)
-        } catch (e: IllegalArgumentException) {
-            customValue = "custom:$customUseCase"
+            val licenseUseCaseEnum = TitleTagEnum.fromValue(value)
+            this.value = licenseUseCaseEnum.value
+        } catch (e: Exception) {
+            this.value = "custom:$value"
         }
     }
+
+    constructor(licenseUseCaseEnum: LicenseUsecaseEnum) : this(licenseUseCaseEnum.value)
 
     /**
      * Use case for license attribution.
@@ -61,14 +62,4 @@ open class LicenseUsecase(private var licenseUseCaseEnum: LicenseUsecaseEnum? = 
      */
     object SUPPORT : LicenseUsecase(LicenseUsecaseEnum.SUPPORT)
 
-    /**
-     * Returns the license use case value.
-     *
-     * @return the license use case value, which can be either the value of licenseUseCaseEnum or customValue.
-     * @throws NullPointerException if licenseUseCaseEnum is null and customValue is null.
-     */
-    val value: String
-        get() {
-            return licenseUseCaseEnum?.value ?: customValue!!
-        }
 }

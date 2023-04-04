@@ -2,10 +2,9 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
+package com.mytiki.tiki_sdk_android
 
-import com.mytiki.tiki_sdk_android.TitleTag
 import com.squareup.moshi.JsonClass
-
 
 /**
  * Title record

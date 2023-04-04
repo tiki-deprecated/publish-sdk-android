@@ -4,6 +4,7 @@
  */
 package com.mytiki.tiki_sdk_android.core.req
 
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

@@ -2,14 +2,10 @@
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
-
 package com.mytiki.tiki_sdk_android.util
 
-import com.mytiki.tiki_sdk_android.LicenseUse
 import com.mytiki.tiki_sdk_android.TitleTag
 import com.squareup.moshi.*
-
-import java.util.*
 
 /**
  * Single value to String JSON adapter for Moshi.
