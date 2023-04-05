@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/whoops" />
+
+    <TextView
+        android:id="@+id/backing_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/space_grotesk_medium"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingTop="36dp"
+        android:paddingBottom="36dp"
+        android:text="Permission Required"
+        android:textColor="#1C0000"
+        android:textSize="32sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/space_grotesk_light"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingBottom="6dp"
+        android:text="Offer declined."
+        android:textColor="#99000000"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/space_grotesk_light"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="To proceed, allow "
+            android:textColor="#99000000"
+            android:textSize="18sp" />
+
+        <include layout="@layout/permissions_link" />
+
+    </LinearLayout>
+</LinearLayout>

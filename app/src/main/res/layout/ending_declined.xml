@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/your_choice" />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/backing_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/space_grotesk_medium"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingTop="36dp"
+        android:paddingBottom="36dp"
+        android:text="Backing Off"
+        android:textColor="#1C0000"
+        android:textSize="32sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/space_grotesk_light"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingBottom="6dp"
+        android:text="Your data is valuable."
+        android:textColor="#99000000"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/space_grotesk_light"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Opt-in anytime in"
+            android:textColor="#99000000"
+            android:textSize="18sp" />
+
+        <include layout="@layout/settings_link" />
+
+    </LinearLayout>
+</LinearLayout>
