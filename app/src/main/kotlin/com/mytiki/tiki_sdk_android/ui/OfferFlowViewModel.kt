@@ -11,5 +11,5 @@ class OfferFlowViewModel : ViewModel() {
     val step: LiveData<OfferFlowStep>
         get() = _step
 
-    private var _step: MutableLiveData<OfferFlowStep> = MutableLiveData(OfferFlowStep.NONE)
+    private var _step: MutableLiveData<OfferFlowStep> = MutableLiveData(OfferFlowStep.PROMPT)
 }

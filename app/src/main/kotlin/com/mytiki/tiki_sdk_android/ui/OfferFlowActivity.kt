@@ -30,16 +30,17 @@ class OfferFlowActivity : AppCompatActivity() {
                 OfferFlowStep.ENDING_ERROR -> showEndingError()
             }
         }
+        showOfferPrompt()
     }
 
     private fun initializeBottomSheets() {
-        promptBottomSheetDialog = BottomSheetDialog(applicationContext)
+        promptBottomSheetDialog = BottomSheetDialog(this)
         promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
-        endingAcceptedBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingAcceptedBottomSheetDialog = BottomSheetDialog(this)
         endingAcceptedBottomSheetDialog.setContentView(R.layout.ending_accepted)
-        endingDeclinedBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingDeclinedBottomSheetDialog = BottomSheetDialog(this)
         endingDeclinedBottomSheetDialog.setContentView(R.layout.ending_declined)
-        endingErrorBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingErrorBottomSheetDialog = BottomSheetDialog(this)
         endingErrorBottomSheetDialog.setContentView(R.layout.ending_error)
     }
 
