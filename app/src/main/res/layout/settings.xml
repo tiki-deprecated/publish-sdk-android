@@ -32,7 +32,6 @@
         android:gravity="center_vertical"
         android:paddingBottom="11dp"
         android:text="Terms &amp; Conditions"
-        android:textAppearance="@style/terms_condi"
         android:textColor="#1C0000"
         android:textSize="16sp" />
 

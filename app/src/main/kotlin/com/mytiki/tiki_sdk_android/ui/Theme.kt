@@ -5,7 +5,6 @@
 package com.mytiki.tiki_sdk_android.ui
 
 import android.graphics.Color
-import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 
 /**
@@ -25,7 +24,7 @@ class Theme(
 //        Color(0xFFF6F6F6)
 //    },
     private var _accentColor: Color = Color(), //if (dark) Color(0xFF00B272) else Color(0xFF00B272),
-    private var _fontFamily: Int = R.font.space_grotesk
+    private var _fontFamily: Int? = null
 ) {
 
     /**
@@ -62,7 +61,7 @@ class Theme(
     /**
      * The default font family for all texts.
      */
-    val fontFamily: Int
+    val fontFamily: Int?
         get() = _fontFamily
 
     /**
