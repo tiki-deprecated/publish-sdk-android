@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mytiki.tiki_sdk_android">
 
-    <application android:theme="@style/Theme.AppCompat">
+    <application>
         <activity
             android:name=".ui.OfferFlowActivity"
+            android:theme="@style/Theme.Transparent"
             android:exported="true" />
     </application>
 

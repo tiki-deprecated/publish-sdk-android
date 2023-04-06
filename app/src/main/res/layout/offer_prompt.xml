@@ -32,7 +32,9 @@
             <include layout="@layout/button_outline" />
         </FrameLayout>
 
-        <Space android:layout_width="24dp" />
+        <Space
+            android:layout_width="24dp"
+            android:layout_height="match_parent" />
 
         <FrameLayout
             android:layout_width="0dp"

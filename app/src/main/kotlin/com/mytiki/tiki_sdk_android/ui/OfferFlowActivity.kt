@@ -10,12 +10,18 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<OfferFlowViewModel>()
 
+    private lateinit var promptBottomSheetDialog: BottomSheetDialog
+    private lateinit var endingAcceptedBottomSheetDialog: BottomSheetDialog
+    private lateinit var endingDeclinedBottomSheetDialog: BottomSheetDialog
+    private lateinit var endingErrorBottomSheetDialog: BottomSheetDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_offer_flow)
+        initializeBottomSheets()
         viewModel.step.observe(this) {
             when (it) {
-                OfferFlowStep.PROMPT -> dismiss()
+                OfferFlowStep.NONE, null -> dismiss()
                 OfferFlowStep.PROMPT -> showOfferPrompt()
                 OfferFlowStep.TERMS -> showTerms()
                 OfferFlowStep.LEARN_MORE -> showLearnMore()
@@ -26,35 +32,42 @@ class OfferFlowActivity : AppCompatActivity() {
         }
     }
 
+    private fun initializeBottomSheets() {
+        promptBottomSheetDialog = BottomSheetDialog(applicationContext)
+        promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
+        endingAcceptedBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingAcceptedBottomSheetDialog.setContentView(R.layout.ending_accepted)
+        endingDeclinedBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingDeclinedBottomSheetDialog.setContentView(R.layout.ending_declined)
+        endingErrorBottomSheetDialog = BottomSheetDialog(applicationContext)
+        endingErrorBottomSheetDialog.setContentView(R.layout.ending_error)
+    }
+
     private fun dismiss() {
-        TODO("Not yet implemented")
+        finishActivity(1001)
     }
 
     private fun showEndingError() {
-        val bottomSheetDialog = BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.ending_error);
-        bottomSheetDialog.show()
+        endingErrorBottomSheetDialog.show()
     }
 
     private fun showEndingDeclined() {
-        val bottomSheetDialog = BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.ending_declined);
-        bottomSheetDialog.show()
+        endingDeclinedBottomSheetDialog.show()
     }
 
     private fun showEndingAccepted() {
-        TODO("Not yet implemented")
-    }
-
-    private fun showLearnMore() {
-        TODO("Not yet implemented")
-    }
-
-    private fun showTerms() {
-        TODO("Not yet implemented")
+        endingAcceptedBottomSheetDialog.show()
     }
 
     private fun showOfferPrompt() {
-        TODO("Not yet implemented")
+        promptBottomSheetDialog.show()
+    }
+
+    private fun showLearnMore() {
+
+    }
+
+    private fun showTerms() {
+
     }
 }

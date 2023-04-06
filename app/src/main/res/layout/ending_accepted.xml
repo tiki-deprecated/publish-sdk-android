@@ -5,9 +5,14 @@
     android:background="@drawable/bottom_sheet_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/your_choice" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        <include layout="@layout/your_choice" />
+    </FrameLayout>
+
+    <TextView
         android:id="@+id/backing_off"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
