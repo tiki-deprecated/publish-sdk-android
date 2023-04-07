@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -35,6 +36,9 @@ enum class Permission(val code: Int) {
     MEDIA_LIBRARY(111),
     MOTION(112),
     TRACKING(113);
+
+    val displayName
+        get() = name.lowercase().replace('_', ' ')
 
     fun isAuthorized(context: Context): Boolean = when (this) {
         CAMERA -> isPermissionGranted(Manifest.permission.CAMERA, context)
@@ -141,6 +145,7 @@ enum class Permission(val code: Int) {
         requestCode: Int,
         onRequestResult: ((Boolean) -> Unit)
     ) {
+        Log.e("TIKI", "request pemission called" )
         ActivityCompat.requestPermissions(
             context as Activity,
             arrayOf(permission),

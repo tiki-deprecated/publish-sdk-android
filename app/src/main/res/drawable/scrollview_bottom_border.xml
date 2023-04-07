@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--Minus (-) how much dp you gave in the stroke width from left right-->
     <item
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:bottom="-1dp"
         android:left="-4dp"
         android:right="-4dp"

@@ -34,8 +34,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/space_grotesk_light"
             android:gravity="center_horizontal|center_vertical"
@@ -43,7 +47,18 @@
             android:textColor="#99000000"
             android:textSize="18sp" />
 
-        <include layout="@layout/permissions_link" />
-
+        <TextView
+            android:id="@+id/permissions_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/space_grotesk_light"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/permissions_link"
+            android:textColor="#99000000"
+            android:textSize="18sp" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

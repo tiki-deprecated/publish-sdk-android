@@ -38,9 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
+        <Space
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/space_grotesk_light"
             android:gravity="center_horizontal|center_vertical"
@@ -49,6 +52,9 @@
             android:textSize="18sp" />
 
         <include layout="@layout/settings_link" />
-
+        <Space
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>
