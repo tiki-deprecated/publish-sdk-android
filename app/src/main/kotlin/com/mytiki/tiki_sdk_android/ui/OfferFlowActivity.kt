@@ -3,47 +3,48 @@ package com.mytiki.tiki_sdk_android.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
+import com.mytiki.tiki_sdk_android.TikiSdk
 
 class OfferFlowActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<OfferFlowViewModel>()
+    private var step: OfferFlowStep = OfferFlowStep.PROMPT
 
     private lateinit var promptBottomSheetDialog: BottomSheetDialog
     private lateinit var endingAcceptedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingDeclinedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingErrorBottomSheetDialog: BottomSheetDialog
 
+    private val offer: Offer = TikiSdk.offers.values.first()
+    private val isPermissionPending: Boolean
+        get() = permissions.size > 0
+    private var permissions: MutableList<Permission> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_offer_flow)
         initializeBottomSheets()
-        viewModel.step.observe(this) {
-            when (it) {
-                OfferFlowStep.NONE, null -> dismiss()
-                OfferFlowStep.PROMPT -> showOfferPrompt()
-                OfferFlowStep.TERMS -> showTerms()
-                OfferFlowStep.LEARN_MORE -> showLearnMore()
-                OfferFlowStep.ENDING_ACCEPTED -> showEndingAccepted()
-                OfferFlowStep.ENDING_DECLINED -> showEndingDeclined()
-                OfferFlowStep.ENDING_ERROR -> showEndingError()
-            }
-        }
         showOfferPrompt()
+        findViewById<ConstraintLayout>(R.id.activity_offer_bg).setOnClickListener {
+            finish()
+        }
     }
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.setPendingPermissions()
-            if(viewModel.isPermissionPending){
-                viewModel.step(OfferFlowStep.ENDING_ERROR)
-            }else{
-                viewModel.step(OfferFlowStep.ENDING_ACCEPTED)
+            promptBottomSheetDialog.dismiss()
+            permissions = offer.permissions.toMutableList()
+            if (isPermissionPending) {
+                step = OfferFlowStep.ENDING_ERROR
+                showEndingError()
+            } else {
+                step = OfferFlowStep.ENDING_ACCEPTED
+                showEndingAccepted()
             }
         }
     }
@@ -51,58 +52,77 @@ class OfferFlowActivity : AppCompatActivity() {
     private fun initializeBottomSheets() {
         promptBottomSheetDialog = BottomSheetDialog(this)
         promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
-        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.color_btn)!!.setOnClickListener{
-            val intent = Intent(this, TermsActivity::class.java)
-            resultLauncher.launch(intent)
+        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.color_btn)!!
+            .setOnClickListener {
+                showTerms()
+            }
+        promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!.setOnClickListener {
+            showLearnMore()
         }
-        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.outline_btn)!!.setOnClickListener{
-            viewModel.step(OfferFlowStep.ENDING_DECLINED)
-        }
+        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.outline_btn)!!
+            .setOnClickListener {
+                showEndingDeclined()
+            }
         promptBottomSheetDialog.setOnDismissListener {
-            dismiss()
+            if (step == OfferFlowStep.PROMPT) {
+                finish()
+            }
         }
         endingAcceptedBottomSheetDialog = BottomSheetDialog(this)
         endingAcceptedBottomSheetDialog.setContentView(R.layout.ending_accepted)
         endingAcceptedBottomSheetDialog.setOnDismissListener {
-                dismiss()
+            if (step == OfferFlowStep.ENDING_ACCEPTED) {
+                finish()
             }
+        }
         endingDeclinedBottomSheetDialog = BottomSheetDialog(this)
         endingDeclinedBottomSheetDialog.setContentView(R.layout.ending_declined)
         endingDeclinedBottomSheetDialog.setOnDismissListener {
-                dismiss()
+            if (step == OfferFlowStep.ENDING_DECLINED) {
+                finish()
             }
+        }
+
         endingErrorBottomSheetDialog = BottomSheetDialog(this)
         endingErrorBottomSheetDialog.setContentView(R.layout.ending_error)
         endingErrorBottomSheetDialog.setOnDismissListener {
-                dismiss()
+            if (step == OfferFlowStep.ENDING_ERROR) {
+                finish()
             }
-    }
+        }
 
-    private fun dismiss() {
-        finishActivity(1001)
     }
 
     private fun showEndingError() {
+        step = OfferFlowStep.ENDING_ERROR
+        promptBottomSheetDialog.dismiss()
         endingErrorBottomSheetDialog.show()
     }
 
     private fun showEndingDeclined() {
+        step = OfferFlowStep.ENDING_DECLINED
+        promptBottomSheetDialog.dismiss()
         endingDeclinedBottomSheetDialog.show()
     }
 
     private fun showEndingAccepted() {
+        step = OfferFlowStep.ENDING_ACCEPTED
+        promptBottomSheetDialog.dismiss()
         endingAcceptedBottomSheetDialog.show()
     }
 
     private fun showOfferPrompt() {
+        step = OfferFlowStep.PROMPT
         promptBottomSheetDialog.show()
     }
 
     private fun showLearnMore() {
-
+        val intent = Intent(this, LearnMoreActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showTerms() {
-
+        val intent = Intent(this, TermsActivity::class.java)
+        resultLauncher.launch(intent)
     }
 }
