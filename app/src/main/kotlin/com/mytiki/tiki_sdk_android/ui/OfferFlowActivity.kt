@@ -3,6 +3,7 @@ package com.mytiki.tiki_sdk_android.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.Intent.*
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -47,7 +48,7 @@ class OfferFlowActivity : AppCompatActivity() {
             promptBottomSheetDialog.dismiss()
             permissions = offer.permissions.toMutableList()
             if (isPermissionPending) {
-                showEndingError()
+                handlePermissions()
             } else {
                 step = OfferFlowStep.ENDING_ACCEPTED
                 showEndingAccepted()
@@ -101,7 +102,9 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showEndingError() {
         step = OfferFlowStep.ENDING_ERROR
-        promptBottomSheetDialog.dismiss()
+        if(promptBottomSheetDialog.isShowing){
+            promptBottomSheetDialog.dismiss()
+        }
         endingErrorBottomSheetDialog.show()
         endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!.text = permissions.map{
             permission -> permission.displayName}.joinToString(", ") + "."
@@ -115,23 +118,20 @@ class OfferFlowActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-        handlePermissions()
     }
 
     private fun handlePermissions() {
         if(!isPermissionPending){
-            step = OfferFlowStep.ENDING_ACCEPTED
-            endingErrorBottomSheetDialog.dismiss()
-            endingAcceptedBottomSheetDialog.show()
-        }else{
+            showEndingAccepted()
+        }else {
+            showEndingError()
             val perm = permissions.first()
             Log.e("tiki", perm.name)
-            perm.requestAuth(this) { isAuth ->
-                Log.e("tiki", "callback")
-                if(isAuth){
-                    permissions.removeFirst()
-                    handlePermissions()
-                }
+            if (!perm.isAuthorized(this)) {
+                perm.requestAuth(this)
+            }else{
+                permissions.removeFirst()
+                handlePermissions()
             }
         }
     }
@@ -144,8 +144,18 @@ class OfferFlowActivity : AppCompatActivity() {
     }
 
     private fun showEndingAccepted() {
+        Log.e("tiki", "show ending accepted")
         step = OfferFlowStep.ENDING_ACCEPTED
-        promptBottomSheetDialog.dismiss()
+        endingErrorBottomSheetDialog.apply {
+            if(this.isShowing){
+                this.dismiss()
+            }
+        }
+        promptBottomSheetDialog.apply {
+            if(this.isShowing){
+                this.dismiss()
+            }
+        }
         endingAcceptedBottomSheetDialog.show()
         enableSettingsLink(endingAcceptedBottomSheetDialog)
     }
@@ -170,6 +180,19 @@ class OfferFlowActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             finish()
             startActivity(intent)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.e("tiki", "callback")
+        if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.permissions.removeFirst()
+            handlePermissions()
         }
     }
 }

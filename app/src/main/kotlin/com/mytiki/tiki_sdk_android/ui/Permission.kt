@@ -60,61 +60,53 @@ enum class Permission(val code: Int) {
         TRACKING -> isTrackingPermissionGranted(context)
     }
 
-    fun requestAuth(context: Context, onRequestResult: ((Boolean) -> Unit) = {}) {
+    fun requestAuth(context: ActivityCompat.OnRequestPermissionsResultCallback, onRequestResult: ((Boolean) -> Unit) = {}) {
         when (this) {
-            CAMERA -> requestPermission(context, Manifest.permission.CAMERA, code, onRequestResult)
+            CAMERA -> requestPermission(context, Manifest.permission.CAMERA, code)
             MICROPHONE -> requestPermission(
                 context,
                 Manifest.permission.RECORD_AUDIO,
-                code,
-                onRequestResult
+                code
             )
             PHOTO_LIBRARY -> requestPermission(
                 context,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                code,
-                onRequestResult
+                code
             )
-            LOCATION_IN_USE -> requestLocationPermission(context, onRequestResult)
-            LOCATION_ALWAYS -> requestLocationPermission(context, onRequestResult)
-            NOTIFICATIONS -> requestNotificationPermission(context, onRequestResult)
+            LOCATION_IN_USE -> requestLocationPermission(context)
+            LOCATION_ALWAYS -> requestLocationPermission(context)
+            NOTIFICATIONS -> requestNotificationPermission(context as Context, onRequestResult)
             CALENDAR -> requestPermission(
                 context,
                 Manifest.permission.READ_CALENDAR,
-                code,
-                onRequestResult
+                code
             )
             CONTACTS -> requestPermission(
                 context,
                 Manifest.permission.READ_CONTACTS,
-                code,
-                onRequestResult
+                code
             )
             REMINDERS -> requestPermission(
                 context,
                 Manifest.permission.READ_CALENDAR,
-                code,
-                onRequestResult
+                code
             )
             SPEECH_RECOGNITION -> requestPermission(
                 context,
                 Manifest.permission.RECORD_AUDIO,
-                code,
-                onRequestResult
+                code
             )
             HEALTH -> requestPermission(
                 context,
                 Manifest.permission.BODY_SENSORS,
-                code,
-                onRequestResult
+                code
             )
             MEDIA_LIBRARY -> requestPermission(
                 context,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                code,
-                onRequestResult
+                code
             )
-            MOTION -> requestActivityRecognitionPermission(context, code, onRequestResult)
+            MOTION -> requestActivityRecognitionPermission(context, code)
             TRACKING -> requestTrackingPermission(context, onRequestResult)
         }
     }
@@ -140,21 +132,19 @@ enum class Permission(val code: Int) {
     }
 
     private fun requestPermission(
-        context: Context,
+        activity: ActivityCompat.OnRequestPermissionsResultCallback,
         permission: String,
-        requestCode: Int,
-        onRequestResult: ((Boolean) -> Unit)
+        requestCode: Int
     ) {
         Log.e("TIKI", "request pemission called" )
         ActivityCompat.requestPermissions(
-            context as Activity,
+            activity as Activity,
             arrayOf(permission),
             requestCode
         )
-        onRequestResult(false)
     }
 
-    private fun requestLocationPermission(context: Context, onRequestResult: ((Boolean) -> Unit)) {
+    private fun requestLocationPermission(context: ActivityCompat.OnRequestPermissionsResultCallback) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             ActivityCompat.requestPermissions(
                 context as Activity,
@@ -174,7 +164,6 @@ enum class Permission(val code: Int) {
                 LOCATION_IN_USE.code
             )
         }
-        onRequestResult(false)
     }
 
     @SuppressLint("DiscouragedPrivateApi")
@@ -242,33 +231,23 @@ enum class Permission(val code: Int) {
     }
 
     @SuppressLint("AnnotateVersionCheck")
-    private fun requestTrackingPermission(context: Context, onRequestResult: ((Boolean) -> Unit)) {
+    private fun requestTrackingPermission(context: ActivityCompat.OnRequestPermissionsResultCallback, onRequestResult: ((Boolean) -> Unit)) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             onRequestResult(false)
         } else {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.fromParts("package", context.packageName, null)
-            context.startActivity(intent)
+            intent.data = Uri.fromParts("package", (context as Context).packageName, null)
+            (context as Context).startActivity(intent)
             onRequestResult(false)
         }
     }
 
     fun requestActivityRecognitionPermission(
-        context: Context,
+        activity: ActivityCompat.OnRequestPermissionsResultCallback,
         code: Int,
-        onRequestResult: (Boolean) -> Unit
     ) {
         val permission = "android.permission.ACTIVITY_RECOGNITION"
-        val permissionGranted = ContextCompat.checkSelfPermission(
-            context,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
-        if (permissionGranted) {
-            onRequestResult(true)
-        } else {
-            ActivityCompat.requestPermissions(context as Activity, arrayOf(permission), code)
-            onRequestResult(false)
-        }
+        ActivityCompat.requestPermissions(activity as Activity, arrayOf(permission), code)
     }
 
 }
