@@ -7,7 +7,7 @@
 
     <include layout="@layout/your_choice" />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:id="@+id/backing_off"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,16 +30,16 @@
         android:textSize="18sp" />
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Space
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,8 +52,8 @@
         <include layout="@layout/settings_link" />
 
         <Space
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

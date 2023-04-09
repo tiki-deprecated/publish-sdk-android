@@ -8,13 +8,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
@@ -43,18 +41,19 @@ class OfferFlowActivity : AppCompatActivity() {
         }
     }
 
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            promptBottomSheetDialog.dismiss()
-            permissions = offer.permissions.toMutableList()
-            if (isPermissionPending) {
-                handlePermissions()
-            } else {
-                step = OfferFlowStep.ENDING_ACCEPTED
-                showEndingAccepted()
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                promptBottomSheetDialog.dismiss()
+                permissions = offer.permissions.toMutableList()
+                if (isPermissionPending) {
+                    handlePermissions()
+                } else {
+                    step = OfferFlowStep.ENDING_ACCEPTED
+                    showEndingAccepted()
+                }
             }
         }
-    }
 
     private fun initializeBottomSheets() {
         promptBottomSheetDialog = BottomSheetDialog(this)
@@ -102,34 +101,35 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showEndingError() {
         step = OfferFlowStep.ENDING_ERROR
-        if(promptBottomSheetDialog.isShowing){
+        if (promptBottomSheetDialog.isShowing) {
             promptBottomSheetDialog.dismiss()
         }
         endingErrorBottomSheetDialog.show()
-        endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!.text = permissions.map{
-            permission -> permission.displayName}.joinToString(", ") + "."
-        endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!.setOnClickListener {
-            val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS).apply{
-                data = Uri.fromParts("package", packageName, null)
-                addCategory(CATEGORY_DEFAULT)
-                addFlags(FLAG_ACTIVITY_NEW_TASK)
-                addFlags(FLAG_ACTIVITY_NO_HISTORY)
-                addFlags(FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+        endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!.text =
+            permissions.map { permission -> permission.displayName }.joinToString(", ") + "."
+        endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!
+            .setOnClickListener {
+                val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                    addCategory(CATEGORY_DEFAULT)
+                    addFlags(FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(FLAG_ACTIVITY_NO_HISTORY)
+                    addFlags(FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
-        }
     }
 
     private fun handlePermissions() {
-        if(!isPermissionPending){
+        if (!isPermissionPending) {
             showEndingAccepted()
-        }else {
+        } else {
             showEndingError()
             val perm = permissions.first()
             Log.e("tiki", perm.name)
             if (!perm.isAuthorized(this)) {
                 perm.requestAuth(this)
-            }else{
+            } else {
                 permissions.removeFirst()
                 handlePermissions()
             }
@@ -144,15 +144,23 @@ class OfferFlowActivity : AppCompatActivity() {
     }
 
     private fun showEndingAccepted() {
-        Log.e("tiki", "show ending accepted")
+        TikiSdk.license(
+            offer.ptr,
+            offer.uses,
+            offer.terms,
+            offer.tags,
+            null,
+            offer.description,
+            offer.expiry
+        )
         step = OfferFlowStep.ENDING_ACCEPTED
         endingErrorBottomSheetDialog.apply {
-            if(this.isShowing){
+            if (this.isShowing) {
                 this.dismiss()
             }
         }
         promptBottomSheetDialog.apply {
-            if(this.isShowing){
+            if (this.isShowing) {
                 this.dismiss()
             }
         }
@@ -175,7 +183,7 @@ class OfferFlowActivity : AppCompatActivity() {
         resultLauncher.launch(intent)
     }
 
-    private fun enableSettingsLink(v: BottomSheetDialog){
+    private fun enableSettingsLink(v: BottomSheetDialog) {
         v.findViewById<TextView>(R.id.settings_link)!!.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             finish()
@@ -190,7 +198,7 @@ class OfferFlowActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.e("tiki", "callback")
-        if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.permissions.removeFirst()
             handlePermissions()
         }

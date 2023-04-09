@@ -28,6 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
+
             <include layout="@layout/button_outline" />
         </FrameLayout>
 
@@ -39,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
+
             <include layout="@layout/button_color" />
         </FrameLayout>
     </LinearLayout>

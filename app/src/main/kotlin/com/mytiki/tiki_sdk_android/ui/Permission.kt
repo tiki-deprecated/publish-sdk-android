@@ -60,7 +60,10 @@ enum class Permission(val code: Int) {
         TRACKING -> isTrackingPermissionGranted(context)
     }
 
-    fun requestAuth(context: ActivityCompat.OnRequestPermissionsResultCallback, onRequestResult: ((Boolean) -> Unit) = {}) {
+    fun requestAuth(
+        context: ActivityCompat.OnRequestPermissionsResultCallback,
+        onRequestResult: ((Boolean) -> Unit) = {}
+    ) {
         when (this) {
             CAMERA -> requestPermission(context, Manifest.permission.CAMERA, code)
             MICROPHONE -> requestPermission(
@@ -136,7 +139,7 @@ enum class Permission(val code: Int) {
         permission: String,
         requestCode: Int
     ) {
-        Log.e("TIKI", "request pemission called" )
+        Log.e("TIKI", "request pemission called")
         ActivityCompat.requestPermissions(
             activity as Activity,
             arrayOf(permission),
@@ -231,7 +234,10 @@ enum class Permission(val code: Int) {
     }
 
     @SuppressLint("AnnotateVersionCheck")
-    private fun requestTrackingPermission(context: ActivityCompat.OnRequestPermissionsResultCallback, onRequestResult: ((Boolean) -> Unit)) {
+    private fun requestTrackingPermission(
+        context: ActivityCompat.OnRequestPermissionsResultCallback,
+        onRequestResult: ((Boolean) -> Unit)
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             onRequestResult(false)
         } else {
