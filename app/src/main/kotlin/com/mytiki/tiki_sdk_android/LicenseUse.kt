@@ -3,9 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 package com.mytiki.tiki_sdk_android
-
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
 /**
  * License use
@@ -24,17 +22,57 @@ import com.squareup.moshi.JsonClass
  * @property destinations
  * @constructor Create empty License use
  */
-@JsonClass(generateAdapter = true)
+
 data class LicenseUse(
     /**
      * Usecases explicitly define HOW an asset may be used.
      */
-    @Json(name = "usecases") val usecases: List<LicenseUsecase>,
+    val usecases: List<LicenseUsecase>,
 
     /**
      * Destinations explicitly define WHERE an asset may be used.
      * Destinations can be: a wildcard URL (*.your-co.com),
      * a string defining a category of
      */
-    @Json(name = "destinations") val destinations: List<String>? = null
-)
+    val destinations: List<String>? = null
+) {
+    companion object {
+        fun fromJson(json: String): LicenseUse {
+            val jsonObject = JSONObject(json)
+            val usecasesArr = jsonObject.getJSONArray("usecases")
+            val usecases = mutableListOf<LicenseUsecase>()
+            for (i in 0 until usecasesArr.length()) {
+                usecases.add(LicenseUsecase.fromJson(usecasesArr[i] as String))
+            }
+            val destinations = mutableListOf<String>()
+            val destinationsArr = jsonObject.getJSONArray("destinations")
+            for (i in 0 until destinationsArr.length()) {
+                destinations.add(destinationsArr[i] as String)
+            }
+            return LicenseUse(usecases, destinations)
+        }
+    }
+
+    fun toJson(): String {
+        val builder = StringBuilder()
+        builder.append("{")
+        builder.append("\"usecases\":").append("[")
+        for (i in usecases.indices) {
+            builder.append(usecases[i].toJson())
+            if (i != usecases.size - 1) {
+                builder.append(",")
+            }
+        }
+        builder.append("]").append(",")
+        builder.append("\"destinations\":").append("[")
+        for (i in usecases.indices) {
+            builder.append(usecases[i].toJson())
+            if (i != usecases.size - 1) {
+                builder.append(",")
+            }
+        }
+        builder.append("]")
+        builder.append("}")
+        return builder.toString()
+    }
+}

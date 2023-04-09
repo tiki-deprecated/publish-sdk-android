@@ -5,9 +5,15 @@
 package com.mytiki.tiki_sdk_android.core.rsp
 
 import com.mytiki.tiki_sdk_android.LicenseRecord
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
-@JsonClass(generateAdapter = true)
 data class RspLicense(
     val license: LicenseRecord?
-)
+) {
+    companion object {
+        fun fromJson(json: String): RspLicense {
+            val jsonObj = JSONObject(json)
+            return RspLicense(LicenseRecord.fromJson(jsonObj.optString("license")))
+        }
+    }
+}

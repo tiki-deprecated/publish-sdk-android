@@ -5,13 +5,37 @@
 package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.LicenseUsecase
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class ReqGuard(
-    @Json(name = "ptr") var ptr: String? = null,
-    @Json(name = "usecases") var usecases: List<LicenseUsecase> = emptyList(),
-    @Json(name = "destinations") var destinations: List<String>? = null,
-    @Json(name = "origin") var origin: String? = null
-)
+    var ptr: String? = null,
+    var usecases: List<LicenseUsecase> = emptyList(),
+    var destinations: List<String>? = null,
+    var origin: String? = null
+) {
+    fun toJson(): String {
+        val builder = StringBuilder()
+        builder.append("{")
+        builder.append("\"ptr\":").append("\"").append(ptr).append("\"").append(",")
+        builder.append("\"usecases\":").append("[")
+        for (i in usecases.indices) {
+            builder.append(usecases[i].toJson())
+            if (i != usecases.size - 1) {
+                builder.append(",")
+            }
+        }
+        builder.append("]").append(",")
+        builder.append("\"destinations\":").append("[")
+        if (destinations != null) {
+            for (i in destinations!!.indices) {
+                builder.append("\"").append(destinations!![i]).append("\"")
+                if (i != destinations!!.size - 1) {
+                    builder.append(",")
+                }
+            }
+        }
+        builder.append("]").append(",")
+        builder.append("\"origin\":").append("\"").append(origin).append("\"")
+        builder.append("}")
+        return builder.toString()
+    }
+}

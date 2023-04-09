@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 package com.mytiki.tiki_sdk_android
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 import java.util.*
 
 /**
@@ -18,7 +18,6 @@ import java.util.*
  * @property description A human-readable description of the license
  * @property expiry The date when the license expires
  */
-@JsonClass(generateAdapter = true)
 data class LicenseRecord(
     val id: String?,
     val title: TitleRecord,
@@ -26,4 +25,24 @@ data class LicenseRecord(
     val terms: String,
     val description: String?,
     val expiry: Date?
-)
+) {
+    companion object {
+        fun fromJson(json: String): LicenseRecord? {
+            if (json == "null") {
+                return null
+            }
+            val jsonObj = JSONObject(json)
+            val id = jsonObj.getString("id")
+            val terms = jsonObj.getString("terms")
+            val description = jsonObj.getString("description")
+            val title = TitleRecord.fromJson(jsonObj.getString("title"))!!
+            val usesArray = jsonObj.getJSONArray("uses")
+            val uses = mutableListOf<LicenseUse>()
+            for (index in 0 until usesArray.length()) {
+                uses.add(LicenseUse.fromJson(usesArray[index] as String))
+            }
+            val expiry = Date(jsonObj.getString("expiry").toLong())
+            return LicenseRecord(id, title, uses, terms, description, expiry)
+        }
+    }
+}

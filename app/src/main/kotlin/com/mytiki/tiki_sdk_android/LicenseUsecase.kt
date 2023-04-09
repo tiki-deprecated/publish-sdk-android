@@ -27,39 +27,48 @@ open class LicenseUsecase(value: String) {
 
     constructor(licenseUseCaseEnum: LicenseUsecaseEnum) : this(licenseUseCaseEnum.value)
 
-    /**
-     * Use case for license attribution.
-     */
-    object ATTRIBUTION : LicenseUsecase(LicenseUsecaseEnum.ATTRIBUTION)
+    fun toJson(): String {
+        return "\"$value\""
+    }
 
-    /**
-     * Use case for license retargeting.
-     */
-    object RETARGETING : LicenseUsecase(LicenseUsecaseEnum.RETARGETING)
+    companion object {
+        fun fromJson(json: String): LicenseUsecase {
+            return LicenseUsecase(json.replace("\"", ""))
+        }
 
-    /**
-     * Use case for license personalization.
-     */
-    object PERSONALIZATION : LicenseUsecase(LicenseUsecaseEnum.PERSONALIZATION)
+        /**
+         * Use case for license attribution.
+         */
+        val ATTRIBUTION = LicenseUsecase(LicenseUsecaseEnum.ATTRIBUTION)
 
-    /**
-     * Use case for license AI training.
-     */
-    object AI_TRAINING : LicenseUsecase(LicenseUsecaseEnum.AI_TRAINING)
+        /**
+         * Use case for license retargeting.
+         */
+        val RETARGETING = LicenseUsecase(LicenseUsecaseEnum.RETARGETING)
 
-    /**
-     * Use case for license distribution.
-     */
-    object DISTRIBUTION : LicenseUsecase(LicenseUsecaseEnum.DISTRIBUTION)
+        /**
+         * Use case for license personalization.
+         */
+        val PERSONALIZATION = LicenseUsecase(LicenseUsecaseEnum.PERSONALIZATION)
 
-    /**
-     * Use case for license analytics.
-     */
-    object ANALYTICS : LicenseUsecase(LicenseUsecaseEnum.ANALYTICS)
+        /**
+         * Use case for license AI training.
+         */
+        val AI_TRAINING = LicenseUsecase(LicenseUsecaseEnum.AI_TRAINING)
 
-    /**
-     * Use case for license support.
-     */
-    object SUPPORT : LicenseUsecase(LicenseUsecaseEnum.SUPPORT)
+        /**
+         * Use case for license distribution.
+         */
+        val DISTRIBUTION = LicenseUsecase(LicenseUsecaseEnum.DISTRIBUTION)
 
+        /**
+         * Use case for license analytics.
+         */
+        val ANALYTICS = LicenseUsecase(LicenseUsecaseEnum.ANALYTICS)
+
+        /**
+         * Use case for license support.
+         */
+        val SUPPORT = LicenseUsecase(LicenseUsecaseEnum.SUPPORT)
+    }
 }

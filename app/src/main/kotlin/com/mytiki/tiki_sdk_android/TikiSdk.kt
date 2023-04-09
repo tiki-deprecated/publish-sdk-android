@@ -6,13 +6,18 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import com.mytiki.tiki_sdk_android.TikiSdk.init
 import com.mytiki.tiki_sdk_android.core.CoreChannel
 import com.mytiki.tiki_sdk_android.core.CoreMethod
 import com.mytiki.tiki_sdk_android.core.req.*
 import com.mytiki.tiki_sdk_android.core.rsp.*
 import com.mytiki.tiki_sdk_android.ui.Offer
+import com.mytiki.tiki_sdk_android.ui.OfferFlowActivity
+import com.mytiki.tiki_sdk_android.ui.SettingsActivity
 import com.mytiki.tiki_sdk_android.ui.Theme
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
@@ -232,6 +237,8 @@ object TikiSdk {
         onComplete: (() -> Unit)?
     ): Deferred<Unit> {
         return MainScope().async {
+
+            Log.e("TIKI", "start")
             val loader = FlutterLoader()
             loader.startInitialization(context)
             yield()
@@ -240,6 +247,7 @@ object TikiSdk {
             flutterEngine.dartExecutor.executeDartEntrypoint(
                 DartExecutor.DartEntrypoint.createDefault()
             )
+            Log.e("TIKI", "engine ok")
             GeneratedPluginRegistrant.registerWith(flutterEngine)
             val coreChannel = CoreChannel(context)
             this@TikiSdk.coreChannel = coreChannel
@@ -251,6 +259,7 @@ object TikiSdk {
                     ReqInit(publishingId, id, origin ?: context.packageName)
                 ).await()
             this@TikiSdk.address = rspBuild!!.address
+            Log.e("TIKI", rspBuild.address)
             onComplete?.let {
                 it()
             }
@@ -270,7 +279,7 @@ object TikiSdk {
         throwIfNotInitialized()
         throwIfNoOffers()
         val presentOffer = { _: String? ->
-            print("ok")
+            startActivity(context, Intent(context, OfferFlowActivity::class.java), null)
         }
         return MainScope().async {
             val ptr: String = offers.values.first().ptr
@@ -296,6 +305,7 @@ object TikiSdk {
     fun settings(context: Context) {
         throwIfNotInitialized()
         throwIfNoOffers()
+        startActivity(context, Intent(context, SettingsActivity::class.java), null)
     }
 
     /**
@@ -367,9 +377,9 @@ object TikiSdk {
                 CoreMethod.LICENSE, licenseReq
             )
         return MainScope().async {
-
             val rspLicense: RspLicense = rspLicenseCompletable.await()!!
-            rspLicense.license!!
+            Log.e("TIKI", rspLicense.license!!.id!!)
+            rspLicense.license
         }
     }
 
@@ -585,7 +595,7 @@ object TikiSdk {
 
     private fun throwIfNotInitialized() {
         if (!isInitialized) {
-            throw IllegalStateException("Please ensure that the TIKI SDK is properly initialized by calling initialize().")
+            throw IllegalStateException("Please ensure that the TIKI SDK is properly initialized by calling TikiSdk.init().")
         }
     }
 

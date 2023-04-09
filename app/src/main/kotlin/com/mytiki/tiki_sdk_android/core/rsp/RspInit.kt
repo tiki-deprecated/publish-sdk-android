@@ -4,9 +4,15 @@
  */
 package com.mytiki.tiki_sdk_android.core.rsp
 
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
-@JsonClass(generateAdapter = true)
 data class RspInit(
     val address: String
-)
+) {
+    companion object {
+        fun fromJson(json: String): RspInit {
+            val jsonObj = JSONObject(json)
+            return RspInit(jsonObj.getString("address"))
+        }
+    }
+}

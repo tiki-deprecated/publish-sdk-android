@@ -4,10 +4,16 @@
  */
 package com.mytiki.tiki_sdk_android.core.rsp
 
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
-@JsonClass(generateAdapter = true)
 data class RspGuard(
     val success: Boolean,
     val reason: String?
-)
+) {
+    companion object {
+        fun fromJson(json: String): RspGuard {
+            val jsonObj = JSONObject(json)
+            return RspGuard(jsonObj.getBoolean("success"), jsonObj.optString("reason"))
+        }
+    }
+}
