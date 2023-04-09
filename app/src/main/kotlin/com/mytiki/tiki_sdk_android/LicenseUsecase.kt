@@ -4,13 +4,10 @@
  */
 package com.mytiki.tiki_sdk_android
 
-import com.squareup.moshi.JsonClass
-
 /**
  * Use case for license.
  *
  */
-@JsonClass(generateAdapter = true)
 open class LicenseUsecase(value: String) {
 
     var value: String
@@ -18,7 +15,7 @@ open class LicenseUsecase(value: String) {
 
     init {
         try {
-            val licenseUseCaseEnum = TitleTagEnum.fromValue(value)
+            val licenseUseCaseEnum = LicenseUsecaseEnum.fromValue(value)
             this.value = licenseUseCaseEnum.value
         } catch (e: Exception) {
             this.value = "custom:$value"
@@ -33,7 +30,8 @@ open class LicenseUsecase(value: String) {
 
     companion object {
         fun fromJson(json: String): LicenseUsecase {
-            return LicenseUsecase(json.replace("\"", ""))
+            val value = json.replace("\"", "")
+            return LicenseUsecase(value)
         }
 
         /**

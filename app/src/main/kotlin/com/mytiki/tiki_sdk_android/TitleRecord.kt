@@ -4,7 +4,6 @@
  */
 package com.mytiki.tiki_sdk_android
 
-import com.squareup.moshi.JsonClass
 import org.json.JSONObject
 
 /**
@@ -21,7 +20,6 @@ import org.json.JSONObject
  * @property origin Overrides the default origin from which the data was generated.
  * @constructor Create empty Title record
  */
-@JsonClass(generateAdapter = true)
 data class TitleRecord(
     /**
      * This record's id.

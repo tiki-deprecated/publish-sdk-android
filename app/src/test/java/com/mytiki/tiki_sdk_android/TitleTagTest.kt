@@ -4,9 +4,7 @@
  */
 
 package com.mytiki.tiki_sdk_android
-import com.mytiki.tiki_sdk_android.util.TitleTagFromStringAdapter
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
+
 import org.junit.Assert
 import org.junit.Test
 
@@ -25,23 +23,17 @@ class TitleTagTest {
 
     @Test
     fun titleTag_from_json() {
-        val moshi: Moshi = Moshi.Builder()
-            .add(TitleTagFromStringAdapter())
-            .build()
-        val adapter: JsonAdapter<TitleTag> = moshi.adapter(TitleTag::class.java)
         val json = "\"advertising_data\""
-        val titleTag = adapter.fromJson(json)
-        Assert.assertEquals(TitleTag.ADVERTISING_DATA.value, titleTag?.value)
+        val titleTag = TitleTag.fromJson(json)
+        Assert.assertEquals(TitleTag.ADVERTISING_DATA.value, titleTag.value)
     }
 
     @Test
     fun titleTag_to_json() {
-        val moshi: Moshi = Moshi.Builder()
-            .add(TitleTagFromStringAdapter())
-            .build()
-        val adapter: JsonAdapter<TitleTag> = moshi.adapter(TitleTag::class.java)
         val titleTag = TitleTag.ADVERTISING_DATA
-        val json = adapter.toJson(titleTag)
+        val json = titleTag.toJson()
         Assert.assertEquals("\"advertising_data\"", json)
     }
+
+
 }
