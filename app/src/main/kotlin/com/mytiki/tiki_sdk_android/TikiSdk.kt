@@ -237,22 +237,8 @@ object TikiSdk {
         onComplete: (() -> Unit)?
     ): Deferred<Unit> {
         return MainScope().async {
-
-            Log.e("TIKI", "start")
-            val loader = FlutterLoader()
-            loader.startInitialization(context)
-            yield()
-            loader.ensureInitializationComplete(context, null)
-            val flutterEngine = FlutterEngine(context)
-            flutterEngine.dartExecutor.executeDartEntrypoint(
-                DartExecutor.DartEntrypoint.createDefault()
-            )
-            Log.e("TIKI", "engine ok")
-            GeneratedPluginRegistrant.registerWith(flutterEngine)
             val coreChannel = CoreChannel(context)
             this@TikiSdk.coreChannel = coreChannel
-            flutterEngine.plugins.add(coreChannel)
-            yield()
             val rspInitJson = coreChannel.invokeMethod(
                 CoreMethod.BUILD,
                 ReqInit(publishingId, id, origin ?: context.packageName).toJson()
