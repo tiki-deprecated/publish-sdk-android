@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.util.Log
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
@@ -36,7 +36,7 @@ class OfferFlowActivity : AppCompatActivity() {
         setContentView(R.layout.activity_offer_flow)
         initializeBottomSheets()
         showOfferPrompt()
-        findViewById<ConstraintLayout>(R.id.activity_offer_bg).setOnClickListener {
+        findViewById<RelativeLayout>(R.id.activity_offer_bg).setOnClickListener {
             finish()
         }
     }
@@ -58,14 +58,14 @@ class OfferFlowActivity : AppCompatActivity() {
     private fun initializeBottomSheets() {
         promptBottomSheetDialog = BottomSheetDialog(this)
         promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
-        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.color_btn)!!
+        promptBottomSheetDialog.findViewById<RelativeLayout>(R.id.color_btn)!!
             .setOnClickListener {
                 showTerms()
             }
         promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!.setOnClickListener {
             showLearnMore()
         }
-        promptBottomSheetDialog.findViewById<ConstraintLayout>(R.id.outline_btn)!!
+        promptBottomSheetDialog.findViewById<RelativeLayout>(R.id.outline_btn)!!
             .setOnClickListener {
                 showEndingDeclined()
             }
