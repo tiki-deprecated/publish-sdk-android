@@ -16,14 +16,13 @@ import com.mytiki.tiki_sdk_android.core.CoreMethod
 import com.mytiki.tiki_sdk_android.core.req.*
 import com.mytiki.tiki_sdk_android.core.rsp.*
 import com.mytiki.tiki_sdk_android.ui.Offer
-import com.mytiki.tiki_sdk_android.ui.OfferFlowActivity
-import com.mytiki.tiki_sdk_android.ui.SettingsActivity
 import com.mytiki.tiki_sdk_android.ui.Theme
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor
-import io.flutter.embedding.engine.loader.FlutterLoader
-import io.flutter.plugins.GeneratedPluginRegistrant
-import kotlinx.coroutines.*
+import com.mytiki.tiki_sdk_android.ui.activities.OfferFlowActivity
+import com.mytiki.tiki_sdk_android.ui.activities.SettingsActivity
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import java.util.*
 
 /**
@@ -265,9 +264,6 @@ object TikiSdk {
     fun present(context: Context) {
         throwIfNotInitialized()
         throwIfNoOffers()
-        val presentOffer = { _: String? ->
-            startActivity(context, Intent(context, OfferFlowActivity::class.java), null)
-        }
         MainScope().async {
             val ptr: String = offers.values.first().ptr
             val usecases: MutableList<LicenseUsecase> = mutableListOf()
@@ -277,8 +273,12 @@ object TikiSdk {
                     destinations.addAll(it.destinations)
                 }
                 usecases.addAll(it.usecases)
-                guard(ptr, usecases, destinations, null, presentOffer)
             }
+            guard(ptr, usecases, destinations, {
+                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
+            }, {
+                startActivity(context, Intent(context, OfferFlowActivity::class.java), null)
+            })
         }
     }
 

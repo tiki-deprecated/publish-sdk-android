@@ -5,10 +5,7 @@
 package com.mytiki.tiki_sdk_android.ui
 
 enum class OfferFlowStep {
-    NONE,
     PROMPT,
-    TERMS,
-    LEARN_MORE,
     ENDING_ACCEPTED,
     ENDING_DECLINED,
     ENDING_ERROR;
