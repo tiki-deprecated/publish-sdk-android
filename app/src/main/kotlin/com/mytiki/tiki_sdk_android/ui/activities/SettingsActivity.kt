@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -24,12 +25,15 @@ class SettingsActivity : AppCompatActivity() {
 
     private val isPermissionPending: Boolean
         get() = permissions.size > 0
+
     private var permissions: MutableList<Permission> = mutableListOf()
+    private lateinit var btnFrame: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
         offer = TikiSdk.offers.values.first()
+        btnFrame = findViewById(R.id.settings_btn_frame)
         setupOfferDetails()
         setupStaticBtns()
         setupOptBtn()
@@ -80,8 +84,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupOptBtn() {
-        optInBtn = findViewById(R.id.color_btn)
-        optOutBtn = findViewById(R.id.outline_btn)
+        val inflater = LayoutInflater.from(this)
+        optInBtn = inflater.inflate(R.layout.button_color, null, false) as RelativeLayout
+        optOutBtn = inflater.inflate(R.layout.button_outline, null, false) as RelativeLayout
         val ptr: String = offer.ptr
         val usecases: MutableList<LicenseUsecase> = mutableListOf()
         val destinations: MutableList<String> = mutableListOf()
@@ -91,7 +96,15 @@ class SettingsActivity : AppCompatActivity() {
             }
             usecases.addAll(it.usecases)
         }
-        TikiSdk.guard(ptr, usecases, destinations, { enableOptOutBtn() }, { enableOptInBtn() })
+        TikiSdk.guard(ptr, usecases, destinations, {
+            Log.e("TIKI", "SETTINGS GUARD PASS")
+            enableOptOutBtn()
+        }, {
+
+
+            Log.e("TIKI", "SETTINGS GUARD FAIL")
+            enableOptInBtn()
+        })
     }
 
     private fun enableOptInBtn() {
@@ -100,7 +113,8 @@ class SettingsActivity : AppCompatActivity() {
             permissions = offer.permissions.toMutableList()
             handlePermissions()
         }
-        findViewById<FrameLayout>(R.id.settings_btn_frame).addView(optInBtn)
+        btnFrame.removeAllViews()
+        btnFrame.addView(optInBtn)
     }
 
     private fun enableOptOutBtn() {
@@ -115,10 +129,12 @@ class SettingsActivity : AppCompatActivity() {
                 offer.description,
                 offer.expiry
             ).invokeOnCompletion {
+                Log.e("tiki", "complete")
                 setupOptBtn()
             }
         }
-        findViewById<FrameLayout>(R.id.settings_btn_frame).addView(optInBtn)
+        btnFrame.removeAllViews()
+        btnFrame.addView(optInBtn)
     }
 
     private fun handlePermissions() {

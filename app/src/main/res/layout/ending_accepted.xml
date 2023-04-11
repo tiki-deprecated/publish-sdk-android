@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="28dp"
+    android:paddingBottom="50dp">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <include layout="@layout/your_choice" />
-    </FrameLayout>
+    <include layout="@layout/your_choice" />
 
     <TextView
         android:id="@+id/backing_off"

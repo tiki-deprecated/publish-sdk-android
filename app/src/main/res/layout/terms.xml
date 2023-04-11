@@ -42,7 +42,7 @@
             android:fontFamily="@font/space_grotesk_regular"
             android:gravity="center_vertical"
             android:paddingStart="15dp"
-            android:paddingTop="40dp"
+            android:paddingTop="30dp"
             android:paddingEnd="15dp"
             android:text="@string/lipsum"
             android:textColor="#1C0000"

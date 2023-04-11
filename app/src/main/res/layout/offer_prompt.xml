@@ -3,6 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
+    android:paddingStart="15dp"
+    android:paddingTop="32dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="50dp"
     android:orientation="vertical">
 
     <FrameLayout
@@ -15,7 +19,13 @@
         <include layout="@layout/offer_prompt_header" />
     </FrameLayout>
 
-    <include layout="@layout/offer_card" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <include layout="@layout/offer_card" />
+    </FrameLayout>
 
     <include layout="@layout/used_for" />
 

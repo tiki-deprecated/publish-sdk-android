@@ -8,10 +8,7 @@
     android:elevation="4dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="20dp">
+    android:padding="20dp">
 
     <ImageView
         android:id="@+id/offer_image"
@@ -21,8 +18,10 @@
 
     <TextView
         android:id="@+id/offer_description"
+        android:layout_height="wrap_content"
+        android:paddingTop="14dp"
         android:layout_width="300dp"
-        android:layout_height="64dp"
+        android:paddingBottom="14dp"
         android:fontFamily="@font/space_grotesk_bold"
         android:gravity="center_vertical"
         android:text="Trade your IDFA (kind of like a serial # for your phone) for a discount."

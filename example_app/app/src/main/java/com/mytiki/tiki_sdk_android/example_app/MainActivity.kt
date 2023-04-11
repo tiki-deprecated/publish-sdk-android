@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         TikiSdk.offer
             .ptr("test_offer")
             .reward(ResourcesCompat.getDrawable(resources, R.drawable.offer_img, null)!!)
