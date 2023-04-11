@@ -11,9 +11,8 @@ import com.mytiki.tiki_sdk_android.TitleTag
 import com.mytiki.tiki_sdk_android.ui.OfferFlowActivity
 import com.mytiki.tiki_sdk_android.ui.Permission
 import com.mytiki.tiki_sdk_android.ui.SettingsActivity
+import java.util.*
 import java.util.concurrent.TimeUnit
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,6 +44,6 @@ class MainActivity : AppCompatActivity() {
             //.onSettings  { print("settings") }
             .disableAcceptEnding(false)
             .disableDeclineEnding(false)
-            .init(this, "e12f5b7b-6b48-4503-8b39-28e4995b5f88", "user_123") {}
+            .init(this, "e12f5b7b-6b48-4503-8b39-28e4995b5f88", UUID.randomUUID().toString()) {}
     }
 }
