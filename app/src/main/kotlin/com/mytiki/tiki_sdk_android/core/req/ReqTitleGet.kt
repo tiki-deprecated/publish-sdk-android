@@ -4,16 +4,16 @@
  */
 package com.mytiki.tiki_sdk_android.core.req
 
+import org.json.JSONObject
+
 data class ReqTitleGet(
     val id: String?,
     val origin: String?
 ) {
     fun toJson(): String {
-        val builder = StringBuilder()
-        builder.append("{")
-        builder.append("\"id\":").append("\"").append(id).append("\"").append(",")
-        builder.append("\"origin\":").append("\"").append(origin).append("\"")
-        builder.append("}")
-        return builder.toString()
+        val jsonObject = JSONObject()
+        jsonObject.put("id", id)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
     }
 }

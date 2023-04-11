@@ -6,6 +6,8 @@ package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.LicenseUse
 import com.mytiki.tiki_sdk_android.TitleTag
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 
 data class ReqLicense(
@@ -19,34 +21,23 @@ data class ReqLicense(
     val origin: String?
 ) {
     fun toJson(): String {
-        val builder = StringBuilder()
-        builder.append("{")
-        builder.append("\"ptr\":").append("\"").append(ptr).append("\"").append(",")
-        builder.append("\"terms\":").append("\"").append(terms).append("\"").append(",")
-        builder.append("\"titleDescription\":").append("\"").append(titleDescription).append("\"")
-            .append(",")
-        builder.append("\"licenseDescription\":").append("\"").append(licenseDescription)
-            .append("\"").append(",")
-        builder.append("\"uses\":").append("\"").append(uses).append("\"").append(",")
-        builder.append("\"uses\":").append("[")
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        jsonObject.put("terms", terms)
+        jsonObject.put("titleDescription", titleDescription)
+        jsonObject.put("licenseDescription", licenseDescription)
+        val usesArray = JSONArray()
         for (i in uses.indices) {
-            builder.append(uses[i].toJson())
-            if (i != uses.size - 1) {
-                builder.append(",")
-            }
+            usesArray.put(uses[i].toJsonObject())
         }
-        builder.append("]").append(",")
-        builder.append("\"tags\":").append("[")
+        jsonObject.put("uses", usesArray)
+        val tagsArray = JSONArray()
         for (i in tags.indices) {
-            builder.append(tags[i].toJson())
-            if (i != tags.size - 1) {
-                builder.append(",")
-            }
+            tagsArray.put(tags[i].value)
         }
-        builder.append("]").append(",")
-        builder.append("\"expiry\":").append("\"").append(expiry).append("\"").append(",")
-        builder.append("\"origin\":").append("\"").append(origin).append("\"").append(",")
-        builder.append("}")
-        return builder.toString()
+        jsonObject.put("tags", tagsArray)
+        jsonObject.put("expiry", expiry?.time)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
     }
 }

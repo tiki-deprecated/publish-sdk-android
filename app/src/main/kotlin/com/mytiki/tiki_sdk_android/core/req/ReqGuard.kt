@@ -5,6 +5,8 @@
 package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.LicenseUsecase
+import org.json.JSONArray
+import org.json.JSONObject
 
 data class ReqGuard(
     var ptr: String? = null,
@@ -13,29 +15,21 @@ data class ReqGuard(
     var origin: String? = null
 ) {
     fun toJson(): String {
-        val builder = StringBuilder()
-        builder.append("{")
-        builder.append("\"ptr\":").append("\"").append(ptr).append("\"").append(",")
-        builder.append("\"usecases\":").append("[")
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        val usesArray = JSONArray()
         for (i in usecases.indices) {
-            builder.append(usecases[i].toJson())
-            if (i != usecases.size - 1) {
-                builder.append(",")
-            }
+            usesArray.put(usecases[i].value)
         }
-        builder.append("]").append(",")
-        builder.append("\"destinations\":").append("[")
+        jsonObject.put("usecases", usesArray)
+        val destinationsArray = JSONArray()
         if (destinations != null) {
             for (i in destinations!!.indices) {
-                builder.append("\"").append(destinations!![i]).append("\"")
-                if (i != destinations!!.size - 1) {
-                    builder.append(",")
-                }
+                usesArray.put(destinations!![i])
             }
         }
-        builder.append("]").append(",")
-        builder.append("\"origin\":").append("\"").append(origin).append("\"")
-        builder.append("}")
-        return builder.toString()
+        jsonObject.put("destinations", destinationsArray)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
     }
 }

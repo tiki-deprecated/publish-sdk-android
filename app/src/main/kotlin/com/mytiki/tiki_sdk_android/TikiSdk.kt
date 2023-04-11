@@ -366,8 +366,7 @@ object TikiSdk {
         return MainScope().async {
             val rspLicenseJson: String = rspLicenseCompletable.await()
             val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
-            Log.e("TIKI", rspLicense.license!!.id!!)
-            rspLicense.license
+            rspLicense.license!!
         }
     }
 

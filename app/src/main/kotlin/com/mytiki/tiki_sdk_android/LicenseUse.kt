@@ -4,6 +4,7 @@
  */
 package com.mytiki.tiki_sdk_android
 
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -54,26 +55,24 @@ data class LicenseUse(
         }
     }
 
+    fun toJsonObject(): JSONObject {
+        val jsonObject = JSONObject()
+        val usesArray = JSONArray()
+        for (i in usecases.indices) {
+            usesArray.put(usecases[i].value)
+        }
+        jsonObject.put("usecases", usesArray)
+        val destinationsArray = JSONArray()
+        if (destinations != null) {
+            for (i in destinations.indices) {
+                usesArray.put(destinations[i])
+            }
+        }
+        jsonObject.put("destinations", destinationsArray)
+        return jsonObject
+    }
+
     fun toJson(): String {
-        val builder = StringBuilder()
-        builder.append("{")
-        builder.append("\"usecases\":").append("[")
-        for (i in usecases.indices) {
-            builder.append(usecases[i].toJson())
-            if (i != usecases.size - 1) {
-                builder.append(",")
-            }
-        }
-        builder.append("]").append(",")
-        builder.append("\"destinations\":").append("[")
-        for (i in usecases.indices) {
-            builder.append(usecases[i].toJson())
-            if (i != usecases.size - 1) {
-                builder.append(",")
-            }
-        }
-        builder.append("]")
-        builder.append("}")
-        return builder.toString()
+        return toJsonObject().toString()
     }
 }

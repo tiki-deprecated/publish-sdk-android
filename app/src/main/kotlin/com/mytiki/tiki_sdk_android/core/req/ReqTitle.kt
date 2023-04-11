@@ -5,6 +5,8 @@
 package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.TitleTag
+import org.json.JSONArray
+import org.json.JSONObject
 
 data class ReqTitle(
     val ptr: String?,
@@ -13,20 +15,15 @@ data class ReqTitle(
     val origin: String?
 ) {
     fun toJson(): String {
-        val builder = StringBuilder()
-        builder.append("{")
-        builder.append("\"ptr\":").append("\"").append(ptr).append("\"").append(",")
-        builder.append("\"tags\":").append("[")
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        val tagsArray = JSONArray()
         for (i in tags.indices) {
-            builder.append(tags[i].toJson())
-            if (i != tags.size - 1) {
-                builder.append(",")
-            }
+            tagsArray.put(tags[i].value)
         }
-        builder.append("]").append(",")
-        builder.append("\"description\":").append("\"").append(description).append("\"").append(",")
-        builder.append("\"origin\":").append("\"").append(origin).append("\"").append(",")
-        builder.append("}")
-        return builder.toString()
+        jsonObject.put("tags", tagsArray)
+        jsonObject.put("description", description)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
     }
 }
