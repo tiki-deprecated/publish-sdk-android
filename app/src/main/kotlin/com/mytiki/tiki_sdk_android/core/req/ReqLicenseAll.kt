@@ -4,10 +4,16 @@
  */
 package com.mytiki.tiki_sdk_android.core.req
 
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
-@JsonClass(generateAdapter = true)
 data class ReqLicenseAll(
     val ptr: String?,
     val origin: String?
-)
+) {
+    fun toJson(): String {
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
+    }
+}

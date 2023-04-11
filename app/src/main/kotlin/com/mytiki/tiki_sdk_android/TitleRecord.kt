@@ -4,7 +4,7 @@
  */
 package com.mytiki.tiki_sdk_android
 
-import com.squareup.moshi.JsonClass
+import org.json.JSONObject
 
 /**
  * Title record
@@ -20,7 +20,6 @@ import com.squareup.moshi.JsonClass
  * @property origin Overrides the default origin from which the data was generated.
  * @constructor Create empty Title record
  */
-@JsonClass(generateAdapter = true)
 data class TitleRecord(
     /**
      * This record's id.
@@ -42,4 +41,23 @@ data class TitleRecord(
      * The origin from which the data was generated.
      */
     val origin: String? = null,
-)
+) {
+    companion object {
+        fun fromJson(json: String): TitleRecord? {
+            if (json == "null") {
+                return null
+            }
+            val jsonObj = JSONObject(json)
+            val id = jsonObj.getString("id")
+            val ptr = jsonObj.getString("ptr")
+            val description = jsonObj.getString("description")
+            val origin = jsonObj.getString("origin")
+            val tagsArr = jsonObj.getJSONArray("tags")
+            val tags = mutableListOf<TitleTag>()
+            for (i in 0 until tagsArr.length()) {
+                tags.add(TitleTag.fromJson(tagsArr[i] as String))
+            }
+            return TitleRecord(id, ptr, tags, description, origin)
+        }
+    }
+}

@@ -5,13 +5,11 @@
 
 package com.mytiki.tiki_sdk_android
 
-import com.mytiki.tiki_sdk_android.util.LicenseUsecaseFromStringAdapter
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import org.junit.Assert
 import org.junit.Test
 
 class LicenseUsecaseTest {
+
     @Test
     fun licenseUsecaseEnum_from_value() {
         val licenseUsecaseEnum = LicenseUsecaseEnum.fromValue("support")
@@ -26,23 +24,15 @@ class LicenseUsecaseTest {
 
     @Test
     fun licenseUsecase_from_json() {
-        val moshi: Moshi = Moshi.Builder()
-            .add(LicenseUsecaseFromStringAdapter())
-            .build()
-        val adapter: JsonAdapter<LicenseUsecase> = moshi.adapter(LicenseUsecase::class.java)
         val json = "\"support\""
-        val licenseUsecase = adapter.fromJson(json)
-        Assert.assertEquals(LicenseUsecase.SUPPORT.value, licenseUsecase?.value)
+        val licenseUsecase = LicenseUsecase.fromJson(json)
+        Assert.assertEquals(LicenseUsecase.SUPPORT.value, licenseUsecase.value)
     }
 
     @Test
     fun licenseUsecase_to_json() {
-        val moshi: Moshi = Moshi.Builder()
-            .add(LicenseUsecaseFromStringAdapter())
-            .build()
-        val adapter: JsonAdapter<LicenseUsecase> = moshi.adapter(LicenseUsecase::class.java)
         val licenseUsecase = LicenseUsecase.SUPPORT
-        val json = adapter.toJson(licenseUsecase)
+        val json = licenseUsecase.toJson()
         Assert.assertEquals("\"support\"", json)
     }
 }

@@ -6,7 +6,10 @@
 package com.mytiki.tiki_sdk_android
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import com.mytiki.tiki_sdk_android.TikiSdk.init
 import com.mytiki.tiki_sdk_android.core.CoreChannel
 import com.mytiki.tiki_sdk_android.core.CoreMethod
@@ -14,11 +17,12 @@ import com.mytiki.tiki_sdk_android.core.req.*
 import com.mytiki.tiki_sdk_android.core.rsp.*
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Theme
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.engine.dart.DartExecutor
-import io.flutter.embedding.engine.loader.FlutterLoader
-import io.flutter.plugins.GeneratedPluginRegistrant
-import kotlinx.coroutines.*
+import com.mytiki.tiki_sdk_android.ui.activities.OfferFlowActivity
+import com.mytiki.tiki_sdk_android.ui.activities.SettingsActivity
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import java.util.*
 
 /**
@@ -232,25 +236,15 @@ object TikiSdk {
         onComplete: (() -> Unit)?
     ): Deferred<Unit> {
         return MainScope().async {
-            val loader = FlutterLoader()
-            loader.startInitialization(context)
-            yield()
-            loader.ensureInitializationComplete(context, null)
-            val flutterEngine = FlutterEngine(context)
-            flutterEngine.dartExecutor.executeDartEntrypoint(
-                DartExecutor.DartEntrypoint.createDefault()
-            )
-            GeneratedPluginRegistrant.registerWith(flutterEngine)
             val coreChannel = CoreChannel(context)
             this@TikiSdk.coreChannel = coreChannel
-            flutterEngine.plugins.add(coreChannel)
-            yield()
-            val rspBuild = coreChannel
-                .invokeMethod<RspInit, ReqInit>(
-                    CoreMethod.BUILD,
-                    ReqInit(publishingId, id, origin ?: context.packageName)
-                ).await()
-            this@TikiSdk.address = rspBuild!!.address
+            val rspInitJson = coreChannel.invokeMethod(
+                CoreMethod.BUILD,
+                ReqInit(publishingId, id, origin ?: context.packageName).toJson()
+            ).await()
+            val rspInit = RspInit.fromJson(rspInitJson)
+            this@TikiSdk.address = rspInit.address
+            Log.e("TIKI", rspInit.address)
             onComplete?.let {
                 it()
             }
@@ -266,13 +260,11 @@ object TikiSdk {
      * @param context
      * @throws IllegalStateException if the SDK is not initialized or if no Offer was created.
      */
-    fun present(context: Context): Deferred<Unit> {
+    @Suppress("DeferredResultUnused")
+    fun present(context: Context) {
         throwIfNotInitialized()
         throwIfNoOffers()
-        val presentOffer = { _: String? ->
-            print("ok")
-        }
-        return MainScope().async {
+        MainScope().async {
             val ptr: String = offers.values.first().ptr
             val usecases: MutableList<LicenseUsecase> = mutableListOf()
             val destinations: MutableList<String> = mutableListOf()
@@ -281,8 +273,12 @@ object TikiSdk {
                     destinations.addAll(it.destinations)
                 }
                 usecases.addAll(it.usecases)
-                guard(ptr, usecases, destinations, null, presentOffer)
             }
+            guard(ptr, usecases, destinations, {
+                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
+            }, {
+                startActivity(context, Intent(context, OfferFlowActivity::class.java), null)
+            })
         }
     }
 
@@ -296,6 +292,7 @@ object TikiSdk {
     fun settings(context: Context) {
         throwIfNotInitialized()
         throwIfNoOffers()
+        startActivity(context, Intent(context, SettingsActivity::class.java), null)
     }
 
     /**
@@ -362,13 +359,13 @@ object TikiSdk {
             ptr, terms, titleDescription, licenseDescription, uses, tags, expiry, origin
         )
 
-        val rspLicenseCompletable: CompletableDeferred<RspLicense?> =
+        val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq
+                CoreMethod.LICENSE, licenseReq.toJson()
             )
         return MainScope().async {
-
-            val rspLicense: RspLicense = rspLicenseCompletable.await()!!
+            val rspLicenseJson: String = rspLicenseCompletable.await()
+            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
             rspLicense.license!!
         }
     }
@@ -423,12 +420,13 @@ object TikiSdk {
     ): Deferred<Boolean> {
         throwIfNotInitialized()
         val guardReq = ReqGuard(ptr, usecases, destinations, origin)
-        val rspGuardCompletable: CompletableDeferred<RspGuard?> =
+        val rspGuardCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.GUARD, guardReq
+                CoreMethod.GUARD, guardReq.toJson()
             )
         return MainScope().async {
-            val rspGuard: RspGuard = rspGuardCompletable.await()!!
+            val rspGuardJson: String = rspGuardCompletable.await()
+            val rspGuard: RspGuard = RspGuard.fromJson(rspGuardJson)
             if (onPass != null && rspGuard.success) {
                 onPass()
             }
@@ -464,12 +462,13 @@ object TikiSdk {
     ): Deferred<TitleRecord> {
         throwIfNotInitialized()
         val titleReq = ReqTitle(ptr, tags, description, origin)
-        val rspTitleCompletable: CompletableDeferred<RspTitle?> =
+        val rspTitleCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, titleReq
+                CoreMethod.LICENSE, titleReq.toJson()
             )
         return MainScope().async {
-            val rspTitle: RspTitle = rspTitleCompletable.await()!!
+            val rspTitleString: String = rspTitleCompletable.await()
+            val rspTitle: RspTitle = RspTitle.fromJson(rspTitleString)
             rspTitle.title!!
         }
     }
@@ -488,13 +487,14 @@ object TikiSdk {
     fun getTitle(id: String, origin: String? = null): Deferred<TitleRecord?> {
         throwIfNotInitialized()
         val titleReq = ReqTitleGet(id, origin)
-        val rspTitleCompletable: CompletableDeferred<RspTitle?> =
+        val rspTitleCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, titleReq
+                CoreMethod.LICENSE, titleReq.toJson()
             )
         return MainScope().async {
-            val rspTitle: RspTitle? = rspTitleCompletable.await()
-            rspTitle?.title
+            val rspTitleJson = rspTitleCompletable.await()
+            val rspTitle: RspTitle = RspTitle.fromJson(rspTitleJson)
+            rspTitle.title
         }
     }
 
@@ -513,12 +513,13 @@ object TikiSdk {
     fun getLicense(id: String, origin: String? = null): Deferred<LicenseRecord?> {
         throwIfNotInitialized()
         val licenseReq = ReqLicenseGet(id, origin)
-        val rspLicenseCompletable: CompletableDeferred<RspLicense?> =
+        val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq
+                CoreMethod.LICENSE, licenseReq.toJson()
             )
         return MainScope().async {
-            val rspLicense: RspLicense = rspLicenseCompletable.await()!!
+            val rspLicenseJson: String = rspLicenseCompletable.await()
+            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
             rspLicense.license
         }
     }
@@ -539,12 +540,13 @@ object TikiSdk {
     fun all(ptr: String, origin: String? = null): Deferred<List<LicenseRecord>> {
         throwIfNotInitialized()
         val licenseReq = ReqLicenseAll(ptr, origin)
-        val rspLicenseCompletable: CompletableDeferred<RspLicenseList?> =
+        val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq
+                CoreMethod.LICENSE, licenseReq.toJson()
             )
         return MainScope().async {
-            val rspLicense: RspLicenseList = rspLicenseCompletable.await()!!
+            val rspLicenseJson: String = rspLicenseCompletable.await()
+            val rspLicense: RspLicenseList = RspLicenseList.fromJson(rspLicenseJson)
             rspLicense.licenseList
         }
     }
@@ -562,12 +564,13 @@ object TikiSdk {
     fun latest(ptr: String, origin: String? = null): Deferred<LicenseRecord?> {
         throwIfNotInitialized()
         val licenseReq = ReqLicenseLatest(ptr, origin)
-        val rspLicenseCompletable: CompletableDeferred<RspLicense?> =
+        val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq
+                CoreMethod.LICENSE, licenseReq.toJson()
             )
         return MainScope().async {
-            val rspLicense: RspLicense = rspLicenseCompletable.await()!!
+            val rspLicenseJson: String = rspLicenseCompletable.await()
+            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
             rspLicense.license
         }
     }
@@ -585,7 +588,7 @@ object TikiSdk {
 
     private fun throwIfNotInitialized() {
         if (!isInitialized) {
-            throw IllegalStateException("Please ensure that the TIKI SDK is properly initialized by calling initialize().")
+            throw IllegalStateException("Please ensure that the TIKI SDK is properly initialized by calling TikiSdk.init().")
         }
     }
 

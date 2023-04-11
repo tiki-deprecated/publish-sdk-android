@@ -6,16 +6,38 @@ package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.LicenseUse
 import com.mytiki.tiki_sdk_android.TitleTag
-import com.squareup.moshi.Json
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 
 data class ReqLicense(
-    @Json(name = "ptr") val ptr: String?,
-    @Json(name = "terms") val terms: String?,
-    @Json(name = "titleDescription") val titleDescription: String?,
-    @Json(name = "licenseDescription") val licenseDescription: String?,
-    @Json(name = "uses") val uses: List<LicenseUse> = emptyList(),
-    @Json(name = "tags") val tags: List<TitleTag> = emptyList(),
-    @Json(name = "expiry") val expiry: Date?,
-    @Json(name = "origin") val origin: String?
-)
+    val ptr: String?,
+    val terms: String?,
+    val titleDescription: String?,
+    val licenseDescription: String?,
+    val uses: List<LicenseUse> = emptyList(),
+    val tags: List<TitleTag> = emptyList(),
+    val expiry: Date?,
+    val origin: String?
+) {
+    fun toJson(): String {
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        jsonObject.put("terms", terms)
+        jsonObject.put("titleDescription", titleDescription)
+        jsonObject.put("licenseDescription", licenseDescription)
+        val usesArray = JSONArray()
+        for (i in uses.indices) {
+            usesArray.put(uses[i].toJsonObject())
+        }
+        jsonObject.put("uses", usesArray)
+        val tagsArray = JSONArray()
+        for (i in tags.indices) {
+            tagsArray.put(tags[i].value)
+        }
+        jsonObject.put("tags", tagsArray)
+        jsonObject.put("expiry", expiry?.time)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
+    }
+}

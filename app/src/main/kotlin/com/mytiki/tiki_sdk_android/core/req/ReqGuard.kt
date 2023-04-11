@@ -5,13 +5,31 @@
 package com.mytiki.tiki_sdk_android.core.req
 
 import com.mytiki.tiki_sdk_android.LicenseUsecase
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import org.json.JSONArray
+import org.json.JSONObject
 
-@JsonClass(generateAdapter = true)
 data class ReqGuard(
-    @Json(name = "ptr") var ptr: String? = null,
-    @Json(name = "usecases") var usecases: List<LicenseUsecase> = emptyList(),
-    @Json(name = "destinations") var destinations: List<String>? = null,
-    @Json(name = "origin") var origin: String? = null
-)
+    var ptr: String? = null,
+    var usecases: List<LicenseUsecase> = emptyList(),
+    var destinations: List<String>? = null,
+    var origin: String? = null
+) {
+    fun toJson(): String {
+        val jsonObject = JSONObject()
+        jsonObject.put("ptr", ptr)
+        val usesArray = JSONArray()
+        for (i in usecases.indices) {
+            usesArray.put(usecases[i].value)
+        }
+        jsonObject.put("usecases", usesArray)
+        val destinationsArray = JSONArray()
+        if (destinations != null) {
+            for (i in destinations!!.indices) {
+                usesArray.put(destinations!![i])
+            }
+        }
+        jsonObject.put("destinations", destinationsArray)
+        jsonObject.put("origin", origin)
+        return jsonObject.toString()
+    }
+}

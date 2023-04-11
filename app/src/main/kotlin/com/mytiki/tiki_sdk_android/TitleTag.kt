@@ -4,12 +4,9 @@
  */
 package com.mytiki.tiki_sdk_android
 
-import com.squareup.moshi.JsonClass
-
 /**
  * Use case for license.
  */
-@JsonClass(generateAdapter = true)
 class TitleTag(value: String) {
 
     var value: String
@@ -26,7 +23,16 @@ class TitleTag(value: String) {
 
     constructor(titleTagEnum: TitleTagEnum) : this(titleTagEnum.value)
 
+    fun toJson(): String {
+        return "\"$value\""
+    }
+
     companion object {
+
+        fun fromJson(json: String): TitleTag {
+            return TitleTag(json.replace("\"", ""))
+        }
+
         val EMAIL_ADDRESS = TitleTag(TitleTagEnum.EMAIL_ADDRESS)
         val PHONE_NUMBER = TitleTag(TitleTagEnum.PHONE_NUMBER)
         val PHYSICAL_ADDRESS = TitleTag(TitleTagEnum.PHYSICAL_ADDRESS)

@@ -5,10 +5,9 @@
 package com.mytiki.tiki_sdk_android.core
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.core.rsp.RspError
-import com.mytiki.tiki_sdk_android.util.TimeStampToDateAdapter
-import com.squareup.moshi.Moshi
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.embedding.engine.loader.FlutterLoader
@@ -19,7 +18,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugins.GeneratedPluginRegistrant
 import kotlinx.coroutines.CompletableDeferred
-import okio.IOException
 import java.util.*
 
 /**
@@ -29,8 +27,8 @@ import java.util.*
  */
 class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
 
-    lateinit var channel: MethodChannel
-    var completables: MutableMap<String, ((String?, Error?) -> Unit)> = mutableMapOf()
+    private lateinit var channel: MethodChannel
+    private var completables: MutableMap<String, ((String, Error?) -> Unit)> = mutableMapOf()
 
     init {
         val loader = FlutterLoader()
@@ -38,8 +36,8 @@ class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
         loader.ensureInitializationComplete(context, null)
         val flutterEngine = FlutterEngine(context)
         flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
-        GeneratedPluginRegistrant.registerWith(flutterEngine)
         flutterEngine.plugins.add(this)
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
     }
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -55,8 +53,8 @@ class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
                 completables[requestId]?.invoke(response, null)
             }
             "error" -> {
-                val error = Moshi.Builder().build().adapter(RspError::class.java).fromJson(response)
-                completables[requestId]?.invoke(null, Error(error?.message))
+                val error = RspError.fromJson(response)
+                completables[requestId]?.invoke("", Error(error.message))
             }
         }
     }
@@ -68,38 +66,27 @@ class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
     /**
      * Invoke [method] in TIKI SDK Flutter
      *
-     * @param T The type that will be returned in the CompletableDeferred
-     * @param R The type of the [request]
      * @param method The method to be called from TIKI SDK Flutter
-     * @param request The request object for the [method]
-     * @return CompletableDeferred holding [T]
+     * @param jsonRequest: The request JSON object for the [method]
+     * @return CompletableDeferred holding JSON [String]
      */
-    inline fun <reified T, reified R> invokeMethod(
+    fun invokeMethod(
         method: CoreMethod,
-        request: R
-    ): CompletableDeferred<T?> {
-        val moshi: Moshi = Moshi.Builder()
-            .add(TimeStampToDateAdapter())
-            .build()
+        jsonRequest: String
+    ): CompletableDeferred<String> {
         val requestId = UUID.randomUUID().toString()
-        val deferred = CompletableDeferred<T?>()
-        val jsonRequest = moshi.adapter(R::class.java).toJson(request)
+        val deferred = CompletableDeferred<String>()
         channel.invokeMethod(
             method.value, mapOf(
                 "requestId" to requestId,
                 "request" to jsonRequest
             )
         )
-        completables[requestId] = { jsonString: String?, error: Error? ->
+        completables[requestId] = { jsonString: String, error: Error? ->
             if (error != null) {
                 deferred.completeExceptionally(error)
             } else {
-                try {
-                    val response = moshi.adapter(T::class.java).fromJson(jsonString ?: "")
-                    deferred.complete(response)
-                } catch (e: IOException) {
-                    deferred.completeExceptionally(e)
-                }
+                deferred.complete(jsonString)
             }
         }
         return deferred

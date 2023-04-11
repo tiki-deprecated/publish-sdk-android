@@ -4,10 +4,7 @@
  */
 package com.mytiki.tiki_sdk_android.ui
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import com.mytiki.tiki_sdk_android.R
+import android.graphics.Color
 import com.mytiki.tiki_sdk_android.TikiSdk
 
 /**
@@ -15,42 +12,20 @@ import com.mytiki.tiki_sdk_android.TikiSdk
  */
 class Theme(
     dark: Boolean = true,
-    private var _primaryTextColor: Color = if (dark) Color(0xFFF6F6F6) else Color(0xFF1C0000),
-    private var _primaryBackgroundColor: Color = if (dark) {
-        Color(0xFF1C1C1E)
-    } else {
-        Color(0xFF1C1C1E)
-    },
-    private var _secondaryBackgroundColor: Color = if (dark) {
-        Color(0xFFF6F6F6).copy(alpha = 0.38f)
-    } else {
-        Color(0xFFF6F6F6)
-    },
-    private var _accentColor: Color = if (dark) Color(0xFF00B272) else Color(0xFF00B272),
-    private var _fontFamily: Int = R.font.space_grotesk
+    private var _primaryTextColor: Color = Color(), //if (dark) Color.parseColor("#F6F6F6") else Color.parseColor("1C0000"),
+    private var _primaryBackgroundColor: Color = Color(), // if (dark) {
+//        Color(0xFF1C1C1E)
+//    } else {
+//        Color(0xFF1C1C1E)
+//    },
+    private var _secondaryBackgroundColor: Color = Color(), //if (dark) {
+//        Color(0xFFF6F6F6).copy(alpha = 0.38f)
+//    } else {
+//        Color(0xFFF6F6F6)
+//    },
+    private var _accentColor: Color = Color(), //if (dark) Color(0xFF00B272) else Color(0xFF00B272),
+    private var _fontFamily: Int? = null
 ) {
-
-    val font: FontFamily = FontFamily(Font(fontFamily))
-
-    /**
-     * Back arrow image, used in the `NavigationHeader` to dismiss the view.
-     */
-    val backArrow = R.drawable.back_arrow
-
-    /**
-     * Check icon, used in the `UsedFor` list for bullets.
-     */
-    val checkIcon = R.drawable.check_icon
-
-    /**
-     * Question icon, used for the `LeanMoreButton`.
-     */
-    val questionIcon = R.drawable.question_icon
-
-    /**
-     * Red X icon, used in the `UsedFor` list for bullets.
-     */
-    val xIcon = R.drawable.x_icon
 
     /**
      * Primary text color. Used in the default text items.
@@ -63,8 +38,7 @@ class Theme(
      *
      * Defaults to [primaryTextColor] with 60% alpha transparency.
      */
-    val secondaryTextColor: Color
-        get() = _primaryTextColor.copy(alpha = 0.6f)
+    val secondaryTextColor: Color? = null
 
     /**
      * Primary background color. The default color for backgrounds.
@@ -87,7 +61,7 @@ class Theme(
     /**
      * The default font family for all texts.
      */
-    val fontFamily: Int
+    val fontFamily: Int?
         get() = _fontFamily
 
     /**

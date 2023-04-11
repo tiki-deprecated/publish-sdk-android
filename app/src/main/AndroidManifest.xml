@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.mytiki.tiki_sdk_android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mytiki.tiki_sdk_android">
+
+    <application>
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.LearnMoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.TermsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.OfferFlowActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Transparent" />
+    </application>
 
 </manifest>
