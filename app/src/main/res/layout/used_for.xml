@@ -31,12 +31,14 @@
             android:paddingBottom="16dp">
 
             <ImageView
+                android:id="@+id/bullet_icon_1"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
                 android:paddingTop="4dp"
                 android:src="@drawable/ic_check_icon" />
 
             <TextView
+                android:id="@+id/bullet_text_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -55,13 +57,14 @@
             android:paddingBottom="16dp">
 
             <ImageView
-
+                android:id="@+id/bullet_icon_2"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
                 android:paddingTop="4dp"
                 android:src="@drawable/ic_x_icon" />
 
             <TextView
+                android:id="@+id/bullet_text_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -80,12 +83,14 @@
             android:paddingBottom="16dp">
 
             <ImageView
+                android:id="@+id/bullet_icon_3"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
                 android:paddingTop="4dp"
                 android:src="@drawable/ic_x_icon" />
 
             <TextView
+                android:id="@+id/bullet_text_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

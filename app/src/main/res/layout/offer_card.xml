@@ -14,13 +14,13 @@
     android:paddingBottom="20dp">
 
     <ImageView
-        android:id="@+id/offerImage"
+        android:id="@+id/offer_image"
         android:layout_width="300dp"
         android:layout_height="86dp"
         app:srcCompat="@drawable/offer_img" />
 
     <TextView
-        android:id="@+id/trade_your_"
+        android:id="@+id/offer_description"
         android:layout_width="300dp"
         android:layout_height="64dp"
         android:fontFamily="@font/space_grotesk_bold"
