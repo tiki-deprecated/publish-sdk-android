@@ -22,17 +22,30 @@ import com.mytiki.tiki_sdk_android.ui.Permission
 
 class OfferFlowActivity : AppCompatActivity() {
 
+    private val offer: Offer = TikiSdk.offers.values.first()
+    private var permissions: MutableList<Permission> = mutableListOf()
+    private val isPermissionPending: Boolean
+        get() = permissions.size > 0
+
     private var step: OfferFlowStep = OfferFlowStep.PROMPT
+    private var termsResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                promptBottomSheetDialog.dismiss()
+                permissions = offer.permissions.toMutableList()
+                if (isPermissionPending) {
+                    handlePermissions()
+                } else {
+                    step = OfferFlowStep.ENDING_ACCEPTED
+                    showEndingAccepted()
+                }
+            }
+        }
 
     private lateinit var promptBottomSheetDialog: BottomSheetDialog
     private lateinit var endingAcceptedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingDeclinedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingErrorBottomSheetDialog: BottomSheetDialog
-
-    private val offer: Offer = TikiSdk.offers.values.first()
-    private val isPermissionPending: Boolean
-        get() = permissions.size > 0
-    private var permissions: MutableList<Permission> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,18 +180,7 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showTerms() {
         val intent = Intent(this, TermsActivity::class.java)
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                promptBottomSheetDialog.dismiss()
-                permissions = offer.permissions.toMutableList()
-                if (isPermissionPending) {
-                    handlePermissions()
-                } else {
-                    step = OfferFlowStep.ENDING_ACCEPTED
-                    showEndingAccepted()
-                }
-            }
-        }.launch(intent)
+        termsResult.launch(intent)
     }
 
     private fun enableSettingsLink(v: BottomSheetDialog) {
