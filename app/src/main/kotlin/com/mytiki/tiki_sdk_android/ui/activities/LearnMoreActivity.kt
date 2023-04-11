@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.ui
+package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.os.Bundle
 import android.widget.ImageView

@@ -1,4 +1,4 @@
-package com.mytiki.tiki_sdk_android.ui
+package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.ui.Offer
+import com.mytiki.tiki_sdk_android.ui.OfferFlowStep
+import com.mytiki.tiki_sdk_android.ui.Permission
 
 class OfferFlowActivity : AppCompatActivity() {
 
@@ -41,21 +44,44 @@ class OfferFlowActivity : AppCompatActivity() {
         }
     }
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                promptBottomSheetDialog.dismiss()
-                permissions = offer.permissions.toMutableList()
-                if (isPermissionPending) {
-                    handlePermissions()
-                } else {
-                    step = OfferFlowStep.ENDING_ACCEPTED
-                    showEndingAccepted()
-                }
+    private fun initializeBottomSheets() {
+        initPromptBottomSheet()
+        initEndingAcceptedBottomSheet()
+        initEndingDeclinedBottomSheet()
+        initEndingErrorBottomSheet()
+    }
+
+    private fun initEndingErrorBottomSheet() {
+        endingErrorBottomSheetDialog = BottomSheetDialog(this)
+        endingErrorBottomSheetDialog.setContentView(R.layout.ending_error)
+        endingErrorBottomSheetDialog.setOnDismissListener {
+            if (step == OfferFlowStep.ENDING_ERROR) {
+                finish()
             }
         }
+    }
 
-    private fun initializeBottomSheets() {
+    private fun initEndingDeclinedBottomSheet() {
+        endingDeclinedBottomSheetDialog = BottomSheetDialog(this)
+        endingDeclinedBottomSheetDialog.setContentView(R.layout.ending_declined)
+        endingDeclinedBottomSheetDialog.setOnDismissListener {
+            if (step == OfferFlowStep.ENDING_DECLINED) {
+                finish()
+            }
+        }
+    }
+
+    private fun initEndingAcceptedBottomSheet() {
+        endingAcceptedBottomSheetDialog = BottomSheetDialog(this)
+        endingAcceptedBottomSheetDialog.setContentView(R.layout.ending_accepted)
+        endingAcceptedBottomSheetDialog.setOnDismissListener {
+            if (step == OfferFlowStep.ENDING_ACCEPTED) {
+                finish()
+            }
+        }
+    }
+
+    private fun initPromptBottomSheet() {
         promptBottomSheetDialog = BottomSheetDialog(this)
         promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
         promptBottomSheetDialog.findViewById<RelativeLayout>(R.id.color_btn)!!
@@ -74,29 +100,6 @@ class OfferFlowActivity : AppCompatActivity() {
                 finish()
             }
         }
-        endingAcceptedBottomSheetDialog = BottomSheetDialog(this)
-        endingAcceptedBottomSheetDialog.setContentView(R.layout.ending_accepted)
-        endingAcceptedBottomSheetDialog.setOnDismissListener {
-            if (step == OfferFlowStep.ENDING_ACCEPTED) {
-                finish()
-            }
-        }
-        endingDeclinedBottomSheetDialog = BottomSheetDialog(this)
-        endingDeclinedBottomSheetDialog.setContentView(R.layout.ending_declined)
-        endingDeclinedBottomSheetDialog.setOnDismissListener {
-            if (step == OfferFlowStep.ENDING_DECLINED) {
-                finish()
-            }
-        }
-
-        endingErrorBottomSheetDialog = BottomSheetDialog(this)
-        endingErrorBottomSheetDialog.setContentView(R.layout.ending_error)
-        endingErrorBottomSheetDialog.setOnDismissListener {
-            if (step == OfferFlowStep.ENDING_ERROR) {
-                finish()
-            }
-        }
-
     }
 
     private fun showEndingError() {
@@ -118,22 +121,6 @@ class OfferFlowActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
-    }
-
-    private fun handlePermissions() {
-        if (!isPermissionPending) {
-            showEndingAccepted()
-        } else {
-            showEndingError()
-            val perm = permissions.first()
-            Log.e("tiki", perm.name)
-            if (!perm.isAuthorized(this)) {
-                perm.requestAuth(this)
-            } else {
-                permissions.removeFirst()
-                handlePermissions()
-            }
-        }
     }
 
     private fun showEndingDeclined() {
@@ -180,7 +167,18 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showTerms() {
         val intent = Intent(this, TermsActivity::class.java)
-        resultLauncher.launch(intent)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                promptBottomSheetDialog.dismiss()
+                permissions = offer.permissions.toMutableList()
+                if (isPermissionPending) {
+                    handlePermissions()
+                } else {
+                    step = OfferFlowStep.ENDING_ACCEPTED
+                    showEndingAccepted()
+                }
+            }
+        }.launch(intent)
     }
 
     private fun enableSettingsLink(v: BottomSheetDialog) {
@@ -188,6 +186,22 @@ class OfferFlowActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             finish()
             startActivity(intent)
+        }
+    }
+
+    private fun handlePermissions() {
+        if (!isPermissionPending) {
+            showEndingAccepted()
+        } else {
+            showEndingError()
+            val perm = permissions.first()
+            Log.e("tiki", perm.name)
+            if (!perm.isAuthorized(this)) {
+                perm.requestAuth(this)
+            } else {
+                permissions.removeFirst()
+                handlePermissions()
+            }
         }
     }
 
