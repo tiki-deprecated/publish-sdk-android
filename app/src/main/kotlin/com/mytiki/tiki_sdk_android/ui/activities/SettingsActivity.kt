@@ -16,6 +16,7 @@ import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Permission
+import io.noties.markwon.Markwon
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -37,6 +38,18 @@ class SettingsActivity : AppCompatActivity() {
         setupOfferDetails()
         setupStaticBtns()
         setupOptBtn()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.permissions.removeFirst()
+            handlePermissions()
+        }
     }
 
     private fun setupOfferDetails() {
@@ -70,7 +83,8 @@ class SettingsActivity : AppCompatActivity() {
         )
         findViewById<TextView>(R.id.bullet_text_3).text = offer.bullets[2].text
 
-        findViewById<TextView>(R.id.terms_text).text = offer.terms
+        val markwon = Markwon.create(this);
+        markwon.setMarkdown(findViewById<TextView>(R.id.terms_text), offer.terms);
     }
 
     private fun setupStaticBtns() {
@@ -85,8 +99,8 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupOptBtn() {
         val inflater = LayoutInflater.from(this)
-        optInBtn = inflater.inflate(R.layout.button_color, null, false) as RelativeLayout
-        optOutBtn = inflater.inflate(R.layout.button_outline, null, false) as RelativeLayout
+        optInBtn = inflater.inflate(R.layout.button_color, btnFrame, false) as RelativeLayout
+        optOutBtn = inflater.inflate(R.layout.button_outline, btnFrame, false) as RelativeLayout
         val ptr: String = offer.ptr
         val usecases: MutableList<LicenseUsecase> = mutableListOf()
         val destinations: MutableList<String> = mutableListOf()
@@ -100,8 +114,6 @@ class SettingsActivity : AppCompatActivity() {
             Log.e("TIKI", "SETTINGS GUARD PASS")
             enableOptOutBtn()
         }, {
-
-
             Log.e("TIKI", "SETTINGS GUARD FAIL")
             enableOptInBtn()
         })
@@ -129,7 +141,6 @@ class SettingsActivity : AppCompatActivity() {
                 offer.description,
                 offer.expiry
             ).invokeOnCompletion {
-                Log.e("tiki", "complete")
                 setupOptBtn()
             }
         }
@@ -161,16 +172,4 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.e("tiki", "callback")
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            this.permissions.removeFirst()
-            handlePermissions()
-        }
-    }
 }

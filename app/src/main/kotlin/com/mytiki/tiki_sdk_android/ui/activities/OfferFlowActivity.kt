@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.util.Log
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -197,7 +196,6 @@ class OfferFlowActivity : AppCompatActivity() {
         } else {
             showEndingError()
             val perm = permissions.first()
-            Log.e("tiki", perm.name)
             if (!perm.isAuthorized(this)) {
                 perm.requestAuth(this)
             } else {
@@ -213,7 +211,6 @@ class OfferFlowActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.e("tiki", "callback")
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.permissions.removeFirst()
             handlePermissions()

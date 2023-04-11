@@ -32,7 +32,7 @@
         android:fontFamily="@font/space_grotesk_bold"
         android:gravity="center_vertical"
         android:paddingBottom="11dp"
-        android:text="Terms &amp; Conditions"
+        android:text="TERMS &amp; CONDITIONS"
         android:textColor="#1C0000"
         android:textSize="16sp" />
 
@@ -62,8 +62,5 @@
         android:id="@+id/settings_btn_frame"
         android:layout_width="match_parent"
         android:layout_height="84dp"
-        android:paddingTop="30dp">
-
-        <include layout="@layout/button_color" />
-    </FrameLayout>
+        android:paddingTop="30dp" />
 </LinearLayout>
