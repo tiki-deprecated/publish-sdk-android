@@ -4,16 +4,16 @@
 
     <application>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.LearnMoreActivity"
+            android:name=".ui.activities.LearnMoreActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.TermsActivity"
+            android:name=".ui.activities.TermsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.OfferFlowActivity"
+            android:name=".ui.activities.OfferFlowActivity"
             android:exported="true"
             android:theme="@style/Theme.Transparent" />
     </application>
