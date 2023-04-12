@@ -18,7 +18,7 @@ class TermsActivity : AppCompatActivity() {
             .usePlugin(TablePlugin.create(this))
             .build();
         markwon.setMarkdown(findViewById(R.id.terms_text), TikiSdk.offers.values.first().terms);
-        findViewById<RelativeLayout>(R.id.color_btn).setOnClickListener {
+        findViewById<RelativeLayout>(R.id.tiki_sdk_btn).setOnClickListener {
             val returnIntent = Intent()
             setResult(RESULT_OK, returnIntent)
             finish()

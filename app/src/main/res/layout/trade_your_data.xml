@@ -5,27 +5,24 @@
     android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/trade_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
         android:text="TRADE"
-        android:textColor="#1C0000"
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/your_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
         android:text=" YOUR "
-        android:textColor="#00B272"
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/data_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
         android:text="DATA"
-        android:textColor="#1C0000"
         android:textSize="20sp" />
 
 </LinearLayout>

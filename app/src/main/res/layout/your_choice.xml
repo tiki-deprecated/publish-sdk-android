@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/space_grotesk_bold"
         android:text=" YOUR "
+        android:id="@+id/your_choice_accent"
         android:textColor="#00B272"
         android:textSize="20sp" />
 

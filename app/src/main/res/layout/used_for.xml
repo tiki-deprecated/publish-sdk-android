@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/used_for_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,12 +10,11 @@
     android:paddingEnd="15dp">
 
     <TextView
+        android:id="@+id/used_for_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
         android:paddingBottom="16dp"
         android:text="HOW YOUR DATA WILL BE USED"
-        android:textColor="#1C0000"
         android:textSize="16sp" />
 
     <LinearLayout

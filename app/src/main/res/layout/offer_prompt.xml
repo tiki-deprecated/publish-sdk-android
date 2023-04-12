@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/offer_prompt_root"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
     android:paddingStart="15dp"
@@ -35,11 +36,12 @@
         android:orientation="horizontal">
 
         <FrameLayout
+            android:id = "@+id/opt_out"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
 
-            <include layout="@layout/button_outline" />
+            <include layout="@layout/tiki_sdk_button" />
         </FrameLayout>
 
         <Space
@@ -47,11 +49,12 @@
             android:layout_height="match_parent" />
 
         <FrameLayout
+            android:id = "@+id/opt_in"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
 
-            <include layout="@layout/button_color" />
+            <include layout="@layout/tiki_sdk_button" />
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

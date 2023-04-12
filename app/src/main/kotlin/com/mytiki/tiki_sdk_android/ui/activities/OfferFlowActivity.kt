@@ -4,20 +4,23 @@ import android.app.Activity
 import android.content.Intent
 import android.content.Intent.*
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.OfferFlowStep
 import com.mytiki.tiki_sdk_android.ui.Permission
+import com.mytiki.tiki_sdk_android.ui.Theme
+
 
 class OfferFlowActivity : AppCompatActivity() {
 
@@ -45,9 +48,11 @@ class OfferFlowActivity : AppCompatActivity() {
     private lateinit var endingAcceptedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingDeclinedBottomSheetDialog: BottomSheetDialog
     private lateinit var endingErrorBottomSheetDialog: BottomSheetDialog
+    private lateinit var theme: Theme
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        theme = TikiSdk.theme(this)
         setContentView(R.layout.activity_offer_flow)
         initializeBottomSheets()
         showOfferPrompt()
@@ -96,22 +101,114 @@ class OfferFlowActivity : AppCompatActivity() {
     private fun initPromptBottomSheet() {
         promptBottomSheetDialog = BottomSheetDialog(this)
         promptBottomSheetDialog.setContentView(R.layout.offer_prompt)
-        promptBottomSheetDialog.findViewById<RelativeLayout>(R.id.color_btn)!!
-            .setOnClickListener {
-                showTerms()
+
+        val drawable = promptBottomSheetDialog
+            .findViewById<LinearLayout>(R.id.offer_prompt_root)!!.background
+        drawable.setTint(TikiSdk.theme.secondaryBackgroundColor)
+
+        setupTradeYourDataTitle()
+        setupOfferDetails()
+        setupPromptButtons()
+    }
+
+    private fun setupPromptButtons() {
+        val solidBg = GradientDrawable()
+        solidBg.shape = GradientDrawable.RECTANGLE
+        solidBg.setTint(theme.accentColor)
+        solidBg.cornerRadius = 10F
+
+        val optInFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_in)!!
+        val optInBtn = optInFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)
+        optInBtn.setOnClickListener{ showTerms() }
+        optInBtn.background = solidBg
+
+        val optInBtnLabel = optInBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
+        optInBtnLabel.setTextColor(theme.primaryBackgroundColor)
+        optInBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
+        optInBtnLabel.text = "I'm in"
+
+        val outlineBg = GradientDrawable()
+        outlineBg.shape = GradientDrawable.RECTANGLE
+        outlineBg.setTint(theme.primaryBackgroundColor)
+        outlineBg.setStroke(2, theme.accentColor)
+        outlineBg.cornerRadius = 10F
+
+        val optOutFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_out)!!
+        val optOutBtn = optOutFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)!!
+        optOutBtn.setOnClickListener{ showEndingDeclined() }
+        optOutBtn.background = outlineBg
+
+        val optOutBtnLabel = optOutBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
+        optOutBtnLabel.setTextColor(theme.primaryTextColor)
+        optOutBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
+        optOutBtnLabel.text = "Back Off"
+
+        val learnMoreButton = promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!
+        learnMoreButton.setOnClickListener { showLearnMore() }
+        learnMoreButton.setColorFilter(theme.secondaryBackgroundColor)
+
+    }
+
+    private fun setupTradeYourDataTitle() {
+        val tradeText = promptBottomSheetDialog.findViewById<TextView>(R.id.trade_text)!!
+        tradeText.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        tradeText.setTextColor(theme.primaryTextColor)
+        val yourText = promptBottomSheetDialog.findViewById<TextView>(R.id.your_text)!!
+        yourText.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        yourText.setTextColor(theme.accentColor)
+        val dataText = promptBottomSheetDialog.findViewById<TextView>(R.id.data_text)!!
+        dataText.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        dataText.setTextColor(theme.primaryTextColor)
+    }
+
+    private fun setupOfferDetails() {
+        val offerCard = promptBottomSheetDialog.findViewById<LinearLayout>(R.id.offer_card_root)!!
+        offerCard.findViewById<ImageView>(R.id.offer_image).setImageDrawable(offer.reward)
+        val offerDescription = offerCard.findViewById<TextView>(R.id.offer_description)
+        offerDescription.text = offer.description
+        offerDescription.setTextColor(theme.secondaryTextColor)
+        offerDescription.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+
+        val usedFor = promptBottomSheetDialog.findViewById<LinearLayout>(R.id.used_for_root)!!
+        val usedForTitle = usedFor.findViewById<TextView>(R.id.used_for_title)
+        usedForTitle.setTextColor(Color.BLACK)
+        usedForTitle.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+
+        usedFor.findViewById<ImageView>(R.id.bullet_icon_1).setImageDrawable(
+            if (offer.bullets[0].isUsed) {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_check_icon, null)
+            } else {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_x_icon, null)
             }
-        promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!.setOnClickListener {
-            showLearnMore()
-        }
-        promptBottomSheetDialog.findViewById<RelativeLayout>(R.id.outline_btn)!!
-            .setOnClickListener {
-                showEndingDeclined()
+        )
+        val bulletText1 = usedFor.findViewById<TextView>(R.id.bullet_text_1)
+        bulletText1.text = offer.bullets[0].text
+        bulletText1.setTextColor(theme.secondaryTextColor)
+        bulletText1.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+
+        usedFor.findViewById<ImageView>(R.id.bullet_icon_2).setImageDrawable(
+            if (offer.bullets[1].isUsed) {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_check_icon, null)
+            } else {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_x_icon, null)
             }
-        promptBottomSheetDialog.setOnDismissListener {
-            if (step == OfferFlowStep.PROMPT) {
-                finish()
+        )
+        val bulletText2 = usedFor.findViewById<TextView>(R.id.bullet_text_2)
+        bulletText2.text = offer.bullets[1].text
+        bulletText2.setTextColor(theme.secondaryTextColor)
+        bulletText2.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+
+        usedFor.findViewById<ImageView>(R.id.bullet_icon_3).setImageDrawable(
+            if (offer.bullets[2].isUsed) {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_check_icon, null)
+            } else {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_x_icon, null)
             }
-        }
+        )
+        val bulletText3 = usedFor.findViewById<TextView>(R.id.bullet_text_3)
+        bulletText3.text = offer.bullets[2].text
+        bulletText3.setTextColor(theme.secondaryTextColor)
+        bulletText3.typeface = ResourcesCompat.getFont(this, theme.fontBold)
     }
 
     private fun showEndingError() {
@@ -138,8 +235,12 @@ class OfferFlowActivity : AppCompatActivity() {
     private fun showEndingDeclined() {
         step = OfferFlowStep.ENDING_DECLINED
         promptBottomSheetDialog.dismiss()
-        endingDeclinedBottomSheetDialog.show()
-        enableSettingsLink(endingDeclinedBottomSheetDialog)
+        if(TikiSdk.isDeclineEndingDisabled){
+            finish()
+        }else {
+            endingDeclinedBottomSheetDialog.show()
+            enableSettingsLink(endingDeclinedBottomSheetDialog)
+        }
     }
 
     private fun showEndingAccepted() {
@@ -152,19 +253,23 @@ class OfferFlowActivity : AppCompatActivity() {
             offer.description,
             offer.expiry
         )
-        step = OfferFlowStep.ENDING_ACCEPTED
-        endingErrorBottomSheetDialog.apply {
-            if (this.isShowing) {
-                this.dismiss()
+        if(TikiSdk.isAcceptEndingDisabled){
+            finish()
+        }else {
+            step = OfferFlowStep.ENDING_ACCEPTED
+            endingErrorBottomSheetDialog.apply {
+                if (this.isShowing) {
+                    this.dismiss()
+                }
             }
-        }
-        promptBottomSheetDialog.apply {
-            if (this.isShowing) {
-                this.dismiss()
+            promptBottomSheetDialog.apply {
+                if (this.isShowing) {
+                    this.dismiss()
+                }
             }
+            endingAcceptedBottomSheetDialog.show()
+            enableSettingsLink(endingAcceptedBottomSheetDialog)
         }
-        endingAcceptedBottomSheetDialog.show()
-        enableSettingsLink(endingAcceptedBottomSheetDialog)
     }
 
     private fun showOfferPrompt() {
