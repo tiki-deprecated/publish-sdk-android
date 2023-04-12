@@ -22,7 +22,7 @@ android {
     compileSdk 33
     defaultConfig {
         minSdk 21
-        versionCode 2
+        versionCode 3
         versionName "2.1.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
