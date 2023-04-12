@@ -51,8 +51,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GH Action"
-          git add pubspec.yaml
-          git add package.json
-          git add package-lock.json
+          git add app/build.gradle
           git commit -m 'version bump'
           git push
