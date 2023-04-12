@@ -61,4 +61,4 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.version.outputs.current }}
+          tag: ${{ steps.semver.outputs.nextStrict }}
