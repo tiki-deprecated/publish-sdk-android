@@ -1,9 +1,11 @@
 name: Dokka
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+  pull_request:
+      branches:
+        - main
+      types:
+        - closed
 
 permissions:
   contents: read
@@ -11,11 +13,12 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "dokka"
+  group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
   publish:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     environment:
       name: Production
       url: ${{ steps.deployment.outputs.page_url }}

@@ -28,6 +28,13 @@ data class LicenseRecord(
     val expiry: Date?
 ) {
     companion object {
+
+        /**
+         * Builds a [LicenseRecord] from JSON String
+         *
+         * @param json
+         * @return [LicenseRecord]
+         */
         fun fromJson(json: String): LicenseRecord? {
             if (json == "null") {
                 return null

@@ -17,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.ui.Offer
-import com.mytiki.tiki_sdk_android.ui.OfferFlowStep
 import com.mytiki.tiki_sdk_android.ui.Permission
 import com.mytiki.tiki_sdk_android.ui.Theme
 

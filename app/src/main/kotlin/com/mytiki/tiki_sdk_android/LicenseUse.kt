@@ -39,6 +39,12 @@ data class LicenseUse(
     val destinations: List<String>? = null
 ) {
     companion object {
+        /**
+         * Builds a [LicenseUse]
+         *
+         * @param json JSON representation of the LicenseUse
+         * @return [LicenseUse]
+         */
         fun fromJson(json: String): LicenseUse {
             val jsonObject = JSONObject(json)
             val usecasesArr = jsonObject.getJSONArray("usecases")
@@ -55,6 +61,11 @@ data class LicenseUse(
         }
     }
 
+    /**
+     * Converts this into
+     *
+     * @return
+     */
     fun toJsonObject(): JSONObject {
         val jsonObject = JSONObject()
         val usesArray = JSONArray()

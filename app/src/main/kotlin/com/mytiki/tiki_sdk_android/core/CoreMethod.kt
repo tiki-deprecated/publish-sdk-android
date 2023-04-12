@@ -4,7 +4,12 @@
  */
 package com.mytiki.tiki_sdk_android.core
 
-/// The type of data origin for an ownership registry.
+/**
+ * Available Core methods calls
+ *
+ * @property value
+ * @constructor Create empty Core method
+ */
 enum class CoreMethod(val value: String) {
     BUILD("build"),
     LICENSE("license"),

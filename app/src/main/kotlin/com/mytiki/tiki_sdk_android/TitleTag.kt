@@ -5,7 +5,11 @@
 package com.mytiki.tiki_sdk_android
 
 /**
- * Use case for license.
+ * Title tag
+ *
+ * @constructor Creates a [TitleTag] for [value]
+ *
+ * @param value
  */
 class TitleTag(value: String) {
 
