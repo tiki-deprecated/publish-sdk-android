@@ -51,3 +51,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version.outputs.current }}
