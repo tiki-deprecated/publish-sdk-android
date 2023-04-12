@@ -9,7 +9,6 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -120,7 +119,7 @@ class OfferFlowActivity : AppCompatActivity() {
 
         val optInFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_in)!!
         val optInBtn = optInFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)
-        optInBtn.setOnClickListener{ showTerms() }
+        optInBtn.setOnClickListener { showTerms() }
         optInBtn.background = solidBg
 
         val optInBtnLabel = optInBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
@@ -136,7 +135,7 @@ class OfferFlowActivity : AppCompatActivity() {
 
         val optOutFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_out)!!
         val optOutBtn = optOutFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)!!
-        optOutBtn.setOnClickListener{ showEndingDeclined() }
+        optOutBtn.setOnClickListener { showEndingDeclined() }
         optOutBtn.background = outlineBg
 
         val optOutBtnLabel = optOutBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
@@ -247,9 +246,11 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun setFootNotes(view: BottomSheetDialog) {
         view.findViewById<TextView>(R.id.footnote_1)!!.setTextColor(theme.secondaryTextColor)
-        view.findViewById<TextView>(R.id.footnote_1)!!.typeface = ResourcesCompat.getFont(this, theme.fontLight)
+        view.findViewById<TextView>(R.id.footnote_1)!!.typeface =
+            ResourcesCompat.getFont(this, theme.fontLight)
         view.findViewById<TextView>(R.id.footnote_2)!!.setTextColor(theme.secondaryTextColor)
-        view.findViewById<TextView>(R.id.footnote_2)!!.typeface = ResourcesCompat.getFont(this, theme.fontLight)
+        view.findViewById<TextView>(R.id.footnote_2)!!.typeface =
+            ResourcesCompat.getFont(this, theme.fontLight)
     }
 
     private fun setYourChoiceTitle(view: BottomSheetDialog) {
@@ -266,9 +267,9 @@ class OfferFlowActivity : AppCompatActivity() {
     private fun showEndingDeclined() {
         step = OfferFlowStep.ENDING_DECLINED
         promptBottomSheetDialog.dismiss()
-        if(TikiSdk.isDeclineEndingDisabled){
+        if (TikiSdk.isDeclineEndingDisabled) {
             finish()
-        }else {
+        } else {
             endingDeclinedBottomSheetDialog.show()
             setYourChoiceTitle(endingDeclinedBottomSheetDialog)
             setEndingTitle(endingDeclinedBottomSheetDialog)
@@ -287,9 +288,9 @@ class OfferFlowActivity : AppCompatActivity() {
             offer.description,
             offer.expiry
         )
-        if(TikiSdk.isAcceptEndingDisabled){
+        if (TikiSdk.isAcceptEndingDisabled) {
             finish()
-        }else {
+        } else {
             step = OfferFlowStep.ENDING_ACCEPTED
             endingErrorBottomSheetDialog.apply {
                 if (this.isShowing) {

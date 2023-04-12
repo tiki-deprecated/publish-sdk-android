@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/offer_prompt_root"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical"
     android:paddingStart="15dp"
     android:paddingTop="32dp"
     android:paddingEnd="15dp"
-    android:paddingBottom="50dp"
-    android:orientation="vertical">
+    android:paddingBottom="50dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id = "@+id/opt_out"
+            android:id="@+id/opt_out"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
@@ -49,7 +49,7 @@
             android:layout_height="match_parent" />
 
         <FrameLayout
-            android:id = "@+id/opt_in"
+            android:id="@+id/opt_in"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">

@@ -17,10 +17,10 @@
 
     <TextView
         android:id="@+id/offer_description"
-        android:layout_height="wrap_content"
-        android:paddingTop="14dp"
         android:layout_width="300dp"
-        android:paddingBottom="14dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:textSize="16sp" />
 </LinearLayout>

@@ -9,9 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center|start"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:gravity="center|start">
+        android:paddingEnd="15dp">
 
         <ImageView
             android:id="@+id/back_btn"
@@ -34,25 +34,23 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        >
+        android:paddingEnd="15dp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:background="@drawable/scrollview_bottom_border"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/scrollview_bottom_border"
+            android:paddingTop="10dp">
 
-        <TextView
-            android:id="@+id/terms_text"
-            android:textColor="#000000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingTop="30dp"
-            android:textSize="16sp"
-            />
-    </ScrollView>
+            <TextView
+                android:id="@+id/terms_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="30dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </ScrollView>
     </FrameLayout>
 
     <FrameLayout

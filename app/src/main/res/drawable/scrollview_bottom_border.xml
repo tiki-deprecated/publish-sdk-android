@@ -7,10 +7,10 @@
         android:top="-4dp">
         <shape android:shape="rectangle">
             <stroke
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
                 android:width="2dp"
-                android:color="#00B272" />
+                android:color="#00B272"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp" />
         </shape>
     </item>
 </layer-list>
