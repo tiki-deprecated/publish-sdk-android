@@ -6,6 +6,9 @@ package com.mytiki.tiki_sdk_android
 
 /**
  * Default accepted usecases
+ *
+ * @property _value
+ * @constructor Create a new License usecase from [_value]
  */
 enum class LicenseUsecaseEnum(private val _value: String) {
     ATTRIBUTION("attribution"),

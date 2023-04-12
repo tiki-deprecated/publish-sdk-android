@@ -5,8 +5,9 @@
 package com.mytiki.tiki_sdk_android
 
 /**
- * Use case for license.
+ * The License usecase
  *
+ * @param value
  */
 open class LicenseUsecase(value: String) {
 

@@ -223,10 +223,11 @@ object TikiSdk {
      * and optionally [origin].
      * You can also provide an optional onComplete closure that will be executed once the initialization process is complete.
      *
+     * @param context: The context in which the SDK will be initialized.
      * @param publishingId: The  *publishingId* for connecting to the TIKI cloud.
      * @param id: The ID that uniquely identifies your user.
-     * @param onComplete: An optional closure to be executed once the initialization process is complete.
      * @param origin: The default  *origin* for all transactions. Defaults to Bundle.main.bundleIdentifier if  *nil*.
+     * @param onComplete: An optional closure to be executed once the initialization process is complete.
      */
     fun init(
         context: Context,
@@ -408,6 +409,8 @@ object TikiSdk {
      * @param origin: An optional override of the default origin specified in the initializer.
      *
      * @returns true if the user has access, false otherwise.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun guard(
         ptr: String,
@@ -454,6 +457,8 @@ object TikiSdk {
      * @param description: A short, human-readable, description of the TitleRecord as a future reminder.
      *
      * @returns The created or retrieved TitleRecord.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun title(
         ptr: String, origin: String? = null, tags: List<TitleTag> = listOf(),
@@ -482,6 +487,8 @@ object TikiSdk {
      *  reverse-DNS syntax, i.e.
      *  com.myco.myapp`.
      *  @returns The TitleRecord with the specified ID, or null if the record is not found.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun getTitle(id: String, origin: String? = null): Deferred<TitleRecord?> {
         throwIfNotInitialized()
@@ -508,6 +515,8 @@ object TikiSdk {
      * @param id: The ID of the LicenseRecord to retrieve.
      * @param origin: An optional override of the default origin specified in initTikiSdkAsync`.
      * @returns The LicenseRecord that matches the specified ID or nil if the license or corresponding title record is not found.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun getLicense(id: String, origin: String? = null): Deferred<LicenseRecord?> {
         throwIfNotInitialized()
@@ -535,6 +544,8 @@ object TikiSdk {
      *
      * @returns An array of all LicenseRecords associated with the given Pointer Record. If no
      * LicenseRecords are found, an empty array is returned.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun all(ptr: String, origin: String? = null): Deferred<List<LicenseRecord>> {
         throwIfNotInitialized()
@@ -559,6 +570,8 @@ object TikiSdk {
      *
      * @returns The latest [LicenseRecord] for the given ptr, or nil if the corresponding title or
      * license records are not found.
+     *
+     * @throws IllegalStateException if the SDK is not initialized
      */
     fun latest(ptr: String, origin: String? = null): Deferred<LicenseRecord?> {
         throwIfNotInitialized()

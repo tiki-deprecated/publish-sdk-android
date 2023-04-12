@@ -19,7 +19,12 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-
+/**
+ * Handles Android OS permissions
+ *
+ * @property code
+ * @constructor Create empty Permission
+ */
 enum class Permission(val code: Int) {
     CAMERA(100),
     MICROPHONE(101),
@@ -36,9 +41,18 @@ enum class Permission(val code: Int) {
     MOTION(112),
     TRACKING(113);
 
+    /**
+     * Display name
+     */
     val displayName
         get() = name.lowercase().replace('_', ' ')
 
+    /**
+     * Check if user authorized the application for this permission
+     *
+     * @param context
+     * @return [Boolean]
+     */
     fun isAuthorized(context: Context): Boolean = when (this) {
         CAMERA -> isPermissionGranted(Manifest.permission.CAMERA, context)
         MICROPHONE -> isPermissionGranted(Manifest.permission.RECORD_AUDIO, context)
@@ -59,9 +73,13 @@ enum class Permission(val code: Int) {
         TRACKING -> isTrackingPermissionGranted(context)
     }
 
+    /**
+     * Request authorization for this permission
+     *
+     * @param context [ActivityCompat.OnRequestPermissionsResultCallback] that will receive the result callback
+     */
     fun requestAuth(
         context: ActivityCompat.OnRequestPermissionsResultCallback,
-        onRequestResult: ((Boolean) -> Unit) = {}
     ) {
         when (this) {
             CAMERA -> requestPermission(context, Manifest.permission.CAMERA, code)
@@ -77,7 +95,7 @@ enum class Permission(val code: Int) {
             )
             LOCATION_IN_USE -> requestLocationPermission(context)
             LOCATION_ALWAYS -> requestLocationPermission(context)
-            NOTIFICATIONS -> requestNotificationPermission(context as Context, onRequestResult)
+            NOTIFICATIONS -> requestNotificationPermission(context as Context)
             CALENDAR -> requestPermission(
                 context,
                 Manifest.permission.READ_CALENDAR,
@@ -109,7 +127,7 @@ enum class Permission(val code: Int) {
                 code
             )
             MOTION -> requestActivityRecognitionPermission(context, code)
-            TRACKING -> requestTrackingPermission(context, onRequestResult)
+            TRACKING -> requestTrackingPermission(context)
         }
     }
 
@@ -195,7 +213,6 @@ enum class Permission(val code: Int) {
 
     private fun requestNotificationPermission(
         context: Context,
-        onRequestResult: ((Boolean) -> Unit)
     ) {
         val intent = Intent()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -207,7 +224,6 @@ enum class Permission(val code: Int) {
             intent.putExtra("app_uid", context.applicationInfo.uid)
         }
         context.startActivity(intent)
-        onRequestResult(false)
     }
 
     private fun isTrackingPermissionGranted(context: Context): Boolean {
@@ -234,19 +250,15 @@ enum class Permission(val code: Int) {
     @SuppressLint("AnnotateVersionCheck")
     private fun requestTrackingPermission(
         context: ActivityCompat.OnRequestPermissionsResultCallback,
-        onRequestResult: ((Boolean) -> Unit)
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            onRequestResult(false)
-        } else {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.data = Uri.fromParts("package", (context as Context).packageName, null)
             (context as Context).startActivity(intent)
-            onRequestResult(false)
         }
     }
 
-    fun requestActivityRecognitionPermission(
+    private fun requestActivityRecognitionPermission(
         activity: ActivityCompat.OnRequestPermissionsResultCallback,
         code: Int,
     ) {

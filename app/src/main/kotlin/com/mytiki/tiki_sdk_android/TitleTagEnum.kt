@@ -8,7 +8,7 @@ package com.mytiki.tiki_sdk_android
  * Default accepted tags.
  *
  * @property value
- * @constructor Create empty Title tag enum
+ * @constructor Create a Title tag enum
  */
 enum class TitleTagEnum(val value: String) {
 

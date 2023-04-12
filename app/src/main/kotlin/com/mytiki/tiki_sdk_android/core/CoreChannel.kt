@@ -66,7 +66,7 @@ class CoreChannel(context: Context) : FlutterPlugin, MethodCallHandler {
      * Invoke [method] in TIKI SDK Flutter
      *
      * @param method The method to be called from TIKI SDK Flutter
-     * @param jsonRequest: The request JSON object for the [method]
+     * @param jsonRequest: The request JSON String for the [method]
      * @return CompletableDeferred holding JSON [String]
      */
     fun invokeMethod(

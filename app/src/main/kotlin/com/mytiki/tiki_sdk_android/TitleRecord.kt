@@ -18,7 +18,7 @@ import org.json.JSONObject
  * @property tags A list of search-friendly tags describing the asset.
  * @property description A human-readable description of the asset.
  * @property origin Overrides the default origin from which the data was generated.
- * @constructor Create empty Title record
+ * @constructor Create new Title record
  */
 data class TitleRecord(
     /**
@@ -43,6 +43,13 @@ data class TitleRecord(
     val origin: String? = null,
 ) {
     companion object {
+
+        /**
+         * Builds a Title Record from JSON String
+         *
+         * @param json String
+         * @return [TitleRecord]
+         */
         fun fromJson(json: String): TitleRecord? {
             if (json == "null") {
                 return null
