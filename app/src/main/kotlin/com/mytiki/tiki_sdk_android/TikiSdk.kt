@@ -244,7 +244,6 @@ object TikiSdk {
             ).await()
             val rspInit = RspInit.fromJson(rspInitJson)
             this@TikiSdk.address = rspInit.address
-            Log.e("TIKI", rspInit.address)
             onComplete?.let {
                 it()
             }

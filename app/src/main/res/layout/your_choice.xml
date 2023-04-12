@@ -10,19 +10,17 @@
         android:layout_weight="1" />
 
     <TextView
+        android:id="@+id/your_choice_accent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
-        android:text=" YOUR "
-        android:textColor="#00B272"
+        android:text="YOUR "
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/your_choice_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/space_grotesk_bold"
         android:text="CHOICE"
-        android:textColor="#1C0000"
         android:textSize="20sp" />
 
     <Space

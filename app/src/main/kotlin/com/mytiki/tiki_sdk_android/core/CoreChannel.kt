@@ -5,7 +5,6 @@
 package com.mytiki.tiki_sdk_android.core
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.NonNull
 import com.mytiki.tiki_sdk_android.core.rsp.RspError
 import io.flutter.embedding.engine.FlutterEngine

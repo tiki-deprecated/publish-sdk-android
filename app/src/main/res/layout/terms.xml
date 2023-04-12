@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/terms_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center|start">
+        android:gravity="center|start"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp">
 
         <ImageView
             android:id="@+id/back_btn"
@@ -19,41 +21,43 @@
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
+            android:id="@+id/terms_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/space_grotesk_bold"
             android:gravity="center_vertical"
             android:text="Terms and Conditions"
-            android:textColor="#1C0000"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp">
 
-        android:background="@drawable/scrollview_bottom_border"
-        android:paddingTop="10dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/scrollview_bottom_border"
+            android:paddingTop="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/space_grotesk_regular"
-            android:gravity="center_vertical"
-            android:paddingStart="15dp"
-            android:paddingTop="40dp"
-            android:paddingEnd="15dp"
-            android:text="@string/lipsum"
-            android:textColor="#1C0000"
-            android:textSize="16sp" />
-    </ScrollView>
+            <TextView
+                android:id="@+id/terms_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="30dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </ScrollView>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="44dp">
 
-        <include layout="@layout/button_color" />
+        <include layout="@layout/tiki_sdk_button" />
     </FrameLayout>
 </LinearLayout>

@@ -4,4 +4,4 @@
     android:id="@+id/activity_offer_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.OfferFlowActivity" />
+    tools:context=".ui.activities.LearnMoreActivity" />

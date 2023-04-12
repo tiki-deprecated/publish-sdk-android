@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/offer_prompt_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="15dp"
+    android:paddingTop="32dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="50dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,7 +20,13 @@
         <include layout="@layout/offer_prompt_header" />
     </FrameLayout>
 
-    <include layout="@layout/offer_card" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <include layout="@layout/offer_card" />
+    </FrameLayout>
 
     <include layout="@layout/used_for" />
 
@@ -25,11 +36,12 @@
         android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/opt_out"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
 
-            <include layout="@layout/button_outline" />
+            <include layout="@layout/tiki_sdk_button" />
         </FrameLayout>
 
         <Space
@@ -37,11 +49,12 @@
             android:layout_height="match_parent" />
 
         <FrameLayout
+            android:id="@+id/opt_in"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_weight="1">
 
-            <include layout="@layout/button_color" />
+            <include layout="@layout/tiki_sdk_button" />
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

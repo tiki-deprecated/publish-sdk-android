@@ -16,7 +16,6 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -139,7 +138,6 @@ enum class Permission(val code: Int) {
         permission: String,
         requestCode: Int
     ) {
-        Log.e("TIKI", "request pemission called")
         ActivityCompat.requestPermissions(
             activity as Activity,
             arrayOf(permission),
