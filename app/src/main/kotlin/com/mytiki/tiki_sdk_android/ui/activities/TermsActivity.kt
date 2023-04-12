@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.ui.Theme
@@ -39,6 +40,7 @@ class TermsActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.terms_title)
         title.text = "Terms and Conditions"
         title.setTextColor(theme.primaryTextColor)
+        title.typeface = ResourcesCompat.getFont(this, theme.fontBold)
 
         val iAgreeBtn = findViewById<RelativeLayout>(R.id.tiki_sdk_btn)
         iAgreeBtn.setOnClickListener {
@@ -54,5 +56,6 @@ class TermsActivity : AppCompatActivity() {
         val iAgreeBtnLabel = iAgreeBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
         iAgreeBtnLabel.text = "I agree"
         iAgreeBtnLabel.setTextColor(theme.primaryBackgroundColor)
+        iAgreeBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
     }
 }

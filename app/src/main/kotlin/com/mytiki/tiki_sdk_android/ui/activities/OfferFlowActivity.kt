@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -115,7 +116,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val solidBg = GradientDrawable()
         solidBg.shape = GradientDrawable.RECTANGLE
         solidBg.setTint(theme.accentColor)
-        solidBg.cornerRadius = 20F
+        solidBg.cornerRadius = 30F
 
         val optInFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_in)!!
         val optInBtn = optInFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)
@@ -131,7 +132,7 @@ class OfferFlowActivity : AppCompatActivity() {
         outlineBg.shape = GradientDrawable.RECTANGLE
         outlineBg.setStroke(4, theme.accentColor)
         outlineBg.setColor(theme.primaryBackgroundColor)
-        outlineBg.cornerRadius = 20F
+        outlineBg.cornerRadius = 30F
 
         val optOutFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_out)!!
         val optOutBtn = optOutFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)!!
@@ -231,6 +232,26 @@ class OfferFlowActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
+        endingErrorBottomSheetDialog.show()
+        endingErrorBottomSheetDialog.findViewById<TextView>(R.id.whoops)!!
+            .typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        setFootNotes(endingErrorBottomSheetDialog)
+    }
+
+    private fun setFootNotes(view: BottomSheetDialog) {
+        view.findViewById<TextView>(R.id.footnote_1)!!.setTextColor(theme.secondaryTextColor)
+        view.findViewById<TextView>(R.id.footnote_1)!!.typeface = ResourcesCompat.getFont(this, theme.fontLight)
+        view.findViewById<TextView>(R.id.footnote_2)!!.setTextColor(theme.secondaryTextColor)
+        view.findViewById<TextView>(R.id.footnote_2)!!.typeface = ResourcesCompat.getFont(this, theme.fontLight)
+    }
+
+    private fun setYourChoiceTitle(view: BottomSheetDialog) {
+        view.findViewById<TextView>(R.id.your_choice_accent)!!
+            .typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        view.findViewById<TextView>(R.id.your_choice_accent)!!
+            .setTextColor(theme.accentColor)
+        view.findViewById<TextView>(R.id.your_choice_text)!!
+            .typeface = ResourcesCompat.getFont(this, theme.fontBold)
     }
 
     private fun showEndingDeclined() {
@@ -240,6 +261,8 @@ class OfferFlowActivity : AppCompatActivity() {
             finish()
         }else {
             endingDeclinedBottomSheetDialog.show()
+            setYourChoiceTitle(endingDeclinedBottomSheetDialog)
+            setFootNotes(endingDeclinedBottomSheetDialog)
             enableSettingsLink(endingDeclinedBottomSheetDialog)
         }
     }
@@ -269,6 +292,8 @@ class OfferFlowActivity : AppCompatActivity() {
                 }
             }
             endingAcceptedBottomSheetDialog.show()
+            setYourChoiceTitle(endingAcceptedBottomSheetDialog)
+            setFootNotes(endingAcceptedBottomSheetDialog)
             enableSettingsLink(endingAcceptedBottomSheetDialog)
         }
     }

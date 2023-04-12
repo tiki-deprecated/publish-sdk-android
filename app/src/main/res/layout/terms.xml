@@ -9,6 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:gravity="center|start">
 
         <ImageView
@@ -27,11 +29,18 @@
             android:textSize="20sp" />
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        >
+
     <ScrollView
         android:layout_width="match_parent"
         android:background="@drawable/scrollview_bottom_border"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:paddingTop="10dp">
 
         <TextView
@@ -40,12 +49,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingStart="15dp"
             android:paddingTop="30dp"
-            android:paddingEnd="15dp"
             android:textSize="16sp"
             />
     </ScrollView>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
