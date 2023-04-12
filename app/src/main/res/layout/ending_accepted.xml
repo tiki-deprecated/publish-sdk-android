@@ -12,7 +12,7 @@
     <include layout="@layout/your_choice" />
 
     <TextView
-        android:id="@+id/backing_off"
+        android:id="@+id/ending_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"

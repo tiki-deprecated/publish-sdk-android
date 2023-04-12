@@ -218,7 +218,6 @@ class OfferFlowActivity : AppCompatActivity() {
         if (promptBottomSheetDialog.isShowing) {
             promptBottomSheetDialog.dismiss()
         }
-        endingErrorBottomSheetDialog.show()
         endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!.text =
             permissions.map { permission -> permission.displayName }.joinToString(", ") + "."
         endingErrorBottomSheetDialog.findViewById<TextView>(R.id.permissions_link)!!
@@ -235,7 +234,15 @@ class OfferFlowActivity : AppCompatActivity() {
         endingErrorBottomSheetDialog.show()
         endingErrorBottomSheetDialog.findViewById<TextView>(R.id.whoops)!!
             .typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        setEndingTitle(endingErrorBottomSheetDialog)
         setFootNotes(endingErrorBottomSheetDialog)
+    }
+
+    private fun setEndingTitle(view: BottomSheetDialog) {
+        view.findViewById<TextView>(R.id.ending_title)!!
+            .typeface = ResourcesCompat.getFont(this, theme.fontMedium)
+        view.findViewById<TextView>(R.id.ending_title)!!
+            .setTextColor(theme.primaryTextColor)
     }
 
     private fun setFootNotes(view: BottomSheetDialog) {
@@ -252,6 +259,8 @@ class OfferFlowActivity : AppCompatActivity() {
             .setTextColor(theme.accentColor)
         view.findViewById<TextView>(R.id.your_choice_text)!!
             .typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        view.findViewById<TextView>(R.id.your_choice_text)!!
+            .setTextColor(theme.primaryTextColor)
     }
 
     private fun showEndingDeclined() {
@@ -262,6 +271,7 @@ class OfferFlowActivity : AppCompatActivity() {
         }else {
             endingDeclinedBottomSheetDialog.show()
             setYourChoiceTitle(endingDeclinedBottomSheetDialog)
+            setEndingTitle(endingDeclinedBottomSheetDialog)
             setFootNotes(endingDeclinedBottomSheetDialog)
             enableSettingsLink(endingDeclinedBottomSheetDialog)
         }
@@ -293,6 +303,7 @@ class OfferFlowActivity : AppCompatActivity() {
             }
             endingAcceptedBottomSheetDialog.show()
             setYourChoiceTitle(endingAcceptedBottomSheetDialog)
+            setEndingTitle(endingAcceptedBottomSheetDialog)
             setFootNotes(endingAcceptedBottomSheetDialog)
             enableSettingsLink(endingAcceptedBottomSheetDialog)
         }
