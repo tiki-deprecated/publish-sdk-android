@@ -1,14 +1,11 @@
 name: Dokka
 
 on:
-#  pull_request:
-  #    branches:
-  #      - main
-  #    types:
-  #      - closed
-  push:
-    branches:
-      - fix/publish_to_maven
+  pull_request:
+      branches:
+        - main
+      types:
+        - closed
 
 permissions:
   contents: read
@@ -21,7 +18,7 @@ concurrency:
 
 jobs:
   publish:
-    #    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     environment:
       name: Production
       url: ${{ steps.deployment.outputs.page_url }}
