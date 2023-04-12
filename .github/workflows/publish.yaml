@@ -1,11 +1,14 @@
 name: Publish
 
 on:
-  pull_request:
+#  pull_request:
+  #    branches:
+  #      - main
+  #    types:
+  #      - closed
+  push:
     branches:
-      - main
-    types:
-      - closed
+      - fix/publish_to_maven
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -13,7 +16,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    #    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     environment: Production
     steps:
