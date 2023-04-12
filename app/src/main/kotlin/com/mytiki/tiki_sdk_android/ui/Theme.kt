@@ -5,128 +5,160 @@
 package com.mytiki.tiki_sdk_android.ui
 
 import android.graphics.Color
+import androidx.annotation.ColorInt
+import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 
 /**
  * Controls the UI theming for TikiSdk.
  */
-class Theme(
-    dark: Boolean = true,
-    private var _primaryTextColor: Color = Color(), //if (dark) Color.parseColor("#F6F6F6") else Color.parseColor("1C0000"),
-    private var _primaryBackgroundColor: Color = Color(), // if (dark) {
-//        Color(0xFF1C1C1E)
-//    } else {
-//        Color(0xFF1C1C1E)
-//    },
-    private var _secondaryBackgroundColor: Color = Color(), //if (dark) {
-//        Color(0xFFF6F6F6).copy(alpha = 0.38f)
-//    } else {
-//        Color(0xFFF6F6F6)
-//    },
-    private var _accentColor: Color = Color(), //if (dark) Color(0xFF00B272) else Color(0xFF00B272),
-    private var _fontFamily: Int? = null
-) {
+class Theme {
 
     /**
-     * Primary text color. Used in the default text items.
+     * Primary text color. Used in default text items.
      */
-    val primaryTextColor: Color
-        get() = _primaryTextColor
+    @ColorInt
+    var primaryTextColor: Int = Color.BLACK
 
     /**
-     * Secondary text color. Used in specific text items.
-     *
-     * Defaults to [primaryTextColor] with 60% alpha transparency.
+     * Secondary text color. Used in specific text items. Defaults to [primaryTextColor] with 60% alpha transparency.
      */
-    val secondaryTextColor: Color? = null
+    @ColorInt
+    var secondaryTextColor: Int = Color.argb((255 * 0.6).toInt(), 0, 0, 0)
 
     /**
      * Primary background color. The default color for backgrounds.
      */
-    val primaryBackgroundColor: Color
-        get() = _primaryBackgroundColor
+    @ColorInt
+    var primaryBackgroundColor: Int = Color.WHITE
 
     /**
      * Secondary background color.
      */
-    val secondaryBackgroundColor: Color
-        get() = _secondaryBackgroundColor
+    @ColorInt
+    var secondaryBackgroundColor: Int = Color.rgb(245, 245, 245)
 
     /**
      * Accent color. Used to decorate or highlight items.
      */
-    val accentColor: Color
-        get() = _accentColor
+    @ColorInt
+    var accentColor: Int = Color.rgb(0, 179, 112)
 
     /**
-     * The default font family for all texts.
+     * The `fontFamily` Regular variation.
      */
-    val fontFamily: Int?
-        get() = _fontFamily
+    var fontRegular: Int = R.font.space_grotesk_regular
+        private set
 
     /**
-     * Set primary text color
+     * The `fontFamily` Bold variation.
+     */
+    var fontBold: Int = R.font.space_grotesk_bold
+        private set
+
+    /**
+     * The `fontFamily` Light variation.
+     */
+    var fontLight: Int = R.font.space_grotesk_light
+        private set
+
+    /**
+     * The `fontFamily` Medium variation.
+     */
+    var fontMedium: Int = R.font.space_grotesk_medium
+        private set
+
+    /**
+     * The `fontFamily` SemiBold variation.
+     */
+    var fontSemiBold: Int = R.font.space_grotesk_semibold
+        private set
+
+    // Instance Methods
+    /**
+     * Sets the primary text color.
      *
-     * @param primaryTextColor
-     * @return this Theme
+     * @param primaryTextColor The color for default text items.
+     * @return This [Theme] instance for method chaining.
      */
-    fun setPrimaryTextColor(primaryTextColor: Color): Theme {
-        _primaryTextColor = primaryTextColor
+    fun primaryTextColor(primaryTextColor: Int): Theme {
+        this.primaryTextColor = primaryTextColor
         return this
     }
 
     /**
-     * Set primary background color
+     * Sets the secondary text color.
      *
-     * @param primaryBackgroundColor
-     * @return this Theme
+     * @param secondaryTextColor The color for specific text items.
+     * @return This [Theme] instance for method chaining.
      */
-    fun setPrimaryBackgroundColor(primaryBackgroundColor: Color): Theme {
-        _primaryBackgroundColor = primaryBackgroundColor
+    fun secondaryTextColor(secondaryTextColor: Int): Theme {
+        this.secondaryTextColor = secondaryTextColor
         return this
     }
 
     /**
-     * Set secondary background color
+     * Sets the primary background color.
      *
-     * @param secondaryBackgroundColor
-     * @return this Theme
+     * @param primaryBackgroundColor The default color for backgrounds.
+     * @return This [Theme] instance for method chaining.
      */
-    fun setSecondaryBackgroundColor(secondaryBackgroundColor: Color): Theme {
-        _secondaryBackgroundColor = secondaryBackgroundColor
+    fun primaryBackgroundColor(primaryBackgroundColor: Int): Theme {
+        this.primaryBackgroundColor = primaryBackgroundColor
         return this
     }
 
     /**
-     * Set accent color
+     * Sets the secondary background color.
      *
-     * @param accentColor
-     * @return this Theme
+     * @param secondaryBackgroundColor The color for secondary backgrounds.
+     * @return This [Theme] instance for method chaining.
      */
-    fun setAccentColor(accentColor: Color): Theme {
-        _accentColor = accentColor
+    fun secondaryBackgroundColor(secondaryBackgroundColor: Int): Theme {
+        this.secondaryBackgroundColor = secondaryBackgroundColor
         return this
     }
 
     /**
-     * Set font family
+     * Sets the accent color.
      *
-     * @param fontFamily
-     * @return this Theme
+     * @param accentColor The color for decorating or highlighting items.
+     * @return This [Theme] instance for method chaining.
      */
-    fun setFontFamily(fontFamily: Int): Theme {
-        _fontFamily = fontFamily
+    fun accentColor(accentColor: Int): Theme {
+        this.accentColor = accentColor
         return this
     }
 
     /**
-     * Returns the parent TikiSdk
+     * Sets the font family variations.
      *
-     * @return TikiSdk
+     * @param fontRegular The font resource for Regular font family variation.
+     * @param fontBold The font resource for Bold font family variation.
+     * @param fontLight The font resource for Light font family variation.
+     * @param fontMedium The font resource for Medium font family variation.
+     * @param fontSemiBold The font resource for SemiBold font family variation.
+     * @return This [Theme] instance for method chaining.
+     */
+    fun fontFamily(
+        fontRegular: Int,
+        fontBold: Int,
+        fontLight: Int,
+        fontMedium: Int,
+        fontSemiBold: Int
+    ) {
+        this.fontRegular = fontRegular
+        this.fontBold = fontBold
+        this.fontLight = fontLight
+        this.fontMedium = fontMedium
+        this.fontSemiBold = fontSemiBold
+    }
+
+    /**
+     * Returns the [TikiSdk] instance to simplify the chaining of methods in SDK configuration and initialization.
      */
     fun and(): TikiSdk {
         return TikiSdk
     }
-
-
 }
+
