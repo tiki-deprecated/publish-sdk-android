@@ -1,5 +1,6 @@
 package com.mytiki.tiki_sdk_android.example_app
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TikiSdk.offer
+        TikiSdk
+            .offer
             .ptr("test_offer")
             .reward(ResourcesCompat.getDrawable(resources, R.drawable.offer_img, null)!!)
             .bullet("Learn how our ads perform ", true)

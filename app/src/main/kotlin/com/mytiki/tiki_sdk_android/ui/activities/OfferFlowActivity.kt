@@ -115,7 +115,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val solidBg = GradientDrawable()
         solidBg.shape = GradientDrawable.RECTANGLE
         solidBg.setTint(theme.accentColor)
-        solidBg.cornerRadius = 10F
+        solidBg.cornerRadius = 20F
 
         val optInFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_in)!!
         val optInBtn = optInFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)
@@ -129,9 +129,9 @@ class OfferFlowActivity : AppCompatActivity() {
 
         val outlineBg = GradientDrawable()
         outlineBg.shape = GradientDrawable.RECTANGLE
-        outlineBg.setTint(theme.primaryBackgroundColor)
-        outlineBg.setStroke(2, theme.accentColor)
-        outlineBg.cornerRadius = 10F
+        outlineBg.setStroke(4, theme.accentColor)
+        outlineBg.setColor(theme.primaryBackgroundColor)
+        outlineBg.cornerRadius = 20F
 
         val optOutFrame = promptBottomSheetDialog.findViewById<FrameLayout>(R.id.opt_out)!!
         val optOutBtn = optOutFrame.findViewById<RelativeLayout>(R.id.tiki_sdk_btn)!!
@@ -145,7 +145,7 @@ class OfferFlowActivity : AppCompatActivity() {
 
         val learnMoreButton = promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!
         learnMoreButton.setOnClickListener { showLearnMore() }
-        learnMoreButton.setColorFilter(theme.secondaryBackgroundColor)
+        learnMoreButton.setColorFilter(theme.secondaryTextColor)
 
     }
 
@@ -173,6 +173,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val usedForTitle = usedFor.findViewById<TextView>(R.id.used_for_title)
         usedForTitle.setTextColor(Color.BLACK)
         usedForTitle.typeface = ResourcesCompat.getFont(this, theme.fontBold)
+        usedForTitle.text = "HOW YOUR DATA WILL BE USED"
 
         usedFor.findViewById<ImageView>(R.id.bullet_icon_1).setImageDrawable(
             if (offer.bullets[0].isUsed) {

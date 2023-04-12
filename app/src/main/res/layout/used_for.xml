@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
-        android:text="HOW YOUR DATA WILL BE USED"
         android:textSize="16sp" />
 
     <LinearLayout
@@ -34,17 +33,13 @@
                 android:id="@+id/bullet_icon_1"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
-                android:paddingTop="4dp"
-                android:src="@drawable/ic_check_icon" />
+                android:paddingTop="4dp" />
 
             <TextView
                 android:id="@+id/bullet_text_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/space_grotesk_bold"
-                android:text="Learn how our ads perform"
-                android:textColor="#1C0000"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -60,17 +55,13 @@
                 android:id="@+id/bullet_icon_2"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
-                android:paddingTop="4dp"
-                android:src="@drawable/ic_x_icon" />
+                android:paddingTop="4dp" />
 
             <TextView
                 android:id="@+id/bullet_text_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/space_grotesk_bold"
-                android:text="Reach you on other platforms"
-                android:textColor="#1C0000"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -86,17 +77,13 @@
                 android:id="@+id/bullet_icon_3"
                 android:layout_width="14dp"
                 android:layout_height="18dp"
-                android:paddingTop="4dp"
-                android:src="@drawable/ic_x_icon" />
+                android:paddingTop="4dp" />
 
             <TextView
                 android:id="@+id/bullet_text_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/space_grotesk_bold"
-                android:text="Sold to other companies"
-                android:textColor="#1C0000"
                 android:textSize="16sp" />
 
         </LinearLayout>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/terms_root"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -20,35 +19,32 @@
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
+            android:id="@+id/terms_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/space_grotesk_bold"
             android:gravity="center_vertical"
             android:text="Terms and Conditions"
-            android:textColor="#1C0000"
             android:textSize="20sp" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
+        android:background="@drawable/scrollview_bottom_border"
         android:layout_height="0dp"
         android:layout_weight="1"
-
-        android:background="@drawable/scrollview_bottom_border"
         android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/terms_text"
+            android:textColor="#000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/space_grotesk_regular"
             android:gravity="center_vertical"
             android:paddingStart="15dp"
             android:paddingTop="30dp"
             android:paddingEnd="15dp"
-            android:text="@string/lipsum"
-            android:textColor="#1C0000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            />
     </ScrollView>
 
     <FrameLayout

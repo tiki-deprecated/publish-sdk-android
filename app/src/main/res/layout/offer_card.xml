@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/offer_card_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,8 +13,7 @@
     <ImageView
         android:id="@+id/offer_image"
         android:layout_width="300dp"
-        android:layout_height="86dp"
-        app:srcCompat="@drawable/offer_img" />
+        android:layout_height="86dp" />
 
     <TextView
         android:id="@+id/offer_description"
@@ -24,6 +22,5 @@
         android:layout_width="300dp"
         android:paddingBottom="14dp"
         android:gravity="center_vertical"
-        android:text="Trade your IDFA (kind of like a serial # for your phone) for a discount."
         android:textSize="16sp" />
 </LinearLayout>
