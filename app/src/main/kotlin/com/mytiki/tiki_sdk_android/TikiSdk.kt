@@ -468,7 +468,7 @@ object TikiSdk {
         val titleReq = ReqTitle(ptr, tags, description, origin)
         val rspTitleCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, titleReq.toJson()
+                CoreMethod.TITLE, titleReq.toJson()
             )
         return MainScope().async {
             val rspTitleString: String = rspTitleCompletable.await()
@@ -495,7 +495,7 @@ object TikiSdk {
         val titleReq = ReqTitleGet(id, origin)
         val rspTitleCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, titleReq.toJson()
+                CoreMethod.GET_TITLE, titleReq.toJson()
             )
         return MainScope().async {
             val rspTitleJson = rspTitleCompletable.await()
@@ -523,7 +523,7 @@ object TikiSdk {
         val licenseReq = ReqLicenseGet(id, origin)
         val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq.toJson()
+                CoreMethod.GET_LICENSE, licenseReq.toJson()
             )
         return MainScope().async {
             val rspLicenseJson: String = rspLicenseCompletable.await()
@@ -552,7 +552,7 @@ object TikiSdk {
         val licenseReq = ReqLicenseAll(ptr, origin)
         val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq.toJson()
+                CoreMethod.ALL, licenseReq.toJson()
             )
         return MainScope().async {
             val rspLicenseJson: String = rspLicenseCompletable.await()
@@ -578,7 +578,7 @@ object TikiSdk {
         val licenseReq = ReqLicenseLatest(ptr, origin)
         val rspLicenseCompletable: CompletableDeferred<String> =
             coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq.toJson()
+                CoreMethod.LATEST, licenseReq.toJson()
             )
         return MainScope().async {
             val rspLicenseJson: String = rspLicenseCompletable.await()
