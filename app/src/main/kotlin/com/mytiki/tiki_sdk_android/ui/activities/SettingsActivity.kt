@@ -3,6 +3,7 @@ package com.mytiki.tiki_sdk_android.ui.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +31,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
-        theme = TikiSdk.theme(this)
+        theme = if (Build.VERSION.SDK_INT >= 33) {
+            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+        } else {
+            savedInstanceState!!.getSerializable("theme") as Theme
+        }
         offer = TikiSdk.offers.values.first()
         tikiSdkBtn = findViewById(R.id.tiki_sdk_btn)
         setupTradeYourDataTitle()

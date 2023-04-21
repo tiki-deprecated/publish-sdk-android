@@ -1,6 +1,6 @@
 buildscript {
     ext.flutterEngine = "1.0.0-1837b5be5f0f1376a1ccf383950e83a80177fb4e"
-    ext.sdkVersion = "2.1.3"
+    ext.sdkVersion = "1.0.7"
     ext.markwon_version = "4.6.2"
     repositories {
         mavenCentral()
@@ -22,8 +22,8 @@ android {
     compileSdk 33
     defaultConfig {
         minSdk 21
-        versionCode 6
-        versionName "2.1.2"
+        versionCode 9
+        versionName "2.1.4"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,7 +66,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
 
@@ -82,22 +82,29 @@ dependencies {
     debugEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
     releaseEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
 
-    debugEmbed "com.mytiki.tiki_sdk_flutter:flutter_release:$sdkVersion"
-    releaseEmbed "com.mytiki.tiki_sdk_flutter:flutter_release:$sdkVersion"
-
-    debugEmbed "io.flutter.plugins.pathprovider:path_provider_android_release:$sdkVersion"
-    releaseEmbed "io.flutter.plugins.pathprovider:path_provider_android_release:$sdkVersion"
+    debugEmbed "com.mytiki.tiki_sdk_platform_channel:flutter_release:$sdkVersion"
+    releaseEmbed "com.mytiki.tiki_sdk_platform_channel:flutter_release:$sdkVersion"
 
     debugEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
     releaseEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
-
-    debugEmbed "eu.simonbinder.sqlite3_flutter_libs:sqlite3_flutter_libs_release:$sdkVersion"
-    releaseEmbed "eu.simonbinder.sqlite3_flutter_libs:sqlite3_flutter_libs_release:$sdkVersion"
 }
 
 apply plugin: "org.jetbrains.dokka"
 tasks.dokkaHtml.configure {
     outputDirectory.set(file("../doc/api"))
+    dokkaSourceSets {
+        configureEach {
+            perPackageOption {
+                matchingRegex.set(".*core.*")
+                suppress.set(true)
+            }
+
+            perPackageOption {
+                matchingRegex.set(".*activities.*")
+                suppress.set(true)
+            }
+        }
+    }
 }
 
 def groovyShell = new GroovyShell()
@@ -111,6 +118,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 signing {
+    required { gradle.taskGraph.hasTask("publish") }
     def signingKey = System.getenv("PGP_PRIVATE_KEY")
     def signingPassword = System.getenv("PGP_PASSPHRASE")
     useInMemoryPgpKeys(signingKey, signingPassword)
