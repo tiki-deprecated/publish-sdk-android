@@ -1,13 +1,14 @@
 package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.mytiki.tiki_sdk_android.R
-import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.ui.Theme
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.tables.TablePlugin
 
@@ -15,8 +16,11 @@ class LearnMoreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val theme = TikiSdk.theme(this)
+        val theme = if (Build.VERSION.SDK_INT >= 33) {
+            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+        } else {
+            savedInstanceState!!.getSerializable("theme") as Theme
+        }
         setContentView(R.layout.learn_more)
 
         val solidBg = GradientDrawable()

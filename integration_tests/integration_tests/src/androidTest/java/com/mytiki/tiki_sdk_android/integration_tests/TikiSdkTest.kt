@@ -54,7 +54,7 @@ class IntegrationTests {
                 TikiSdk.offer
                     .id("test_offer")
                     .ptr("test_offer")
-                    .reward("offerImage")
+                    //.reward("offerImage")
                     .bullet("Learn how our ads perform ", true)
                     .bullet("Reach you on other platforms", false)
                     .bullet("Sold to other companies", false)
@@ -63,7 +63,7 @@ class IntegrationTests {
                     .tag(TitleTag.ADVERTISING_DATA)
                     .description("Trade your IDFA (kind of like a serial # for your phone) for a discount.")
                     .terms(context, "terms.md")
-                    .duration(365 * 24 * 60 * 60)
+                    .duration(365 * 24 * 60 * 60, TimeUnit.SECONDS)
                     .add()
                     .onAccept { _, _ -> print("accepted") }
                     .onDecline { _, _ -> print("declined") }

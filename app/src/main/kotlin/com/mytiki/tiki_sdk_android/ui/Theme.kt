@@ -8,11 +8,12 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
+import java.io.Serializable
 
 /**
  * Controls the UI theming for TikiSdk.
  */
-class Theme {
+class Theme : Serializable {
 
     /**
      * Primary text color. Used in default text items.
