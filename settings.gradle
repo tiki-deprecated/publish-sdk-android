@@ -11,7 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url = uri("https://maven.pkg.github.com/tiki/tiki-sdk-flutter")
+            url = uri("https://maven.pkg.github.com/tiki/tiki-sdk-platform-channel")
             credentials {
                 username = providers
                         .gradleProperty("gpr.user")

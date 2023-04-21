@@ -2,6 +2,7 @@ package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -20,7 +21,11 @@ class TermsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        theme = TikiSdk.theme(this)
+        theme = if (Build.VERSION.SDK_INT >= 33) {
+            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+        } else {
+            savedInstanceState!!.getSerializable("theme") as Theme
+        }
         setContentView(R.layout.terms)
 
         val markwon = Markwon.builder(this)

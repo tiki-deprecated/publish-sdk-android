@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.widget.*
@@ -51,7 +52,11 @@ class OfferFlowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        theme = TikiSdk.theme(this)
+        theme = if (Build.VERSION.SDK_INT >= 33) {
+            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+        } else {
+            savedInstanceState!!.getSerializable("theme") as Theme
+        }
         setContentView(R.layout.activity_offer_flow)
         initializeBottomSheets()
         showOfferPrompt()
@@ -316,17 +321,26 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showLearnMore() {
         val intent = Intent(this, LearnMoreActivity::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable("theme", theme)
+        intent.putExtras(bundle)
         startActivity(intent)
     }
 
     private fun showTerms() {
         val intent = Intent(this, TermsActivity::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable("theme", theme)
+        intent.putExtras(bundle)
         termsResult.launch(intent)
     }
 
     private fun enableSettingsLink(v: BottomSheetDialog) {
         v.findViewById<TextView>(R.id.settings_link)!!.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable("theme", theme)
+            intent.putExtras(bundle)
             finish()
             startActivity(intent)
         }
