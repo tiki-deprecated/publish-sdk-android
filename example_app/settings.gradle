@@ -8,6 +8,10 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven{
+            "local"
+            url = "../app/build/repo"
+        }
         google()
         mavenCentral()
     }
