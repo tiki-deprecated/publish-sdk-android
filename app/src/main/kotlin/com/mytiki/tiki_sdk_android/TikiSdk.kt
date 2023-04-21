@@ -8,6 +8,7 @@ package com.mytiki.tiki_sdk_android
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Bundle
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import com.mytiki.tiki_sdk_android.TikiSdk.init
@@ -233,6 +234,7 @@ object TikiSdk {
         context: Context,
         publishingId: String,
         id: String,
+        dbDir: String? = null,
         origin: String? = null,
         onComplete: (() -> Unit)?
     ): Deferred<Unit> {
@@ -241,7 +243,12 @@ object TikiSdk {
             this@TikiSdk.coreChannel = coreChannel
             val rspInitJson = coreChannel.invokeMethod(
                 CoreMethod.BUILD,
-                ReqInit(publishingId, id, origin ?: context.packageName).toJson()
+                ReqInit(
+                    publishingId,
+                    id,
+                    dbDir ?: context.applicationInfo.dataDir,
+                    origin ?: context.packageName
+                ).toJson()
             ).await()
             val rspInit = RspInit.fromJson(rspInitJson)
             this@TikiSdk.address = rspInit.address
@@ -277,7 +284,11 @@ object TikiSdk {
             guard(ptr, usecases, destinations, {
                 Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
             }, {
-                startActivity(context, Intent(context, OfferFlowActivity::class.java), null)
+                val bundle = Bundle()
+                val intent = Intent(context, OfferFlowActivity::class.java)
+                bundle.putSerializable("theme", theme(context))
+                intent.putExtras(bundle);
+                startActivity(context, intent, null)
             })
         }
     }
@@ -292,7 +303,11 @@ object TikiSdk {
     fun settings(context: Context) {
         throwIfNotInitialized()
         throwIfNoOffers()
-        startActivity(context, Intent(context, SettingsActivity::class.java), null)
+        val bundle = Bundle()
+        val intent = Intent(context, SettingsActivity::class.java)
+        bundle.putSerializable("theme", theme(context))
+        intent.putExtras(bundle);
+        startActivity(context, intent, null)
     }
 
     /**
