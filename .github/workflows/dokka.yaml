@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+#    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     environment:
       name: Production
       url: ${{ steps.deployment.outputs.page_url }}
