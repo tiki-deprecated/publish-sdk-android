@@ -4,8 +4,8 @@ on:
   pull_request:
     branches:
       - main
-#    types:
-#      - closed
+    types:
+      - closed
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   publish:
-#    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -40,25 +40,25 @@ jobs:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: "Publish AAR"
-#        uses: gradle/gradle-build-action@v2
-#        with:
-#          arguments: publish
-#        env:
-#          OSSRH_USER: ${{ secrets.OSSRH_USER }}
-#          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-#          GITHUB_USER: ${{ github.actor }}
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-#          PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
-#
-#      - name: Get Version
-#        id: semver
-#        uses: ietf-tools/semver-action@v1
-#        with:
-#          token: ${{ github.token }}
-#
-#      - name: Release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: ${{ steps.semver.outputs.nextStrict }}
+      - name: "Publish AAR"
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publish
+        env:
+          OSSRH_USER: ${{ secrets.OSSRH_USER }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.semver.outputs.nextStrict }}
