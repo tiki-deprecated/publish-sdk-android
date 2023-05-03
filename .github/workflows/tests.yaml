@@ -43,5 +43,10 @@ jobs:
           working-directory: integration_tests
           script: ./gradlew connectedCheck
 
-      - name: list test results folder
-        run: ls integration_tests/integration_tests/build/outputs/androidTest-results/connected
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: JEST Tests
+          path: 'integration_tests/integration_tests/build/outputs/androidTest-results/connected/TEST-test(AVD) - 10-_integration_tests-.xml'
+          reporter: jest-junit
