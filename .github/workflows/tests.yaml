@@ -42,3 +42,6 @@ jobs:
           disable-animations: true
           working-directory: integration_tests
           script: ./gradlew connectedCheck
+
+      - name: list test results folder
+        run: ls integration_tests/integration_tests/build/outputs/androidTest-results/connected
