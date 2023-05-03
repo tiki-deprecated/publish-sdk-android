@@ -27,6 +27,9 @@ jobs:
 
       - name: Publish to local maven repo
         uses: gradle/gradle-build-action@v2
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           arguments: publishAllPublicationsToLocalRepoRepository
 
