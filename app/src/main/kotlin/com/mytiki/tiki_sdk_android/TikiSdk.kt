@@ -234,7 +234,6 @@ object TikiSdk {
         context: Context,
         publishingId: String,
         id: String,
-        dbDir: String? = null,
         origin: String? = null,
         onComplete: (() -> Unit)?
     ): Deferred<Unit> {
@@ -246,7 +245,7 @@ object TikiSdk {
                 ReqInit(
                     publishingId,
                     id,
-                    dbDir ?: context.applicationInfo.dataDir,
+                    context.applicationInfo.dataDir,
                     origin ?: context.packageName
                 ).toJson()
             ).await()
@@ -287,7 +286,7 @@ object TikiSdk {
                 val bundle = Bundle()
                 val intent = Intent(context, OfferFlowActivity::class.java)
                 bundle.putSerializable("theme", theme(context))
-                intent.putExtras(bundle);
+                intent.putExtras(bundle)
                 startActivity(context, intent, null)
             })
         }
@@ -306,7 +305,7 @@ object TikiSdk {
         val bundle = Bundle()
         val intent = Intent(context, SettingsActivity::class.java)
         bundle.putSerializable("theme", theme(context))
-        intent.putExtras(bundle);
+        intent.putExtras(bundle)
         startActivity(context, intent, null)
     }
 
