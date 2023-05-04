@@ -48,5 +48,5 @@ jobs:
         if: success() || failure()
         with:
           name: JEST Tests
-          path: 'integration_tests/integration_tests/build/outputs/androidTest-results/connected/TEST-test(AVD) - 10-_integration_tests-.xml'
+          path: integration_tests/integration_tests/build/outputs/androidTest-results/connected/*.xml
           reporter: jest-junit

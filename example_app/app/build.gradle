@@ -40,5 +40,5 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
-    implementation 'com.mytiki:tiki-sdk-android:2.1.5'
+    implementation 'com.mytiki:tiki-sdk-android:2.1.6'
 }
