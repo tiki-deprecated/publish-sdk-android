@@ -42,11 +42,3 @@ jobs:
           disable-animations: true
           working-directory: integration_tests
           script: ./gradlew connectedCheck
-
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: JEST Tests
-          path: integration_tests/integration_tests/build/outputs/androidTest-results/connected/*.xml
-          reporter: jest-junit
