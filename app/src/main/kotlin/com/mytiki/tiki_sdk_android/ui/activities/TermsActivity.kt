@@ -24,14 +24,15 @@ class TermsActivity : AppCompatActivity() {
         theme = if (Build.VERSION.SDK_INT >= 33) {
             savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
         } else {
+            @Suppress("DEPRECATION")
             savedInstanceState!!.getSerializable("theme") as Theme
         }
         setContentView(R.layout.terms)
 
         val markwon = Markwon.builder(this)
             .usePlugin(TablePlugin.create(this))
-            .build();
-        markwon.setMarkdown(findViewById(R.id.terms_text), TikiSdk.offers.values.first().terms);
+            .build()
+        markwon.setMarkdown(findViewById(R.id.terms_text), TikiSdk.offers.values.first().terms)
 
         val backBtn = findViewById<ImageView>(R.id.back_btn)
         backBtn.setOnClickListener {
@@ -42,7 +43,7 @@ class TermsActivity : AppCompatActivity() {
         backBtn.drawable.setTint(theme.primaryTextColor)
 
         val title = findViewById<TextView>(R.id.terms_title)
-        title.text = "Terms and Conditions"
+        title.text = getString(R.string.terms_and_conditions)
         title.setTextColor(theme.primaryTextColor)
         title.typeface = ResourcesCompat.getFont(this, theme.fontBold)
 
@@ -58,7 +59,7 @@ class TermsActivity : AppCompatActivity() {
         solidBg.cornerRadius = 20F
         iAgreeBtn.background = solidBg
         val iAgreeBtnLabel = iAgreeBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
-        iAgreeBtnLabel.text = "I agree"
+        iAgreeBtnLabel.text = getString(R.string.i_agree)
         iAgreeBtnLabel.setTextColor(theme.primaryBackgroundColor)
         iAgreeBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
     }

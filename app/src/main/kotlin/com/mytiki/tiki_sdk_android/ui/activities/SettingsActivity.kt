@@ -5,7 +5,10 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.mytiki.tiki_sdk_android.LicenseUsecase
@@ -18,15 +21,13 @@ import io.noties.markwon.Markwon
 
 class SettingsActivity : AppCompatActivity() {
 
-    lateinit var offer: Offer
-    lateinit var tikiSdkBtn: RelativeLayout
-    lateinit var theme: Theme
-
     private val isPermissionPending: Boolean
         get() = permissions.size > 0
 
+    private lateinit var offer: Offer
+    private lateinit var tikiSdkBtn: RelativeLayout
+    private lateinit var theme: Theme
     private var permissions: MutableList<Permission> = mutableListOf()
-    private lateinit var btnFrame: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,7 @@ class SettingsActivity : AppCompatActivity() {
         theme = if (Build.VERSION.SDK_INT >= 33) {
             savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
         } else {
+            @Suppress("DEPRECATION")
             savedInstanceState!!.getSerializable("theme") as Theme
         }
         offer = TikiSdk.offers.values.first()
@@ -82,7 +84,7 @@ class SettingsActivity : AppCompatActivity() {
         val usedForTitle = usedFor.findViewById<TextView>(R.id.used_for_title)
         usedForTitle.setTextColor(theme.primaryTextColor)
         usedForTitle.typeface = ResourcesCompat.getFont(this, theme.fontBold)
-        usedForTitle.text = "HOW YOUR DATA WILL BE USED"
+        usedForTitle.text = getString(R.string.how_your_data_will_be_used)
 
         findViewById<ImageView>(R.id.bullet_icon_1).setImageDrawable(
             if (offer.bullets[0].isUsed) {
@@ -153,6 +155,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             usecases.addAll(it.usecases)
         }
+        @Suppress("DeferredResultUnused")
         TikiSdk.guard(ptr, usecases, destinations, {
             enableOptOutBtn()
         }, {
@@ -167,7 +170,7 @@ class SettingsActivity : AppCompatActivity() {
         solidBg.cornerRadius = 30F
         val btnLabel = tikiSdkBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
         btnLabel.setTextColor(theme.primaryBackgroundColor)
-        btnLabel.text = "Opt in"
+        btnLabel.text = getString(R.string.opt_in)
         btnLabel.typeface = ResourcesCompat.getFont(this, theme.fontRegular)
         tikiSdkBtn.background = solidBg
 
@@ -188,7 +191,7 @@ class SettingsActivity : AppCompatActivity() {
         tikiSdkBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
             .setTextColor(theme.primaryTextColor)
         tikiSdkBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
-            .text = "Opt out"
+            .text = getString(R.string.opt_out)
 
         tikiSdkBtn.setOnClickListener {
             TikiSdk.license(

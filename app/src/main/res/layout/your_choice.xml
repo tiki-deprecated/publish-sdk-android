@@ -13,14 +13,14 @@
         android:id="@+id/your_choice_accent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="YOUR "
+        android:text="@string/your_"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/your_choice_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CHOICE"
+        android:text="@string/choice"
         android:textSize="20sp" />
 
     <Space

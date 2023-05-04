@@ -19,6 +19,7 @@ class LearnMoreActivity : AppCompatActivity() {
         val theme = if (Build.VERSION.SDK_INT >= 33) {
             savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
         } else {
+            @Suppress("DEPRECATION")
             savedInstanceState!!.getSerializable("theme") as Theme
         }
         setContentView(R.layout.learn_more)
@@ -35,7 +36,7 @@ class LearnMoreActivity : AppCompatActivity() {
             assets.open("learn_more.md").bufferedReader().use { it.readText() }
         val markwon = Markwon.builder(this)
             .usePlugin(TablePlugin.create(this))
-            .build();
+            .build()
         markwon.setMarkdown(
             learnMoreTextView,
             learnMoreText

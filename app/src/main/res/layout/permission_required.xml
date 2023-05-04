@@ -5,6 +5,6 @@
     android:layout_height="42dp"
     android:fontFamily="@font/space_grotesk_medium"
     android:gravity="center_horizontal|center_vertical"
-    android:text="Permission Required"
+    android:text="@string/permission_required"
     android:textColor="#1C0000"
     android:textSize="32sp" />

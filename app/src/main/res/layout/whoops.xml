@@ -13,7 +13,7 @@
         android:id="@+id/whoops"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WHOOPS"
+        android:text="@string/whoops"
         android:textColor="#C73000"
         android:textSize="20sp" />
 
