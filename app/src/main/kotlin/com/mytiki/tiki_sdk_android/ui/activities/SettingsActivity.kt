@@ -33,10 +33,10 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
         theme = if (Build.VERSION.SDK_INT >= 33) {
-            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+            intent.getSerializableExtra("theme", Theme::class.java)!!
         } else {
             @Suppress("DEPRECATION")
-            savedInstanceState!!.getSerializable("theme") as Theme
+            intent.getSerializableExtra("theme") as Theme
         }
         offer = TikiSdk.offers.values.first()
         tikiSdkBtn = findViewById(R.id.tiki_sdk_btn)

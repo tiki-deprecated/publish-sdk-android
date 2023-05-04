@@ -88,8 +88,8 @@ dependencies {
     debugEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
     releaseEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
 
-    debugEmbed "eu.simonbinder.sqlite3_flutter_libs.sqlite3_flutter_libs_release:$sdkVersion"
-    releaseEmbed "eu.simonbinder.sqlite3_flutter_libs.sqlite3_flutter_libs_release:$sdkVersion"
+    debugEmbed "eu.simonbinder.sqlite3_flutter_libs:sqlite3_flutter_libs_release:$sdkVersion"
+    releaseEmbed "eu.simonbinder.sqlite3_flutter_libs:sqlite3_flutter_libs_release:$sdkVersion"
 }
 
 apply plugin: "org.jetbrains.dokka"
