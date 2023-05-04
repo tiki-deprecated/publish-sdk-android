@@ -17,9 +17,9 @@ class LearnMoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val theme = if (Build.VERSION.SDK_INT >= 33) {
-            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+            intent.getSerializableExtra("theme", Theme::class.java)!!
         } else {
-            savedInstanceState!!.getSerializable("theme") as Theme
+            intent.getSerializableExtra("theme") as Theme
         }
         setContentView(R.layout.learn_more)
 

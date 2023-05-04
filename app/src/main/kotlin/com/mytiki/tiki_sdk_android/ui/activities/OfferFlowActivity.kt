@@ -53,9 +53,10 @@ class OfferFlowActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         theme = if (Build.VERSION.SDK_INT >= 33) {
-            savedInstanceState!!.getSerializable("theme", Theme::class.java)!!
+            intent.getSerializableExtra("theme", Theme::class.java)!!
         } else {
-            savedInstanceState!!.getSerializable("theme") as Theme
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("theme") as Theme
         }
         setContentView(R.layout.activity_offer_flow)
         initializeBottomSheets()
@@ -129,7 +130,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val optInBtnLabel = optInBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
         optInBtnLabel.setTextColor(theme.primaryBackgroundColor)
         optInBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
-        optInBtnLabel.text = "I'm in"
+        optInBtnLabel.text = getString(R.string.im_in)
 
         val outlineBg = GradientDrawable()
         outlineBg.shape = GradientDrawable.RECTANGLE
@@ -145,7 +146,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val optOutBtnLabel = optOutBtn.findViewById<TextView>(R.id.tiki_sdk_btn_label)
         optOutBtnLabel.setTextColor(theme.primaryTextColor)
         optOutBtnLabel.typeface = ResourcesCompat.getFont(this, theme.fontMedium)
-        optOutBtnLabel.text = "Back Off"
+        optOutBtnLabel.text = getString(R.string.back_off)
 
         val learnMoreButton = promptBottomSheetDialog.findViewById<ImageView>(R.id.question_icon)!!
         learnMoreButton.setOnClickListener { showLearnMore() }
@@ -177,7 +178,7 @@ class OfferFlowActivity : AppCompatActivity() {
         val usedForTitle = usedFor.findViewById<TextView>(R.id.used_for_title)
         usedForTitle.setTextColor(Color.BLACK)
         usedForTitle.typeface = ResourcesCompat.getFont(this, theme.fontBold)
-        usedForTitle.text = "HOW YOUR DATA WILL BE USED"
+        usedForTitle.text = getString(R.string.how_your_data_will_be_used)
 
         usedFor.findViewById<ImageView>(R.id.bullet_icon_1).setImageDrawable(
             if (offer.bullets[0].isUsed) {
@@ -283,6 +284,7 @@ class OfferFlowActivity : AppCompatActivity() {
     }
 
     private fun showEndingAccepted() {
+        @Suppress("DeferredResultUnused")
         TikiSdk.license(
             offer.ptr,
             offer.uses,

@@ -18,7 +18,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:paddingTop="36dp"
         android:paddingBottom="36dp"
-        android:text="Awesome! You're in"
+        android:text="@string/awesome_you_re_in"
         android:textSize="32sp" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:fontFamily="@font/space_grotesk_light"
         android:gravity="center_horizontal|center_vertical"
         android:paddingBottom="6dp"
-        android:text="We're on it, stay tuned."
+        android:text="@string/we_re_on_it_stay_tuned"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Change your mind anytime in"
+            android:text="@string/change_your_mind_anytime_in"
             android:textSize="18sp" />
 
         <include layout="@layout/settings_link" />

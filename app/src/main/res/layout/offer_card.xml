@@ -13,7 +13,8 @@
     <ImageView
         android:id="@+id/offer_image"
         android:layout_width="300dp"
-        android:layout_height="86dp" />
+        android:layout_height="86dp"
+        android:contentDescription="@string/offer_illustration" />
 
     <TextView
         android:id="@+id/offer_description"

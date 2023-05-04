@@ -17,7 +17,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:paddingTop="36dp"
         android:paddingBottom="36dp"
-        android:text="Permission Required"
+        android:text="@string/permission_required"
         android:textSize="32sp" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:paddingBottom="6dp"
-        android:text="Offer declined."
+        android:text="@string/offer_declined"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:text="To proceed, allow "
+            android:text="@string/to_proceed_allow"
             android:textSize="18sp" />
 
         <TextView

@@ -147,12 +147,13 @@ class Theme : Serializable {
         fontLight: Int,
         fontMedium: Int,
         fontSemiBold: Int
-    ) {
+    ): Theme {
         this.fontRegular = fontRegular
         this.fontBold = fontBold
         this.fontLight = fontLight
         this.fontMedium = fontMedium
         this.fontSemiBold = fontSemiBold
+        return this
     }
 
     /**

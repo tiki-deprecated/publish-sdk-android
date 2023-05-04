@@ -17,7 +17,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:paddingTop="36dp"
         android:paddingBottom="36dp"
-        android:text="Backing Off"
+        android:text="@string/backing_off"
         android:textSize="32sp" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:paddingBottom="6dp"
-        android:text="Your data is valuable."
+        android:text="@string/your_data_is_valuable"
         android:textSize="18sp" />
 
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Opt-in anytime in"
+            android:text="@string/opt_in_anytime_in"
             android:textSize="18sp" />
 
         <include layout="@layout/settings_link" />

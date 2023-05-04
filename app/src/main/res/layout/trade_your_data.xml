@@ -8,21 +8,21 @@
         android:id="@+id/trade_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TRADE"
+        android:text="@string/trade"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/your_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" YOUR "
+        android:text="@string/_your_"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/data_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DATA"
+        android:text="@string/data"
         android:textSize="20sp" />
 
 </LinearLayout>
