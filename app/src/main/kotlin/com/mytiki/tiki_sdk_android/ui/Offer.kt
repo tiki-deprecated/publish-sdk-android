@@ -8,6 +8,9 @@ import android.Manifest
 import android.content.Context
 import android.graphics.drawable.Drawable
 import com.mytiki.tiki_sdk_android.*
+import com.mytiki.tiki_sdk_android.trail.Tag
+import com.mytiki.tiki_sdk_android.trail.Use
+import com.mytiki.tiki_sdk_android.trail.Usecase
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -21,8 +24,8 @@ class Offer {
     private var _terms: String? = null
     private var _reward: Drawable? = null
     private var _usedBullet = mutableListOf<Bullet>()
-    private var _uses = mutableListOf<LicenseUse>()
-    private var _tags = mutableListOf<TitleTag>()
+    private var _uses = mutableListOf<Use>()
+    private var _tags = mutableListOf<Tag>()
     private var _permissions = mutableListOf<Permission>()
     private var _expiry: Date? = null
 
@@ -72,13 +75,13 @@ class Offer {
     /**
      * The Use cases for the license.
      */
-    val uses: List<LicenseUse>
+    val uses: List<Use>
         get() = _uses
 
     /**
      * The tags that describes the represented data asset.
      */
-    val tags: List<TitleTag>
+    val tags: List<Tag>
         get() = _tags
 
     /**
@@ -152,8 +155,8 @@ class Offer {
      * @param destinations
      * @return this Offer
      */
-    fun use(usecases: List<LicenseUsecase>, destinations: List<String> = mutableListOf()): Offer {
-        _uses.add(LicenseUse(usecases, destinations))
+    fun use(usecases: List<Usecase>, destinations: List<String> = mutableListOf()): Offer {
+        _uses.add(Use(usecases, destinations))
         return this
     }
 
@@ -163,7 +166,7 @@ class Offer {
      * @param tag
      * @return this Offer
      */
-    fun tag(tag: TitleTag): Offer {
+    fun tag(tag: Tag): Offer {
         _tags.add(tag)
         return this
     }

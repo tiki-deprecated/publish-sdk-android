@@ -22,9 +22,12 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.trail.TitleRecord
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Permission
 import com.mytiki.tiki_sdk_android.ui.Theme
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 
 
 class OfferFlowActivity : AppCompatActivity() {
@@ -290,16 +293,16 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showEndingAccepted() {
         @Suppress("DeferredResultUnused")
-        //TODO FIX ME.
-//        TikiSdk.license(
-//            offer.ptr,
-//            offer.uses,
-//            offer.terms,
-//            offer.tags,
-//            null,
-//            offer.description,
-//            offer.expiry
-//        )
+        MainScope().async {
+            val title: TitleRecord = TikiSdk.trail.title.create(offer.ptr, offer.tags).await()
+            TikiSdk.trail.license.create(
+                title.id,
+                offer.uses,
+                offer.terms,
+                offer.expiry,
+                offer.description,
+            )
+        }
         if (TikiSdk.isAcceptEndingDisabled) {
             finish()
         } else {

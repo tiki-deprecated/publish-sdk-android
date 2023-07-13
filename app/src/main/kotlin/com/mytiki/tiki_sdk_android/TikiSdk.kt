@@ -9,13 +9,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
+import com.mytiki.tiki_sdk_android.TikiSdk.initialize
 import com.mytiki.tiki_sdk_android.channel.Channel
 import com.mytiki.tiki_sdk_android.idp.Idp
+import com.mytiki.tiki_sdk_android.trail.LicenseRecord
 import com.mytiki.tiki_sdk_android.trail.Trail
+import com.mytiki.tiki_sdk_android.trail.Usecase
 import com.mytiki.tiki_sdk_android.trail.rsp.RspInitialize
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Theme
+import com.mytiki.tiki_sdk_android.ui.activities.OfferFlowActivity
 import com.mytiki.tiki_sdk_android.ui.activities.SettingsActivity
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
@@ -25,7 +30,7 @@ import java.util.*
 /**
  * The TIKI SDK main class. Use this to add tokenized data ownership, consent, and rewards.
  *
- * @constructor Create empty Tiki sdk. [init] should be called to build the SDK.
+ * @constructor Create empty Tiki sdk. [initialize] should be called to build the SDK.
  */
 object TikiSdk {
 
@@ -36,7 +41,19 @@ object TikiSdk {
      * If false, it means that the TikiSdk has not yet been initialized or has failed to initialize.
      */
     val isInitialized: Boolean
-        get() = address != null
+        get() = _address != null
+
+    val address: String
+        get() {
+            throwIfNotInitialized()
+            return _address!!
+        }
+
+    val id: String
+        get() {
+            throwIfNotInitialized()
+            return _id!!
+        }
 
     /**
      * A [Theme] object for pre-built UIs.
@@ -228,23 +245,21 @@ object TikiSdk {
         throwIfNoOffers()
         MainScope().async {
             val ptr: String = offers.values.first().ptr
-            val usecases: MutableList<LicenseUsecase> = mutableListOf()
+            val usecases: MutableList<Usecase> = mutableListOf()
             val destinations: MutableList<String> = mutableListOf()
             offers.values.first().uses.forEach {
-                if (it.destinations != null) {
-                    destinations.addAll(it.destinations)
-                }
+                destinations.addAll(it.destinations ?: emptyList())
                 usecases.addAll(it.usecases)
             }
-//            guard(ptr, usecases, destinations, {
-//                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
-//            }, {
-//                val bundle = Bundle()
-//                val intent = Intent(context, OfferFlowActivity::class.java)
-//                bundle.putSerializable("theme", theme(context))
-//                intent.putExtras(bundle)
-//                startActivity(context, intent, null)
-//            })
+            trail.guard(ptr, usecases, destinations, {
+                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
+            }, {
+                val bundle = Bundle()
+                val intent = Intent(context, OfferFlowActivity::class.java)
+                bundle.putSerializable("theme", theme(context))
+                intent.putExtras(bundle)
+                startActivity(context, intent, null)
+            })
         }
     }
 
@@ -293,19 +308,18 @@ object TikiSdk {
     ): Deferred<Unit> {
         return MainScope().async {
             val rsp: RspInitialize = channel.initialize(id, publishingId, context).await()
-            this@TikiSdk.address = rsp.address
-            this@TikiSdk.id = rsp.id
+            this@TikiSdk._address = rsp.address
+            this@TikiSdk._id = rsp.id
             onComplete?.let { it() }
         }
     }
-
 
     private val channel: Channel = Channel()
     val idp: Idp = Idp(channel)
     val trail: Trail = Trail(channel)
 
-    private var address: String? = null
-    private var id: String? = null
+    private var _address: String? = null
+    private var _id: String? = null
     private var _dark: Theme? = null
     private var _onAccept: ((Offer, LicenseRecord) -> Unit)? = null
     private var _onDecline: ((Offer, LicenseRecord?) -> Unit)? = null
