@@ -12,15 +12,12 @@ package com.mytiki.tiki_sdk_android.ui
  * @param isUsed A boolean value that indicates whether the data is being used.
  */
 data class Bullet(
-
     /**
      * A string that describes the usage of the data.
      */
     val text: String,
-
     /**
      * A boolean value that indicates whether the data is being used.
      */
-    val isUsed: Boolean,
-
-    )
+    val isUsed: Boolean
+)

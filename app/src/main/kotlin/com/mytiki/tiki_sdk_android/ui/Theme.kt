@@ -75,7 +75,6 @@ class Theme : Serializable {
     var fontSemiBold: Int = R.font.space_grotesk_semibold
         private set
 
-    // Instance Methods
     /**
      * Sets the primary text color.
      *

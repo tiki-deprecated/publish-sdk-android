@@ -1,6 +1,6 @@
 buildscript {
-    ext.flutterEngine = "1.0.0-1837b5be5f0f1376a1ccf383950e83a80177fb4e"
-    ext.sdkVersion = "1.0.11"
+    ext.flutterEngine = "1.0.0-45f6e009110df4f34ec2cf99f63cf73b71b7a420"
+    ext.sdkVersion = "2.0.6"
     ext.markwon_version = "4.6.2"
     repositories {
         mavenCentral()
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         minSdk 21
         versionCode 28
-        versionName "2.1.5"
+        versionName "2.1.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,11 +40,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     lint {
         baseline = file("lint-baseline.xml")
@@ -58,33 +58,34 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.mytiki.tiki_sdk_android'
 }
 
 apply plugin: 'com.kezong.fat-aar'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
 
     implementation "io.noties.markwon:core:$markwon_version"
     implementation "io.noties.markwon:html:$markwon_version"
     implementation "io.noties.markwon:ext-tables:$markwon_version"
+    implementation 'androidx.core:core-ktx:1.10.1'
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     debugEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
     releaseEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
 
-    debugEmbed "com.mytiki.tiki_sdk_platform_channel:flutter_release:$sdkVersion"
-    releaseEmbed "com.mytiki.tiki_sdk_platform_channel:flutter_release:$sdkVersion"
+    debugEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
+    releaseEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
 
     debugEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
     releaseEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"

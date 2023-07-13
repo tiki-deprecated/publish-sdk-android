@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.content.Intent
@@ -11,13 +16,16 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import com.mytiki.tiki_sdk_android.LicenseUsecase
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
+import com.mytiki.tiki_sdk_android.trail.TitleRecord
+import com.mytiki.tiki_sdk_android.trail.Usecase
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Permission
 import com.mytiki.tiki_sdk_android.ui.Theme
 import io.noties.markwon.Markwon
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -147,16 +155,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupOptBtn() {
         val ptr: String = offer.ptr
-        val usecases: MutableList<LicenseUsecase> = mutableListOf()
+        val usecases: MutableList<Usecase> = mutableListOf()
         val destinations: MutableList<String> = mutableListOf()
         offer.uses.forEach {
-            if (it.destinations != null) {
-                destinations.addAll(it.destinations)
-            }
+            destinations.addAll(it.destinations ?: emptyList())
             usecases.addAll(it.usecases)
         }
         @Suppress("DeferredResultUnused")
-        TikiSdk.guard(ptr, usecases, destinations, {
+        TikiSdk.trail.guard(ptr, usecases, destinations, {
             enableOptOutBtn()
         }, {
             enableOptInBtn()
@@ -194,15 +200,16 @@ class SettingsActivity : AppCompatActivity() {
             .text = getString(R.string.opt_out)
 
         tikiSdkBtn.setOnClickListener {
-            TikiSdk.license(
-                offer.ptr,
-                listOf(),
-                offer.terms,
-                offer.tags,
-                null,
-                offer.description,
-                offer.expiry
-            ).invokeOnCompletion {
+            MainScope().async {
+                val title: TitleRecord = TikiSdk.trail.title.create(offer.ptr, offer.tags).await()
+                TikiSdk.trail.license.create(
+                    title.id,
+                    offer.uses,
+                    offer.terms,
+                    offer.expiry,
+                    offer.description,
+                )
+            }.invokeOnCompletion {
                 setupOptBtn()
             }
         }
@@ -210,15 +217,16 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun handlePermissions() {
         if (!isPermissionPending) {
-            TikiSdk.license(
-                offer.ptr,
-                offer.uses,
-                offer.terms,
-                offer.tags,
-                null,
-                offer.description,
-                offer.expiry
-            ).invokeOnCompletion {
+            MainScope().async {
+                val title: TitleRecord = TikiSdk.trail.title.create(offer.ptr, offer.tags).await()
+                TikiSdk.trail.license.create(
+                    title.id,
+                    offer.uses,
+                    offer.terms,
+                    offer.expiry,
+                    offer.description,
+                )
+            }.invokeOnCompletion {
                 setupOptBtn()
             }
         } else {
