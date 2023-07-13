@@ -24,9 +24,6 @@ dependencyResolutionManagement {
         maven {
             url 'https://storage.googleapis.com/download.flutter.io'
         }
-        maven {
-            url '/Users/maudi/Development/Repositories/TIKI/tiki-sdk-platform-channel/build/host/outputs/repo'
-        }
     }
 }
 
