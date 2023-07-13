@@ -1,6 +1,6 @@
 buildscript {
     ext.flutterEngine = "1.0.0-45f6e009110df4f34ec2cf99f63cf73b71b7a420"
-    ext.sdkVersion = "2.0.5"
+    ext.sdkVersion = "2.0.6"
     ext.markwon_version = "4.6.2"
     repositories {
         mavenCentral()
@@ -84,12 +84,9 @@ dependencies {
     debugEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
     releaseEmbed "io.flutter:flutter_embedding_release:$flutterEngine"
 
-//    debugEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
-//    releaseEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
+    debugEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
+    releaseEmbed "com.mytiki.tiki_sdk_native:flutter_release:$sdkVersion"
 
-    debugEmbed 'com.mytiki.tiki_sdk_native:flutter_debug:1.0'
-    releaseEmbed 'com.mytiki.tiki_sdk_native:flutter_release:1.0'
-    
     debugEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
     releaseEmbed "com.it_nomads.fluttersecurestorage:flutter_secure_storage_release:$sdkVersion"
 
