@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) TIKI Inc.
  * MIT license. See LICENSE file in root directory.
  */
@@ -9,18 +9,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
-import com.mytiki.tiki_sdk_android.TikiSdk.init
-import com.mytiki.tiki_sdk_android.core.CoreChannel
-import com.mytiki.tiki_sdk_android.core.CoreMethod
-import com.mytiki.tiki_sdk_android.core.req.*
-import com.mytiki.tiki_sdk_android.core.rsp.*
+import com.mytiki.tiki_sdk_android.channel.Channel
+import com.mytiki.tiki_sdk_android.idp.Idp
+import com.mytiki.tiki_sdk_android.trail.Trail
+import com.mytiki.tiki_sdk_android.trail.rsp.RspInitialize
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Theme
-import com.mytiki.tiki_sdk_android.ui.activities.OfferFlowActivity
 import com.mytiki.tiki_sdk_android.ui.activities.SettingsActivity
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -218,46 +214,6 @@ object TikiSdk {
     }
 
     /**
-     * Initializes the TIKI SDK.
-     *
-     * Use this method to initialize the TIKI SDK with the specified  [publishingId],  [id],
-     * and optionally [origin].
-     * You can also provide an optional onComplete closure that will be executed once the initialization process is complete.
-     *
-     * @param context: The context in which the SDK will be initialized.
-     * @param publishingId: The  *publishingId* for connecting to the TIKI cloud.
-     * @param id: The ID that uniquely identifies your user.
-     * @param origin: The default  *origin* for all transactions. Defaults to Bundle.main.bundleIdentifier if  *nil*.
-     * @param onComplete: An optional closure to be executed once the initialization process is complete.
-     */
-    fun init(
-        context: Context,
-        publishingId: String,
-        id: String,
-        origin: String? = null,
-        onComplete: (() -> Unit)?
-    ): Deferred<Unit> {
-        return MainScope().async {
-            val coreChannel = CoreChannel(context)
-            this@TikiSdk.coreChannel = coreChannel
-            val rspInitJson = coreChannel.invokeMethod(
-                CoreMethod.BUILD,
-                ReqInit(
-                    publishingId,
-                    id,
-                    context.applicationInfo.dataDir,
-                    origin ?: context.packageName
-                ).toJson()
-            ).await()
-            val rspInit = RspInit.fromJson(rspInitJson)
-            this@TikiSdk.address = rspInit.address
-            onComplete?.let {
-                it()
-            }
-        }
-    }
-
-    /**
      * Presents an Offer to the user and allows them to accept or decline it, which can result in a new LicenseRecord`
      * being created based on the presented Offer`.
      *
@@ -280,15 +236,15 @@ object TikiSdk {
                 }
                 usecases.addAll(it.usecases)
             }
-            guard(ptr, usecases, destinations, {
-                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
-            }, {
-                val bundle = Bundle()
-                val intent = Intent(context, OfferFlowActivity::class.java)
-                bundle.putSerializable("theme", theme(context))
-                intent.putExtras(bundle)
-                startActivity(context, intent, null)
-            })
+//            guard(ptr, usecases, destinations, {
+//                Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
+//            }, {
+//                val bundle = Bundle()
+//                val intent = Intent(context, OfferFlowActivity::class.java)
+//                bundle.putSerializable("theme", theme(context))
+//                intent.putExtras(bundle)
+//                startActivity(context, intent, null)
+//            })
         }
     }
 
@@ -329,280 +285,27 @@ object TikiSdk {
         }
     }
 
-    /**
-     * Creates a new LicenseRecord object.
-     *
-     * The method searches for a TitleRecord object that matches the provided ptr parameter.
-     * If such a record exists, the tags and titleDescription parameters are ignored. Otherwise,
-     * a new TitleRecord is created using the provided tags and titleDescription parameters.
-     *
-     * If the origin parameter is not provided, the default origin specified in initialization is used.
-     * The expiry parameter sets the expiration date of the LicenseRecord`. If the license never
-     * expires, leave this parameter as null.
-     *
-     * @param ptr: The pointer record identifies data stored in your system, similar to a foreign key.
-     * Learn more about selecting good pointer records at https://docs.mytiki.com/docs/selecting-a-pointer-record.
-     * @param uses: A list defining how and where an asset may be used, in the format of LicenseUse
-     * objects. Learn more about specifying uses at https://docs.mytiki.com/docs/specifying-terms-and-usage.
-     * @param terms: The legal terms of the contract. This is a long text document that explains
-     * the terms of the license.
-     * @param tags: A list of metadata tags included in the TitleRecord describing the asset, for
-     * your use in record search and filtering. This parameter is used only if a TitleRecord does
-     * not already exist for the provided ptr`.
-     * @param titleDescription: A short, human-readable description of the TitleRecord as a future
-     * reminder. This parameter is used only if a TitleRecord does not already exist for the provided ptr`.
-     * @param licenseDescription: A short, human-readable description of the LicenseRecord as a
-     * future reminder.
-     * @param expiry: The expiration date of the LicenseRecord`. If the license never expires,
-     * leave this parameter as null.
-     * @param origin: An optional override of the default origin specified in init()`. Use a
-     * reverse-DNS syntax, e.g. com.myco.myapp`.
-     *
-     * @returns The created LicenseRecord object.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun license(
-        ptr: String, uses: List<LicenseUse>, terms: String, tags: List<TitleTag> = listOf(),
-        titleDescription: String? = null, licenseDescription: String? = null,
-        expiry: Date? = null, origin: String? = null
-    ): Deferred<LicenseRecord> {
-        throwIfNotInitialized()
-
-        val licenseReq = ReqLicense(
-            ptr, terms, titleDescription, licenseDescription, uses, tags, expiry, origin
-        )
-
-        val rspLicenseCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.LICENSE, licenseReq.toJson()
-            )
+    fun initialize(
+        id: String,
+        publishingId: String,
+        context: Context,
+        onComplete: (() -> Unit)? = null
+    ): Deferred<Unit> {
         return MainScope().async {
-            val rspLicenseJson: String = rspLicenseCompletable.await()
-            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
-            rspLicense.license!!
+            val rsp: RspInitialize = channel.initialize(id, publishingId, context).await()
+            this@TikiSdk.address = rsp.address
+            this@TikiSdk.id = rsp.id
+            onComplete?.let { it() }
         }
     }
 
-    /**
-     * Guard against an in valid LicenseRecord for a list of usecases and destinations.
-     *
-     * Use this method to verify that a non-expired LicenseRecord for the specified pointer record
-     * exists and permits the listed usecases and destinations.
-     *
-     * This method can be used in two ways:
-     * 1. As an async traditional guard, returning a pass/fail boolean:
-     * ``
-     * val pass = guard(
-     *    ptr: "example-ptr",
-     *    usecases: [.attribution],
-     *    destinations: ["https://example.com"])
-     *  .await()
-     * if(pass){
-     *     // Perform the action allowed by the LicenseRecord.
-     * }
-     * ``
-     * 2. As a wrapper around a function:
-     * ``
-     * guard(
-     *    ptr: "example-ptr",
-     *    usecases: [.attribution],
-     *    destinations: ["https://example.com"]),
-     *    onPass: {
-     *     // Perform the action allowed by the LicenseRecord.
-     * }, onFail: { error in
-     *     // Handle the error.
-     * })
-     * ``
-     *
-     * @param ptr: The pointer record for the asset. Used to locate the latest relevant LicenseRecord.
-     * @param usecases: A list of usecases defining how the asset will be used.
-     * @param destinations: A list of destinations defining where the asset will be used, often URLs.
-     * @param onPass: A closure to execute automatically upon successfully resolving the LicenseRecord against the usecases and destinations.
-     * @param onFail: A closure to execute automatically upon failure to resolve the LicenseRecord. Accepts an optional error message describing the reason for failure.
-     * @param origin: An optional override of the default origin specified in the initializer.
-     *
-     * @returns true if the user has access, false otherwise.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun guard(
-        ptr: String,
-        usecases: List<LicenseUsecase> = listOf(),
-        destinations: List<String> = listOf(),
-        onPass: (() -> Unit)? = null,
-        onFail: ((String?) -> Unit)? = null,
-        origin: String? = null
-    ): Deferred<Boolean> {
-        throwIfNotInitialized()
-        val guardReq = ReqGuard(ptr, usecases, destinations, origin)
-        val rspGuardCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.GUARD, guardReq.toJson()
-            )
-        return MainScope().async {
-            val rspGuardJson: String = rspGuardCompletable.await()
-            val rspGuard: RspGuard = RspGuard.fromJson(rspGuardJson)
-            if (onPass != null && rspGuard.success) {
-                onPass()
-            }
-            if (onFail != null && !rspGuard.success) {
-                onFail(rspGuard.reason)
-            }
-            rspGuard.success
-        }
-    }
 
-    /**
-     * Creates a new TitleRecord, or retrieves an existing one.
-     *
-     * Use this function to create a new TitleRecord for a given Pointer Record (ptr), or retrieve
-     * an existing one if it already exists.
-     *
-     * @param ptr: The Pointer Record that identifies the data stored in your system, similar to a
-     * foreign key. Learn more about selecting good pointer records at
-     * https://docs.mytiki.com/docs/selecting-a-pointer-record.
-     *
-     * @param origin: An optional override of the default origin specified in [init].
-     * Follow a reverse-DNS syntax, i.e. com.myco.myapp.
-     * @param tags: A list of metadata tags included in the TitleRecord describing the asset, for
-     * your use in record search and filtering. Learn more about adding tags at
-     * https://docs.mytiki.com/docs/adding-tags.
-     * @param description: A short, human-readable, description of the TitleRecord as a future reminder.
-     *
-     * @returns The created or retrieved TitleRecord.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun title(
-        ptr: String, origin: String? = null, tags: List<TitleTag> = listOf(),
-        description: String? = null
-    ): Deferred<TitleRecord> {
-        throwIfNotInitialized()
-        val titleReq = ReqTitle(ptr, tags, description, origin)
-        val rspTitleCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.TITLE, titleReq.toJson()
-            )
-        return MainScope().async {
-            val rspTitleString: String = rspTitleCompletable.await()
-            val rspTitle: RspTitle = RspTitle.fromJson(rspTitleString)
-            rspTitle.title!!
-        }
-    }
-
-    /**
-     * Retrieves the TitleRecord with the specified ID, or null if the record is not found.
-     *
-     * Use this method to retrieve the metadata associated with an asset identified by its TitleRecord ID.
-     *
-     * @param id: The ID of the TitleRecord to retrieve.
-     * @param origin: An optional override of the default origin specified in initialization. Follow a
-     *  reverse-DNS syntax, i.e.
-     *  com.myco.myapp`.
-     *  @returns The TitleRecord with the specified ID, or null if the record is not found.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun getTitle(id: String, origin: String? = null): Deferred<TitleRecord?> {
-        throwIfNotInitialized()
-        val titleReq = ReqTitleGet(id, origin)
-        val rspTitleCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.GET_TITLE, titleReq.toJson()
-            )
-        return MainScope().async {
-            val rspTitleJson = rspTitleCompletable.await()
-            val rspTitle: RspTitle = RspTitle.fromJson(rspTitleJson)
-            rspTitle.title
-        }
-    }
-
-    /**
-     * Returns the LicenseRecord for a given ID or nil if the license or corresponding title record
-     * is not found.
-     *
-     * This method retrieves the LicenseRecord object that matches the specified ID. If no record
-     * is found, it returns nil. The origin parameter can be used to override the default origin
-     * specified in initialization.
-     *
-     * @param id: The ID of the LicenseRecord to retrieve.
-     * @param origin: An optional override of the default origin specified in initTikiSdkAsync`.
-     * @returns The LicenseRecord that matches the specified ID or nil if the license or corresponding title record is not found.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun getLicense(id: String, origin: String? = null): Deferred<LicenseRecord?> {
-        throwIfNotInitialized()
-        val licenseReq = ReqLicenseGet(id, origin)
-        val rspLicenseCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.GET_LICENSE, licenseReq.toJson()
-            )
-        return MainScope().async {
-            val rspLicenseJson: String = rspLicenseCompletable.await()
-            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
-            rspLicense.license
-        }
-    }
-
-    /**
-     * Returns all LicenseRecords associated with a given Pointer Record.
-     *
-     * Use this method to retrieve all LicenseRecords that have been previously stored for a given
-     * Pointer Record in your system.
-     *
-     * @param ptr: The Pointer Record that identifies the data stored in your system, similar to a
-     * foreign key.
-     * @param origin: An optional origin. If nil, the origin defaults to the package name.
-     *
-     * @returns An array of all LicenseRecords associated with the given Pointer Record. If no
-     * LicenseRecords are found, an empty array is returned.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun all(ptr: String, origin: String? = null): Deferred<List<LicenseRecord>> {
-        throwIfNotInitialized()
-        val licenseReq = ReqLicenseAll(ptr, origin)
-        val rspLicenseCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.ALL, licenseReq.toJson()
-            )
-        return MainScope().async {
-            val rspLicenseJson: String = rspLicenseCompletable.await()
-            val rspLicense: RspLicenseList = RspLicenseList.fromJson(rspLicenseJson)
-            rspLicense.licenseList
-        }
-    }
-
-    /**
-     * Returns the latest LicenseRecord for a ptr or nil if the corresponding title or license
-     * records are not found.
-     *
-     * @param ptr: The Pointer Records identifies data stored in your system, similar to a foreign key.
-     * @param origin: An optional origin. If nil, the origin defaults to the package name.
-     *
-     * @returns The latest [LicenseRecord] for the given ptr, or nil if the corresponding title or
-     * license records are not found.
-     *
-     * @throws IllegalStateException if the SDK is not initialized
-     */
-    fun latest(ptr: String, origin: String? = null): Deferred<LicenseRecord?> {
-        throwIfNotInitialized()
-        val licenseReq = ReqLicenseLatest(ptr, origin)
-        val rspLicenseCompletable: CompletableDeferred<String> =
-            coreChannel!!.invokeMethod(
-                CoreMethod.LATEST, licenseReq.toJson()
-            )
-        return MainScope().async {
-            val rspLicenseJson: String = rspLicenseCompletable.await()
-            val rspLicense: RspLicense = RspLicense.fromJson(rspLicenseJson)
-            rspLicense.license
-        }
-    }
+    private val channel: Channel = Channel()
+    val idp: Idp = Idp(channel)
+    val trail: Trail = Trail(channel)
 
     private var address: String? = null
-    private var coreChannel: CoreChannel? = null
+    private var id: String? = null
     private var _dark: Theme? = null
     private var _onAccept: ((Offer, LicenseRecord) -> Unit)? = null
     private var _onDecline: ((Offer, LicenseRecord?) -> Unit)? = null

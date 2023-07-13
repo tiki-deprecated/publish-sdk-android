@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.content.Intent
@@ -155,12 +160,13 @@ class SettingsActivity : AppCompatActivity() {
             }
             usecases.addAll(it.usecases)
         }
-        @Suppress("DeferredResultUnused")
-        TikiSdk.guard(ptr, usecases, destinations, {
-            enableOptOutBtn()
-        }, {
-            enableOptInBtn()
-        })
+        //@Suppress("DeferredResultUnused")
+        //TODO FIX ME.
+//        TikiSdk.guard(ptr, usecases, destinations, {
+//            enableOptOutBtn()
+//        }, {
+//            enableOptInBtn()
+//        })
     }
 
     private fun enableOptInBtn() {
@@ -194,33 +200,35 @@ class SettingsActivity : AppCompatActivity() {
             .text = getString(R.string.opt_out)
 
         tikiSdkBtn.setOnClickListener {
-            TikiSdk.license(
-                offer.ptr,
-                listOf(),
-                offer.terms,
-                offer.tags,
-                null,
-                offer.description,
-                offer.expiry
-            ).invokeOnCompletion {
-                setupOptBtn()
-            }
+            //TODO FIX ME.
+//            TikiSdk.license(
+//                offer.ptr,
+//                listOf(),
+//                offer.terms,
+//                offer.tags,
+//                null,
+//                offer.description,
+//                offer.expiry
+//            ).invokeOnCompletion {
+//                setupOptBtn()
+//            }
         }
     }
 
     private fun handlePermissions() {
         if (!isPermissionPending) {
-            TikiSdk.license(
-                offer.ptr,
-                offer.uses,
-                offer.terms,
-                offer.tags,
-                null,
-                offer.description,
-                offer.expiry
-            ).invokeOnCompletion {
-                setupOptBtn()
-            }
+            //TODO FIX ME.
+//            TikiSdk.license(
+//                offer.ptr,
+//                offer.uses,
+//                offer.terms,
+//                offer.tags,
+//                null,
+//                offer.description,
+//                offer.expiry
+//            ).invokeOnCompletion {
+//                setupOptBtn()
+//            }
         } else {
             val perm = permissions.first()
             if (!perm.isAuthorized(this)) {

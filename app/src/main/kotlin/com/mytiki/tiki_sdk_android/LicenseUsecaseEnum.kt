@@ -7,10 +7,10 @@ package com.mytiki.tiki_sdk_android
 /**
  * Default accepted usecases
  *
- * @property _value
- * @constructor Create a new License usecase from [_value]
+ * @property value
+ * @constructor Create a new License usecase from [value]
  */
-enum class LicenseUsecaseEnum(private val _value: String) {
+enum class LicenseUsecaseEnum(val value: String) {
     ATTRIBUTION("attribution"),
     RETARGETING("retargeting"),
     PERSONALIZATION("personalization"),
@@ -18,12 +18,6 @@ enum class LicenseUsecaseEnum(private val _value: String) {
     DISTRIBUTION("distribution"),
     ANALYTICS("analytics"),
     SUPPORT("support");
-
-    /**
-     * Returns the string value for the enum
-     */
-    val value: String
-        get() = _value
 
     companion object {
         /**
@@ -37,7 +31,7 @@ enum class LicenseUsecaseEnum(private val _value: String) {
                     return type
                 }
             }
-            throw IllegalArgumentException("Invalid LicenseUsecaseEnum value $value")
+            throw IllegalArgumentException("Invalid Enum value: $value")
         }
     }
 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) TIKI Inc.
+ * MIT license. See LICENSE file in root directory.
+ */
+
 package com.mytiki.tiki_sdk_android.ui.activities
 
 import android.app.Activity
@@ -285,15 +290,16 @@ class OfferFlowActivity : AppCompatActivity() {
 
     private fun showEndingAccepted() {
         @Suppress("DeferredResultUnused")
-        TikiSdk.license(
-            offer.ptr,
-            offer.uses,
-            offer.terms,
-            offer.tags,
-            null,
-            offer.description,
-            offer.expiry
-        )
+        //TODO FIX ME.
+//        TikiSdk.license(
+//            offer.ptr,
+//            offer.uses,
+//            offer.terms,
+//            offer.tags,
+//            null,
+//            offer.description,
+//            offer.expiry
+//        )
         if (TikiSdk.isAcceptEndingDisabled) {
             finish()
         } else {
