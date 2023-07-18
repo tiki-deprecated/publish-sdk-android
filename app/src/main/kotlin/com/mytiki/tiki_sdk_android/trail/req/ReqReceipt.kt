@@ -16,6 +16,7 @@ data class ReqReceipt(
     override fun map(): Map<String, Any?> {
         return mapOf(
             "requestId" to requestId,
+            "payableId" to payableId,
             "amount" to amount,
             "description" to description,
             "reference" to reference

@@ -15,7 +15,9 @@ class Tag private constructor(val value: String) {
 
         fun from(tag: String): Tag {
             val common: TagCommon? = TagCommon.from(tag)
-            return if (common != null) Tag(common) else custom(tag)
+            return if (common != null) Tag(common)
+            else if (tag.startsWith("custom:")) Tag(tag)
+            else custom(tag)
         }
     }
 }
