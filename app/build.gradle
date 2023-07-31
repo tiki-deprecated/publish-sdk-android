@@ -148,7 +148,7 @@ afterEvaluate {
                 pom {
                     name = 'TIKI SDK [Android]'
                     description = "A package for adding TIKI's decentralized infrastructure to Android projects. Add tokenized data ownership, consent, and rewards to your app in minutes."
-                    url = 'https://docs.mytiki.com/docs/tiki-sdk-android-getting-started'
+                    url = 'https://mytiki.com/docs'
                     licenses {
                         license {
                             name = 'MIT'

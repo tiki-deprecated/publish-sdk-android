@@ -38,7 +38,7 @@ jobs:
           arguments: assemble
         env:
           GITHUB_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: "Publish AAR"
         uses: gradle/gradle-build-action@v2
@@ -48,7 +48,7 @@ jobs:
           OSSRH_USER: ${{ secrets.OSSRH_USER }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
           GITHUB_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
 
