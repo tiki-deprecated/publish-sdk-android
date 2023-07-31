@@ -15,7 +15,9 @@ class Usecase private constructor(val value: String) {
 
         fun from(usecase: String): Usecase {
             val common: UsecaseCommon? = UsecaseCommon.from(usecase)
-            return if (common != null) Usecase(common) else custom(usecase)
+            return if (common != null) Usecase(common)
+            else if (usecase.startsWith("custom:")) Usecase(usecase)
+            else custom(usecase)
         }
     }
 }
