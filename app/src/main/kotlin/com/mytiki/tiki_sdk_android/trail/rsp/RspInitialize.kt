@@ -5,7 +5,6 @@
 
 package com.mytiki.tiki_sdk_android.trail.rsp
 
-import android.util.Log
 import com.mytiki.tiki_sdk_android.channel.rsp.Rsp
 
 data class RspInitialize(
@@ -15,7 +14,6 @@ data class RspInitialize(
 ) : Rsp {
     companion object {
         fun from(map: Map<String, Any?>): RspInitialize {
-            Log.d("TIKI", "RSP IS: $map")
             return RspInitialize(
                 map["id"] as String?,
                 map["address"] as String?,
