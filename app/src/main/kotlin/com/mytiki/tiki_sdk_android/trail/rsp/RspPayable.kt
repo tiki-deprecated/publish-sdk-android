@@ -6,7 +6,7 @@
 package com.mytiki.tiki_sdk_android.trail.rsp
 
 import com.mytiki.tiki_sdk_android.channel.rsp.Rsp
-import java.util.Date
+import java.util.*
 
 data class RspPayable(
     val id: String?,
@@ -16,11 +16,13 @@ data class RspPayable(
     val description: String?,
     val expiry: Date?,
     val reference: String?,
+    val timestamp: Date?,
     override val requestId: String?,
 ) : Rsp {
     companion object {
         fun from(map: Map<String, Any?>): RspPayable {
-            val expiry: Long? = map["expiry"] as Long?
+            val expiry: Number? = map["expiry"] as Number?
+            val timestamp: Number? = map["timestamp"] as Number?
             val license: Map<String, Any?>? = map["license"] as Map<String, Any?>?
             return RspPayable(
                 map["id"] as String?,
@@ -28,8 +30,9 @@ data class RspPayable(
                 map["amount"] as String?,
                 map["type"] as String?,
                 map["description"] as String?,
-                if (expiry != null) Date(expiry) else null,
+                if (expiry != null) Date(expiry.toLong()) else null,
                 map["reference"] as String?,
+                if (timestamp != null) Date(timestamp.toLong()) else null,
                 map["requestId"] as String?
             )
         }
