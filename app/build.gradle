@@ -1,6 +1,6 @@
 buildscript {
     ext.flutterEngine = "1.0.0-45f6e009110df4f34ec2cf99f63cf73b71b7a420"
-    ext.sdkVersion = "2.0.6"
+    ext.sdkVersion = "2.1.0"
     ext.markwon_version = "4.6.2"
     repositories {
         mavenCentral()
