@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable
 import com.mytiki.tiki_sdk_android.*
 import com.mytiki.tiki_sdk_android.trail.Tag
 import com.mytiki.tiki_sdk_android.trail.Use
-import com.mytiki.tiki_sdk_android.trail.Usecase
+import com.mytiki.tiki_sdk_android.trail.UseCase
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -151,12 +151,12 @@ class Offer {
     /**
      * Adds an item to the [uses] list.
      *
-     * @param usecases
+     * @param useCases
      * @param destinations
      * @return this Offer
      */
-    fun use(usecases: List<Usecase>, destinations: List<String> = mutableListOf()): Offer {
-        _uses.add(Use(usecases, destinations))
+    fun use(useCases: List<UseCase>, destinations: List<String> = mutableListOf()): Offer {
+        _uses.add(Use(useCases, destinations))
         return this
     }
 

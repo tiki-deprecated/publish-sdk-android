@@ -16,7 +16,7 @@ import com.mytiki.tiki_sdk_android.channel.Channel
 import com.mytiki.tiki_sdk_android.idp.Idp
 import com.mytiki.tiki_sdk_android.trail.LicenseRecord
 import com.mytiki.tiki_sdk_android.trail.Trail
-import com.mytiki.tiki_sdk_android.trail.Usecase
+import com.mytiki.tiki_sdk_android.trail.UseCase
 import com.mytiki.tiki_sdk_android.trail.rsp.RspInitialize
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Theme
@@ -25,7 +25,6 @@ import com.mytiki.tiki_sdk_android.ui.activities.SettingsActivity
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import java.util.*
 
 /**
  * The TIKI SDK main class. Use this to add tokenized data ownership, consent, and rewards.
@@ -245,13 +244,13 @@ object TikiSdk {
         throwIfNoOffers()
         MainScope().async {
             val ptr: String = offers.values.first().ptr
-            val usecases: MutableList<Usecase> = mutableListOf()
+            val useCases: MutableList<UseCase> = mutableListOf()
             val destinations: MutableList<String> = mutableListOf()
             offers.values.first().uses.forEach {
                 destinations.addAll(it.destinations ?: emptyList())
-                usecases.addAll(it.usecases)
+                useCases.addAll(it.usecases)
             }
-            trail.guard(ptr, usecases, destinations, {
+            trail.guard(ptr, useCases, destinations, {
                 Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
             }, {
                 val bundle = Bundle()

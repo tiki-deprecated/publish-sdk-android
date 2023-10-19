@@ -6,11 +6,11 @@
 package com.mytiki.tiki_sdk_android.trail.req
 
 import com.mytiki.tiki_sdk_android.channel.req.Req
-import com.mytiki.tiki_sdk_android.trail.Usecase
+import com.mytiki.tiki_sdk_android.trail.UseCase
 
 data class ReqGuard(
     val ptr: String,
-    val usecases: List<Usecase>,
+    val usecases: List<UseCase>,
     val destinations: List<String>? = null,
     val origin: String? = null
 ) : Req() {
