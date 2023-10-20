@@ -19,7 +19,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.mytiki.tiki_sdk_android.R
 import com.mytiki.tiki_sdk_android.TikiSdk
 import com.mytiki.tiki_sdk_android.trail.TitleRecord
-import com.mytiki.tiki_sdk_android.trail.UseCase
+import com.mytiki.tiki_sdk_android.trail.Usecase
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Permission
 import com.mytiki.tiki_sdk_android.ui.Theme
@@ -155,7 +155,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupOptBtn() {
         val ptr: String = offer.ptr
-        val useCases: MutableList<UseCase> = mutableListOf()
+        val useCases: MutableList<Usecase> = mutableListOf()
         val destinations: MutableList<String> = mutableListOf()
         offer.uses.forEach {
             destinations.addAll(it.destinations ?: emptyList())

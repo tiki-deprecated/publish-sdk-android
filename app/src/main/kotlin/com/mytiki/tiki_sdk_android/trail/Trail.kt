@@ -57,7 +57,7 @@ class Trail(private val channel: Channel) {
 
     fun guard(
         ptr: String,
-        usecases: List<UseCase>,
+        usecases: List<Usecase>,
         destinations: List<String>? = null,
         onPass: (() -> Unit)? = null,
         onFail: ((String?) -> Unit)? = null,

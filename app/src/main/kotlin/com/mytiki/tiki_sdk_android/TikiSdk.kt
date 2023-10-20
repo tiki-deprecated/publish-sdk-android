@@ -16,7 +16,7 @@ import com.mytiki.tiki_sdk_android.channel.Channel
 import com.mytiki.tiki_sdk_android.idp.Idp
 import com.mytiki.tiki_sdk_android.trail.LicenseRecord
 import com.mytiki.tiki_sdk_android.trail.Trail
-import com.mytiki.tiki_sdk_android.trail.UseCase
+import com.mytiki.tiki_sdk_android.trail.Usecase
 import com.mytiki.tiki_sdk_android.trail.rsp.RspInitialize
 import com.mytiki.tiki_sdk_android.ui.Offer
 import com.mytiki.tiki_sdk_android.ui.Theme
@@ -244,13 +244,13 @@ object TikiSdk {
         throwIfNoOffers()
         MainScope().async {
             val ptr: String = offers.values.first().ptr
-            val useCases: MutableList<UseCase> = mutableListOf()
+            val usecases: MutableList<Usecase> = mutableListOf()
             val destinations: MutableList<String> = mutableListOf()
             offers.values.first().uses.forEach {
                 destinations.addAll(it.destinations ?: emptyList())
-                useCases.addAll(it.usecases)
+                usecases.addAll(it.usecases)
             }
-            trail.guard(ptr, useCases, destinations, {
+            trail.guard(ptr, usecases, destinations, {
                 Log.d("TIKI SDK", "Offer already accepted. PTR: $ptr")
             }, {
                 val bundle = Bundle()

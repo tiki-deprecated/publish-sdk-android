@@ -5,7 +5,7 @@
 
 package com.mytiki.tiki_sdk_android.trail
 
-enum class UseCaseCommon(val value: String) {
+enum class UsecaseCommon(val value: String) {
     ATTRIBUTION("attribution"),
     RETARGETING("retargeting"),
     PERSONALIZATION("personalization"),
@@ -15,8 +15,8 @@ enum class UseCaseCommon(val value: String) {
     SUPPORT("support");
 
     companion object {
-        fun from(value: String): UseCaseCommon? {
-            for (type in UseCaseCommon.values()) {
+        fun from(value: String): UsecaseCommon? {
+            for (type in UsecaseCommon.values()) {
                 if (type.value == value) return type
             }
             return null
