@@ -33,6 +33,11 @@ import kotlinx.coroutines.async
  */
 object TikiSdk {
 
+    private val channel: Channel = Channel()
+    val idp: Idp = Idp(channel)
+    val trail: Trail = Trail(channel)
+
+    private var _address: String? = null
     /**
      * Returns a Boolean value indicating whether the TikiSdk has been initialized.
      *
@@ -41,13 +46,13 @@ object TikiSdk {
      */
     val isInitialized: Boolean
         get() = _address != null
-
     val address: String
         get() {
             throwIfNotInitialized()
             return _address!!
         }
 
+    private var _id: String? = null
     val id: String
         get() {
             throwIfNotInitialized()
@@ -60,7 +65,7 @@ object TikiSdk {
      * @returns A [Theme] object with a dark mode appearance.
      */
     val theme = Theme()
-
+    private var _dark: Theme? = null
     /**
      * A [Theme] object for pre-built UIs with a dark mode appearance.
      *
@@ -121,6 +126,27 @@ object TikiSdk {
     var isAcceptEndingDisabled: Boolean = false
         private set
 
+    private var _onAccept: ((Offer, LicenseRecord) -> Unit)? = null
+    private var _onDecline: ((Offer, LicenseRecord?) -> Unit)? = null
+    private var _onSettings: (Context) -> Deferred<Unit> = {
+        MainScope().async {
+            settings(it)
+        }
+    }
+
+    fun initialize(
+        id: String,
+        publishingId: String,
+        context: Context,
+        onComplete: (() -> Unit)? = null
+    ): Deferred<Unit> {
+        return MainScope().async {
+            val rsp: RspInitialize = channel.initialize(id, publishingId, context).await()
+            this@TikiSdk._address = rsp.address
+            this@TikiSdk._id = rsp.id
+            onComplete?.let { it() }
+        }
+    }
 
     /**
      * Adds an [Offer] object to the offers dictionary, using its ID as the key.
@@ -296,35 +322,6 @@ object TikiSdk {
             Configuration.UI_MODE_NIGHT_NO -> theme
             Configuration.UI_MODE_NIGHT_UNDEFINED -> theme
             else -> theme
-        }
-    }
-
-    fun initialize(
-        id: String,
-        publishingId: String,
-        context: Context,
-        onComplete: (() -> Unit)? = null
-    ): Deferred<Unit> {
-        return MainScope().async {
-            val rsp: RspInitialize = channel.initialize(id, publishingId, context).await()
-            this@TikiSdk._address = rsp.address
-            this@TikiSdk._id = rsp.id
-            onComplete?.let { it() }
-        }
-    }
-
-    private val channel: Channel = Channel()
-    val idp: Idp = Idp(channel)
-    val trail: Trail = Trail(channel)
-
-    private var _address: String? = null
-    private var _id: String? = null
-    private var _dark: Theme? = null
-    private var _onAccept: ((Offer, LicenseRecord) -> Unit)? = null
-    private var _onDecline: ((Offer, LicenseRecord?) -> Unit)? = null
-    private var _onSettings: (Context) -> Deferred<Unit> = {
-        MainScope().async {
-            settings(it)
         }
     }
 
