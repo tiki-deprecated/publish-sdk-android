@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -16,5 +16,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Integration Tests"
-include ':integration_tests'
+
+rootProject.name = "integration_tests"
+include ':app'
