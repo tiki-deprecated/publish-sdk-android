@@ -11,7 +11,7 @@ import org.junit.Test
 
 class TagTest {
     @Test
-    fun tagEnum_from() {
+    fun titleTagEnum_from() {
         val existingTagEnum = TagCommon.from("advertising_data")
         val nullTagEnum = TagCommon.from("null")
 
@@ -20,7 +20,7 @@ class TagTest {
     }
 
     @Test
-    fun tag_from() {
+    fun titleTag_from() {
         val test = "test"
 
         val testCase1 = Tag.from("advertising_data")
@@ -33,14 +33,14 @@ class TagTest {
     }
 
     @Test
-    fun tag_custom() {
+    fun titleTag_custom() {
         val test = "test"
         val tag = Tag.custom(test)
         assert(tag.value == "custom:$test")
     }
 
     @Test
-    fun tag_constructor() {
+    fun titleTag_constructor() {
         val tag = Tag(TagCommon.ADVERTISING_DATA)
         assert(tag.value == TagCommon.ADVERTISING_DATA.value)
     }
